@@ -21,8 +21,8 @@ Sistema backend para la gestión de información de la **Parroquia San Cristóba
 |---|---|---|
 | José Carlos Cortez López | Desarrollador Backend | Sprint 1 – Usuario/Auth (.NET) |
 | Mauricio Neftalí Xocoxic Patzán | Desarrollador Backend | Sprint 2 – Rol |
-| Carlos Alejandro Sánchez Solares | Desarrollador Frontend | Sprint 3 – Evento |
-| José Julián González Robles | Desarrollador Full Stack | Sprint 4 – Aviso |
+| Carlos Alejandro Sánchez Solares | Desarrollador Backend | Sprint 3 – Evento |
+| José Julián González Robles | Desarrollador Backend | Sprint 4 – Aviso |
 | José Emilio Bolaños López | Product Owner | Sprint 5 – Horario Misa |
 | José Gerardo Méndez González | Scrum Master | Sprint 5 – Categoría |
 
