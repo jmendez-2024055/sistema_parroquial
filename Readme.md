@@ -127,7 +127,7 @@ JWT_SECRET=tu_clave_secreta
 
 ---
 
-### 👤 Roles – `http://localhost:3000`
+###  Roles – `http://localhost:3000`
 
 | Método | Endpoint | Descripción | Protegido |
 |---|---|---|---|
@@ -143,7 +143,7 @@ JWT_SECRET=tu_clave_secreta
 
 ---
 
-### 🏷️ Categorías – `http://localhost:3000`
+###  Categorías – `http://localhost:3000`
 
 | Método | Endpoint | Descripción | Protegido |
 |---|---|---|---|
