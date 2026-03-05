@@ -5,7 +5,7 @@ services:
     image: postgres:13
     container_name: sistema_parroquial_postgres
     environment: 
-      POSTGRES_USER: ADMIN
+      POSTGRES_USER: SanCristobal
       POSTGRES_PASSWORD: Admin2026
       POSTGRES_DB: sistema_parroquial
     ports:
