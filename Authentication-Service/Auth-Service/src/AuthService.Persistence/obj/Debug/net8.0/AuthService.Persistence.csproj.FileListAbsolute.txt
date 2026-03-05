@@ -1,0 +1,39 @@
+C:\Users\Mnu\Documents\tareas 6to taller\sistema bancario\authentication-service\auth-service\src\AuthService.Persistence\bin\Debug\net8.0\AuthService.Persistence.deps.json
+C:\Users\Mnu\Documents\tareas 6to taller\sistema bancario\authentication-service\auth-service\src\AuthService.Persistence\bin\Debug\net8.0\AuthService.Persistence.runtimeconfig.json
+C:\Users\Mnu\Documents\tareas 6to taller\sistema bancario\authentication-service\auth-service\src\AuthService.Persistence\bin\Debug\net8.0\AuthService.Persistence.dll
+C:\Users\Mnu\Documents\tareas 6to taller\sistema bancario\authentication-service\auth-service\src\AuthService.Persistence\bin\Debug\net8.0\AuthService.Persistence.pdb
+C:\Users\Mnu\Documents\tareas 6to taller\sistema bancario\authentication-service\auth-service\src\AuthService.Persistence\bin\Debug\net8.0\AuthService.Application.dll
+C:\Users\Mnu\Documents\tareas 6to taller\sistema bancario\authentication-service\auth-service\src\AuthService.Persistence\bin\Debug\net8.0\AuthService.Domain.dll
+C:\Users\Mnu\Documents\tareas 6to taller\sistema bancario\authentication-service\auth-service\src\AuthService.Persistence\bin\Debug\net8.0\AuthService.Domain.pdb
+C:\Users\Mnu\Documents\tareas 6to taller\sistema bancario\authentication-service\auth-service\src\AuthService.Persistence\bin\Debug\net8.0\AuthService.Application.pdb
+C:\Users\Mnu\Documents\tareas 6to taller\sistema bancario\authentication-service\auth-service\src\AuthService.Persistence\obj\Debug\net8.0\AuthService.Persistence.csproj.AssemblyReference.cache
+C:\Users\Mnu\Documents\tareas 6to taller\sistema bancario\authentication-service\auth-service\src\AuthService.Persistence\obj\Debug\net8.0\AuthService.Persistence.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Mnu\Documents\tareas 6to taller\sistema bancario\authentication-service\auth-service\src\AuthService.Persistence\obj\Debug\net8.0\AuthService.Persistence.AssemblyInfoInputs.cache
+C:\Users\Mnu\Documents\tareas 6to taller\sistema bancario\authentication-service\auth-service\src\AuthService.Persistence\obj\Debug\net8.0\AuthService.Persistence.AssemblyInfo.cs
+C:\Users\Mnu\Documents\tareas 6to taller\sistema bancario\authentication-service\auth-service\src\AuthService.Persistence\obj\Debug\net8.0\AuthService.Persistence.csproj.CoreCompileInputs.cache
+C:\Users\Mnu\Documents\tareas 6to taller\sistema bancario\authentication-service\auth-service\src\AuthService.Persistence\obj\Debug\net8.0\AuthServ.5D1D95C4.Up2Date
+C:\Users\Mnu\Documents\tareas 6to taller\sistema bancario\authentication-service\auth-service\src\AuthService.Persistence\obj\Debug\net8.0\AuthService.Persistence.dll
+C:\Users\Mnu\Documents\tareas 6to taller\sistema bancario\authentication-service\auth-service\src\AuthService.Persistence\obj\Debug\net8.0\refint\AuthService.Persistence.dll
+C:\Users\Mnu\Documents\tareas 6to taller\sistema bancario\authentication-service\auth-service\src\AuthService.Persistence\obj\Debug\net8.0\AuthService.Persistence.pdb
+C:\Users\Mnu\Documents\tareas 6to taller\sistema bancario\authentication-service\auth-service\src\AuthService.Persistence\obj\Debug\net8.0\AuthService.Persistence.genruntimeconfig.cache
+C:\Users\Mnu\Documents\tareas 6to taller\sistema bancario\authentication-service\auth-service\src\AuthService.Persistence\obj\Debug\net8.0\ref\AuthService.Persistence.dll
+C:\sistema_parroquial\Authentication-Service\Auth-Service\src\AuthService.Persistence\obj\Debug\net8.0\AuthService.Persistence.dll
+C:\sistema_parroquial\Authentication-Service\Auth-Service\src\AuthService.Persistence\obj\Debug\net8.0\refint\AuthService.Persistence.dll
+C:\sistema_parroquial\Authentication-Service\Auth-Service\src\AuthService.Persistence\obj\Debug\net8.0\AuthService.Persistence.pdb
+C:\sistema_parroquial\Authentication-Service\Auth-Service\src\AuthService.Persistence\obj\Debug\net8.0\AuthService.Persistence.csproj.AssemblyReference.cache
+C:\sistema_parroquial\Authentication-Service\Auth-Service\src\AuthService.Persistence\obj\Debug\net8.0\AuthService.Persistence.GeneratedMSBuildEditorConfig.editorconfig
+C:\sistema_parroquial\Authentication-Service\Auth-Service\src\AuthService.Persistence\obj\Debug\net8.0\AuthService.Persistence.AssemblyInfoInputs.cache
+C:\sistema_parroquial\Authentication-Service\Auth-Service\src\AuthService.Persistence\obj\Debug\net8.0\AuthService.Persistence.AssemblyInfo.cs
+C:\sistema_parroquial\Authentication-Service\Auth-Service\src\AuthService.Persistence\obj\Debug\net8.0\AuthService.Persistence.csproj.CoreCompileInputs.cache
+C:\sistema_parroquial\Authentication-Service\Auth-Service\src\AuthService.Persistence\obj\Debug\net8.0\AuthService.Persistence.sourcelink.json
+C:\sistema_parroquial\authentication-service\auth-service\src\AuthService.Persistence\bin\Debug\net8.0\AuthService.Persistence.deps.json
+C:\sistema_parroquial\authentication-service\auth-service\src\AuthService.Persistence\bin\Debug\net8.0\AuthService.Persistence.runtimeconfig.json
+C:\sistema_parroquial\authentication-service\auth-service\src\AuthService.Persistence\bin\Debug\net8.0\AuthService.Persistence.dll
+C:\sistema_parroquial\authentication-service\auth-service\src\AuthService.Persistence\bin\Debug\net8.0\AuthService.Persistence.pdb
+C:\sistema_parroquial\authentication-service\auth-service\src\AuthService.Persistence\bin\Debug\net8.0\AuthService.Application.dll
+C:\sistema_parroquial\authentication-service\auth-service\src\AuthService.Persistence\bin\Debug\net8.0\AuthService.Domain.dll
+C:\sistema_parroquial\authentication-service\auth-service\src\AuthService.Persistence\bin\Debug\net8.0\AuthService.Domain.pdb
+C:\sistema_parroquial\authentication-service\auth-service\src\AuthService.Persistence\bin\Debug\net8.0\AuthService.Application.pdb
+C:\sistema_parroquial\authentication-service\auth-service\src\AuthService.Persistence\obj\Debug\net8.0\AuthServ.5D1D95C4.Up2Date
+C:\sistema_parroquial\authentication-service\auth-service\src\AuthService.Persistence\obj\Debug\net8.0\AuthService.Persistence.genruntimeconfig.cache
+C:\sistema_parroquial\authentication-service\auth-service\src\AuthService.Persistence\obj\Debug\net8.0\ref\AuthService.Persistence.dll
