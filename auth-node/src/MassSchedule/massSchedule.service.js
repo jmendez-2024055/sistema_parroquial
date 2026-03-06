@@ -1,4 +1,4 @@
-const MassSchedule = require('./massSchedule.model');
+import MassSchedule from './massSchedule.model.js';
 
 class MassScheduleService {
 
@@ -25,23 +25,19 @@ class MassScheduleService {
             data,
             { new: true, runValidators: true }
         );
-
         if (!updated) {
             throw new Error('Mass schedule not found');
         }
-
         return updated;
     }
 
     async delete(id) {
         const deleted = await MassSchedule.findByIdAndDelete(id);
-
         if (!deleted) {
             throw new Error('Mass schedule not found');
         }
-
         return deleted;
     }
 }
 
-module.exports = new MassScheduleService();
+export default new MassScheduleService();

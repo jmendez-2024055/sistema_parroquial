@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
 export const dbConnection = async () => {
+    mongoose.connection.setMaxListeners(20); // ← agrega esta línea
     try{
         mongoose.connection.on('error', () => {
             console.error('Mongo DB | Error de conexión');
@@ -26,13 +27,13 @@ export const dbConnection = async () => {
             maxPoolSize: 10,
         });
     }catch(err){
-        console.error(`Kinal Sports - Error al conectar la db: ${err.message}`)
+        console.error(`Mongo DB | Error al conectar la db: ${err.message}`)
         process.exit(1);
     }
 }
 
 const gracefulShutdown = async (signal) => {
-    console.log(`Mongo DB | Recibida señal de ${siganl}, cerrando conexion a mongo DB...`);
+    console.log(`Mongo DB | Recibida señal de ${signal}, cerrando conexion a mongo DB...`);
     try{
         await mongoose.disconnect();
         console.log(`Mongo DB | Conexion cerrada exitosamente`)
@@ -43,6 +44,6 @@ const gracefulShutdown = async (signal) => {
     }
 }
 
-process.on('SIGNIT', () => gracefulShutdown('SIGINT'));
+process.on('SIGINT', () => gracefulShutdown('SIGINT'));
 process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
 process.on('SIGUSR2', () => gracefulShutdown('SIGUSR2'));

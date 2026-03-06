@@ -1,29 +1,21 @@
-const Evento = require('./evento.model');
+import Evento from './evento.model.js';
 
-const crearEvento = async (data) => {
+export const crearEvento = async (data) => {
     return await Evento.create(data);
 };
 
-const obtenerEventos = async () => {
+export const obtenerEventos = async () => {
     return await Evento.find();
 };
 
-const obtenerEventoPorId = async (id) => {
+export const obtenerEventoPorId = async (id) => {
     return await Evento.findById(id);
 };
 
-const actualizarEvento = async (id, data) => {
+export const actualizarEvento = async (id, data) => {
     return await Evento.findByIdAndUpdate(id, data, { new: true });
 };
 
-const eliminarEvento = async (id) => {
+export const eliminarEvento = async (id) => {
     return await Evento.findByIdAndDelete(id);
-};
-
-module.exports = {
-    crearEvento,
-    obtenerEventos,
-    obtenerEventoPorId,
-    actualizarEvento,
-    eliminarEvento
 };

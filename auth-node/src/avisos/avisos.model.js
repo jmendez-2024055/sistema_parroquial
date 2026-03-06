@@ -19,11 +19,7 @@ const avisoSchema = new Schema(
             required: [true, 'La fecha de publicación es obligatoria'],
             default: Date.now,
         },
-        usuario: {
-            type: Schema.Types.ObjectId,
-            ref: 'Usuario',
-            required: [true, 'El ID del usuario es obligatorio'],
-        },
+        
         estado: {
             type: String,
             enum: {

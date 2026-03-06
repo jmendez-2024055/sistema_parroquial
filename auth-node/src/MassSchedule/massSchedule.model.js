@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const massScheduleSchema = new mongoose.Schema({
     diaSemana: {
@@ -18,7 +18,7 @@ const massScheduleSchema = new mongoose.Schema({
     hora: {
         type: String,
         required: true,
-        match: /^([01]\d|2[0-3]):([0-5]\d)$/ 
+        match: /^([01]\d|2[0-3]):([0-5]\d)$/
     },
     tipoMisa: {
         type: String,
@@ -36,4 +36,4 @@ const massScheduleSchema = new mongoose.Schema({
     timestamps: true
 });
 
-module.exports = mongoose.model('MassSchedule', massScheduleSchema);
+export default mongoose.model('MassSchedule', massScheduleSchema);
