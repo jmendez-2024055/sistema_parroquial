@@ -1,4 +1,4 @@
-const massScheduleService = require('./massSchedule.service');
+import massScheduleService from './massSchedule.service.js';
 
 class MassScheduleController {
 
@@ -31,10 +31,7 @@ class MassScheduleController {
 
     async update(req, res) {
         try {
-            const data = await massScheduleService.update(
-                req.params.id,
-                req.body
-            );
+            const data = await massScheduleService.update(req.params.id, req.body);
             res.status(200).json(data);
         } catch (error) {
             res.status(404).json({ message: error.message });
@@ -51,4 +48,4 @@ class MassScheduleController {
     }
 }
 
-module.exports = new MassScheduleController();
+export default new MassScheduleController();

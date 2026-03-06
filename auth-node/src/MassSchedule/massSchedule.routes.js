@@ -1,11 +1,12 @@
-const express = require('express');
-const router = express.Router();
-const massScheduleController = require('./massSchedule.controller');
+import { Router } from 'express';
+import massScheduleController from './massSchedule.controller.js';
 
-router.get('/', massScheduleController.getAll);
-router.get('/:id', massScheduleController.getById);
-router.post('/', massScheduleController.create);
-router.put('/:id', massScheduleController.update);
-router.delete('/:id', massScheduleController.delete);
+const router = Router();
 
-module.exports = router;
+router.get('/', (req, res) => massScheduleController.getAll(req, res));
+router.get('/:id', (req, res) => massScheduleController.getById(req, res));
+router.post('/', (req, res) => massScheduleController.create(req, res));
+router.put('/:id', (req, res) => massScheduleController.update(req, res));
+router.delete('/:id', (req, res) => massScheduleController.delete(req, res));
+
+export default router;

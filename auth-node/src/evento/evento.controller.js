@@ -1,6 +1,6 @@
-const eventoService = require('./evento.service');
+import * as eventoService from './evento.service.js';
 
-const crear = async (req, res) => {
+export const crear = async (req, res) => {
     try {
         const evento = await eventoService.crearEvento(req.body);
         res.status(201).json(evento);
@@ -9,7 +9,7 @@ const crear = async (req, res) => {
     }
 };
 
-const listar = async (req, res) => {
+export const listar = async (req, res) => {
     try {
         const eventos = await eventoService.obtenerEventos();
         res.json(eventos);
@@ -18,7 +18,7 @@ const listar = async (req, res) => {
     }
 };
 
-const obtenerPorId = async (req, res) => {
+export const obtenerPorId = async (req, res) => {
     try {
         const evento = await eventoService.obtenerEventoPorId(req.params.id);
         if (!evento) return res.status(404).json({ message: "No encontrado" });
@@ -28,7 +28,7 @@ const obtenerPorId = async (req, res) => {
     }
 };
 
-const actualizar = async (req, res) => {
+export const actualizar = async (req, res) => {
     try {
         const evento = await eventoService.actualizarEvento(req.params.id, req.body);
         res.json(evento);
@@ -37,19 +37,11 @@ const actualizar = async (req, res) => {
     }
 };
 
-const eliminar = async (req, res) => {
+export const eliminar = async (req, res) => {
     try {
         await eventoService.eliminarEvento(req.params.id);
         res.json({ message: "Evento eliminado" });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
-};
-
-module.exports = {
-    crear,
-    listar,
-    obtenerPorId,
-    actualizar,
-    eliminar
 };
