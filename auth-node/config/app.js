@@ -8,10 +8,10 @@ import { corsOptions } from './cors.configuration.js';
 import { helmetOptions } from './helmet.configuration.js';
 import { dbConnection } from './db.configuration.js';
 import { requestLimit } from './rate.limit.configuration.js';
-import eventoRoutes from '../src/evento/evento.routes.js';
-import avisosRoutes from '../src/avisos/avisos.router.js';
+import eventoRoutes from '../src/event/event.routes.js';
+import avisosRoutes from '../src/notice/notice.router.js';
 import massScheduleRoutes from '../src/MassSchedule/massSchedule.routes.js';
-import categoriaRoutes from '../src/categoria/categoria.routes.js';
+import categoriaRoutes from '../src/category/category.routes.js';
 
 const BASE_PATH = '/SistemaParroquial/v1';
 

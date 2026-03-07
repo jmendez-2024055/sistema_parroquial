@@ -1,4 +1,4 @@
-import * as eventoService from './evento.service.js';
+import * as eventoService from './event.service.js';
 
 export const crear = async (req, res) => {
     try {

@@ -1,4 +1,4 @@
-import * as avisosService from "./avisos.service.js";
+import * as avisosService from "./notice.service.js";
 
 export const crearAviso = async (req, res) => {
     try {

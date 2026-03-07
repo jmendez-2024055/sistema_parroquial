@@ -1,4 +1,4 @@
-import { Aviso } from "./avisos.model.js";
+import { Aviso } from "./notice.model.js";
 
 export const crearAviso = async (data) => {
     const aviso = new Aviso(data);

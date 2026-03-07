@@ -21,3 +21,15 @@ C:\sistema_parroquial\Authentication-Service\Auth-Service\src\AuthService.Domain
 C:\sistema_parroquial\Authentication-Service\Auth-Service\src\AuthService.Domain\bin\Debug\net8.0\AuthService.Domain.dll
 C:\sistema_parroquial\Authentication-Service\Auth-Service\src\AuthService.Domain\bin\Debug\net8.0\AuthService.Domain.pdb
 C:\sistema_parroquial\Authentication-Service\Auth-Service\src\AuthService.Domain\obj\Debug\net8.0\ref\AuthService.Domain.dll
+C:\gitIN6AM2026\sistema_parroquial\Authentication-Service\Auth-Service\src\AuthService.Domain\bin\Debug\net8.0\AuthService.Domain.deps.json
+C:\gitIN6AM2026\sistema_parroquial\Authentication-Service\auth-service\src\AuthService.Domain\bin\Debug\net8.0\AuthService.Domain.dll
+C:\gitIN6AM2026\sistema_parroquial\Authentication-Service\auth-service\src\AuthService.Domain\bin\Debug\net8.0\AuthService.Domain.pdb
+C:\gitIN6AM2026\sistema_parroquial\Authentication-Service\auth-service\src\AuthService.Domain\obj\Debug\net8.0\AuthService.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\gitIN6AM2026\sistema_parroquial\Authentication-Service\auth-service\src\AuthService.Domain\obj\Debug\net8.0\AuthService.Domain.AssemblyInfoInputs.cache
+C:\gitIN6AM2026\sistema_parroquial\Authentication-Service\auth-service\src\AuthService.Domain\obj\Debug\net8.0\AuthService.Domain.AssemblyInfo.cs
+C:\gitIN6AM2026\sistema_parroquial\Authentication-Service\auth-service\src\AuthService.Domain\obj\Debug\net8.0\AuthService.Domain.csproj.CoreCompileInputs.cache
+C:\gitIN6AM2026\sistema_parroquial\Authentication-Service\auth-service\src\AuthService.Domain\obj\Debug\net8.0\AuthService.Domain.sourcelink.json
+C:\gitIN6AM2026\sistema_parroquial\Authentication-Service\auth-service\src\AuthService.Domain\obj\Debug\net8.0\AuthService.Domain.dll
+C:\gitIN6AM2026\sistema_parroquial\Authentication-Service\auth-service\src\AuthService.Domain\obj\Debug\net8.0\refint\AuthService.Domain.dll
+C:\gitIN6AM2026\sistema_parroquial\Authentication-Service\auth-service\src\AuthService.Domain\obj\Debug\net8.0\AuthService.Domain.pdb
+C:\gitIN6AM2026\sistema_parroquial\Authentication-Service\Auth-Service\src\AuthService.Domain\obj\Debug\net8.0\ref\AuthService.Domain.dll

@@ -1,4 +1,4 @@
-import Categoria from './categoria.model.js';
+import Categoria from './category.model.js';
 
 export const createCategoriaRecord = async ({ categoriaData }) => {
   const categoria = new Categoria(categoriaData);

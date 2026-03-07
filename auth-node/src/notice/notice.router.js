@@ -5,7 +5,7 @@ import {
     listarAvisos,
     editarAviso,
     eliminarAviso
-} from './avisos.controller.js';
+} from './notice.controller.js';
 
 const router = Router();
 

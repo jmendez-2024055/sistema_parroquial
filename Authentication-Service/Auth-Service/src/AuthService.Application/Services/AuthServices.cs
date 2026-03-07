@@ -20,7 +20,6 @@ public class AuthServices : IAuthService
     {
         var user = _users.GetByUsername(dto.Username);
 
-        // Verificación simple de contraseña 
         if (user == null || user.Password != dto.Password)
         {
             return new AuthResponseDto 
@@ -30,7 +29,6 @@ public class AuthServices : IAuthService
             };
         }
 
-        // Verificar si el usuario está activo
         if (!user.Status)
         {
             return new AuthResponseDto 
@@ -95,10 +93,8 @@ public class AuthServices : IAuthService
             UpdatedAt = DateTime.UtcNow
         };
 
-        // Guardar usuario
         _users.Add(newUser);
 
-        // Determinar rol
         var userRole = string.IsNullOrWhiteSpace(dto.Role) ? "USER_ROLE" : dto.Role.Trim();
 
         return new AuthResponseDto
