@@ -9,7 +9,7 @@ import { helmetOptions } from './helmet.configuration.js';
 import { dbConnection } from './db.configuration.js';
 import { requestLimit } from './rate.limit.configuration.js';
 import eventoRoutes from '../src/event/event.routes.js';
-import avisosRoutes from '../src/notice/notice.router.js';
+import avisosRoutes from '../src/notice/notice.routes.js';
 import massScheduleRoutes from '../src/MassSchedule/massSchedule.routes.js';
 import categoriaRoutes from '../src/category/category.routes.js';
 
