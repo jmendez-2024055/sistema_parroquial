@@ -19,12 +19,12 @@ Sistema backend para la gestión de información de la **Parroquia San Cristóba
 
 | Nombre | Rol | Sprint |
 |---|---|---|
-| José Carlos Cortez López | Desarrollador Backend | Sprint 1 – Usuario/Auth (.NET) |
-| Mauricio Neftalí Xocoxic Patzán | Desarrollador Backend | Sprint 2 – Rol |
-| Carlos Alejandro Sánchez Solares | Desarrollador Backend | Sprint 3 – Evento |
-| José Julián González Robles | Desarrollador Backend | Sprint 4 – Aviso |
-| José Emilio Bolaños López | Product Owner | Sprint 5 – Horario Misa |
-| José Gerardo Méndez González | Scrum Master | Sprint 5 – Categoría |
+| José Carlos Cortez López | Desarrollador Backend | Sprint 1 – Usuario-Rol/Auth (.NET) |
+| Mauricio Neftalí Xocoxic Patzán | Desarrollador Backend | Sprint 2 – Evento |
+| Carlos Alejandro Sánchez Solares | Desarrollador Backend | Sprint 3 – Aviso |
+| José Julián González Robles | Desarrollador Backend | Sprint 4 – Horario Misa |
+| José Emilio Bolaños López | Product Owner | Sprint 5 – Categoria  |
+| José Gerardo Méndez González | Scrum Master | Sprint 5 – INTEGRACIÓN |
 
 ---
 
@@ -109,10 +109,10 @@ JWT_SECRET=tu_clave_secreta
 **Body – POST /api/auth/register**
 ```json
 {
-  "nombre": "Juan",
-  "apellido": "Pérez",
-  "correo": "juan@gmail.com",
-  "contrasena": "123456",
+  "nombre": "Luis",
+  "apellido": "Garcia",
+  "correo": "Luis@gmail.com",
+  "contrasena": "453245",
   "idRol": 1
 }
 ```
@@ -120,7 +120,7 @@ JWT_SECRET=tu_clave_secreta
 **Body – POST /api/auth/login**
 ```json
 {
-  "correo": "juan@gmail.com",
+  "correo": "Luis@gmail.com",
   "contrasena": "123456"
 }
 ```
