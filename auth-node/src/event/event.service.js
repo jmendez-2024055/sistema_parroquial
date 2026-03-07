@@ -1,4 +1,4 @@
-import Evento from './evento.model.js';
+import Evento from './event.model.js';
 
 export const crearEvento = async (data) => {
     return await Evento.create(data);

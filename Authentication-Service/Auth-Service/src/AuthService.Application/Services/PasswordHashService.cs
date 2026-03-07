@@ -41,7 +41,6 @@ public class PasswordHashService : IPasswordHashService
         {
             Console.WriteLine($"[DEBUG] Verifying password for hash: {hashedPassword.Substring(0, Math.Min(50, hashedPassword.Length))}...");
 
-            // Verificar si es el formato estándar Argon2
             if (hashedPassword.StartsWith("$argon2id$"))
             {
                 Console.WriteLine("[DEBUG] Using Argon2 standard format verification");

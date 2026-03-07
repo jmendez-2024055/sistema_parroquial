@@ -1,5 +1,5 @@
-import { createCategoriaRecord } from './categoria.service.js';
-import { getCategoriasRecord } from './categoria.service.js';
+import { createCategoriaRecord } from './category.service.js';
+import { getCategoriasRecord } from './category.service.js';
 
 export const createCategoria = async (req, res) => {
   try {
