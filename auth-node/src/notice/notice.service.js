@@ -1,24 +1,26 @@
-import { Aviso } from "./notice.model.js";
+import Aviso from './notice.model.js';
 
 export const crearAviso = async (data) => {
-    const aviso = new Aviso(data);
-    return await aviso.save();
+    return await Aviso.create(data);
 };
 
 export const listarAvisos = async () => {
-    return await Aviso.find({ estado: 'ACTIVO' });
+    return await Aviso.find()
+        .sort({ fechaPublicacion: -1 });
+};
+
+export const obtenerAvisoPorId = async (id) => {
+    return await Aviso.findById(id);
 };
 
 export const editarAviso = async (id, data) => {
-    const aviso = await Aviso.findById(id);
-    if (!aviso || aviso.estado === 'INACTIVO') throw new Error("Aviso no encontrado");
-    Object.assign(aviso, data);
-    return await aviso.save();
+    return await Aviso.findByIdAndUpdate(
+        id,
+        data,
+        { new: true, runValidators: true }
+    );
 };
 
 export const eliminarAviso = async (id) => {
-    const aviso = await Aviso.findById(id);
-    if (!aviso) throw new Error("Aviso no encontrado");
-    aviso.estado = 'INACTIVO';
-    return await aviso.save();
+    return await Aviso.findByIdAndDelete(id);
 };

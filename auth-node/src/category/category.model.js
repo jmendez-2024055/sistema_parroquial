@@ -2,11 +2,6 @@ import { Schema, model } from 'mongoose';
 
 const categoriaSchema = new Schema(
   {
-    idCategoria: {
-      type: Number,
-      required: [true, 'El ID de la categoría es obligatorio'],
-      unique: true,
-    },
     nombreCategoria: {
       type: String,
       required: [true, 'El nombre de la categoría es obligatorio'],
@@ -28,13 +23,13 @@ const categoriaSchema = new Schema(
     },
   },
   {
-    timestamps: { createdAt: true, updatedAt: false },
+    timestamps: true,
     versionKey: false,
   }
 );
 
+// Índices
 categoriaSchema.index({ isActive: 1 });
 categoriaSchema.index({ nombreCategoria: 1 });
-categoriaSchema.index({ isActive: 1, nombreCategoria: 1 });
 
-export default model('Categoria', categoriaSchema);
+export default model('Category', categoriaSchema);
