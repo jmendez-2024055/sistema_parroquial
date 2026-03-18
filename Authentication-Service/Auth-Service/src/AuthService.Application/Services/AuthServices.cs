@@ -9,18 +9,21 @@ public class AuthServices : IAuthService
 {
     private readonly IUserRepository _users;
     private readonly IJwtService _jwt;
+    private readonly IPasswordHashService _passwordHash; 
 
-    public AuthServices(IUserRepository users, IJwtService jwt)
+    public AuthServices(IUserRepository users, IJwtService jwt, IPasswordHashService passwordHash)
     {
         _users = users;
         _jwt = jwt;
+        _passwordHash = passwordHash; 
     }
 
     public AuthResponseDto Login(LoginDto dto)
     {
         var user = _users.GetByUsername(dto.Username);
 
-        if (user == null || user.Password != dto.Password)
+
+        if (user == null || !_passwordHash.VerifyPassword(dto.Password, user.Password))
         {
             return new AuthResponseDto 
             { 
@@ -79,7 +82,6 @@ public class AuthServices : IAuthService
             };
         }
 
-        // Crear nuevo usuario
         var newUser = new User
         {
             Id = Guid.NewGuid().ToString(),
@@ -87,8 +89,8 @@ public class AuthServices : IAuthService
             Surname = dto.Surname.Trim(),
             Username = dto.Username.Trim(),
             Email = dto.Email.Trim().ToLower(),
-            Password = dto.Password, 
-            Status = true, 
+            Password = _passwordHash.HashPassword(dto.Password), 
+            Status = true,
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow
         };

@@ -4,35 +4,37 @@ const avisoSchema = new Schema(
     {
         titulo: {
             type: String,
-            required: [true, 'El título del aviso es obligatorio'],
+            required: [true, 'El título es obligatorio'],
             trim: true,
-            maxlength: [150, 'El título no puede superar los 150 caracteres'],
+            maxlength: 150
         },
         contenido: {
             type: String,
-            required: [true, 'El contenido del aviso es obligatorio'],
+            required: [true, 'El contenido es obligatorio'],
             trim: true,
-            maxlength: [1000, 'El contenido no puede superar los 1000 caracteres'],
+            maxlength: 1000
         },
         fechaPublicacion: {
             type: Date,
-            required: [true, 'La fecha de publicación es obligatoria'],
-            default: Date.now,
+            default: Date.now
         },
-        
         estado: {
             type: String,
-            enum: {
-                values: ['ACTIVO', 'INACTIVO'],
-                message: 'Estado inválido',
-            },
-            default: 'ACTIVO',
+            enum: ['ACTIVO', 'INACTIVO'],
+            default: 'ACTIVO'
         },
+        usuario: {
+            type: Schema.Types.ObjectId,
+            required: true
+        }
     },
     {
         timestamps: true,
-        versionKey: false,
+        versionKey: false
     }
 );
 
-export const Aviso = model('Aviso', avisoSchema);
+avisoSchema.index({ estado: 1 });
+avisoSchema.index({ fechaPublicacion: -1 });
+
+export default model('Aviso', avisoSchema);

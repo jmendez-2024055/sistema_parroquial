@@ -6730,11 +6730,11 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "C:\\gitIN6AM2026\\sistema_parroquial\\Authentication-Service\\auth-service\\src\\AuthService.Application\\AuthService.Application.csproj": {
-              "projectPath": "C:\\gitIN6AM2026\\sistema_parroquial\\Authentication-Service\\auth-service\\src\\AuthService.Application\\AuthService.Application.csproj"
+            "C:\\gitIN6AM2026\\sistema_parroquial\\Authentication-Service\\Auth-Service\\src\\AuthService.Application\\AuthService.Application.csproj": {
+              "projectPath": "C:\\gitIN6AM2026\\sistema_parroquial\\Authentication-Service\\Auth-Service\\src\\AuthService.Application\\AuthService.Application.csproj"
             },
-            "C:\\gitIN6AM2026\\sistema_parroquial\\Authentication-Service\\auth-service\\src\\AuthService.Domain\\AuthService.Domain.csproj": {
-              "projectPath": "C:\\gitIN6AM2026\\sistema_parroquial\\Authentication-Service\\auth-service\\src\\AuthService.Domain\\AuthService.Domain.csproj"
+            "C:\\gitIN6AM2026\\sistema_parroquial\\Authentication-Service\\Auth-Service\\src\\AuthService.Domain\\AuthService.Domain.csproj": {
+              "projectPath": "C:\\gitIN6AM2026\\sistema_parroquial\\Authentication-Service\\Auth-Service\\src\\AuthService.Domain\\AuthService.Domain.csproj"
             }
           }
         }

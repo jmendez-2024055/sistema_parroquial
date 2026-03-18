@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "7H/+LrcvixM=",
+  "dgSpecHash": "7H+T7HE+Gak=",
   "success": true,
-  "projectFilePath": "C:\\gitIN6AM2026\\sistema_parroquial\\Authentication-Service\\auth-service\\src\\AuthService.Api\\AuthService.Api.csproj",
+  "projectFilePath": "C:\\gitIN6AM2026\\sistema_parroquial\\Authentication-Service\\Auth-Service\\src\\AuthService.Api\\AuthService.Api.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\CompuFire\\.nuget\\packages\\bouncycastle.cryptography\\2.5.1\\bouncycastle.cryptography.2.5.1.nupkg.sha512",
     "C:\\Users\\CompuFire\\.nuget\\packages\\cloudinarydotnet\\1.27.7\\cloudinarydotnet.1.27.7.nupkg.sha512",
