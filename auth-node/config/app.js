@@ -11,7 +11,7 @@ import { corsOptions } from './cors.configuration.js';
 import { helmetOptions } from './helmet.configuration.js';
 import { dbConnection } from './db.configuration.js';
 import { requestLimit } from './rate.limit.configuration.js';
-import { errorHandler } from './middlewares/error.middleware.js';
+import { errorHandler } from '../middlewares/error.middleware.js';
 import { swaggerDocs } from './documentation.js';
 
 import eventoRoutes from '../src/event/event.routes.js';
