@@ -1,46 +1,79 @@
 import { Router } from 'express';
 import * as categoriaController from './category.controller.js';
-import { validateJWT } from '../middlewares/auth.middleware.js';
-import { validateCreateCategoria } from '../middlewares/categoria-validator.js';
-import { validationResult } from 'express-validator';
 
 const router = Router();
 
-const validarCampos = (req, res, next) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        return res.status(400).json({
-            success: false,
-            errors: errors.array()
-        });
-    }
-    next();
-};
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Categoria:
+ *       type: object
+ *       required:
+ *         - nombre
+ *         - descripcion
+ *       properties:
+ *         _id:
+ *           type: string
+ *           description: ID autogenerado por MongoDB
+ *         nombre:
+ *           type: string
+ *           description: Nombre de la categoría
+ *         descripcion:
+ *           type: string
+ *           description: Descripción de la categoría
+ *         estado:
+ *           type: boolean
+ *           default: true
+ *           description: Estado activo de la categoría
+ *       example:
+ *         nombre: "Donaciones"
+ *         descripcion: "Categoría para registrar donaciones"
+ */
 
-router.post(
-    '/',
-    validateJWT,
-    validateCreateCategoria,
-    validarCampos,
-    categoriaController.createCategoria
-);
-
+/**
+ * @swagger
+ * /category:
+ *   get:
+ *     summary: Obtener todas las categorías
+ *     tags: [Categoria]
+ */
 router.get('/', categoriaController.getCategorias);
 
+/**
+ * @swagger
+ * /category/{id}:
+ *   get:
+ *     summary: Obtener una categoría por ID
+ *     tags: [Categoria]
+ */
 router.get('/:id', categoriaController.getCategoriaById);
 
-router.put(
-    '/:id',
-    validateJWT,
-    validateCreateCategoria,
-    validarCampos,
-    categoriaController.updateCategoria
-);
+/**
+ * @swagger
+ * /category:
+ *   post:
+ *     summary: Crear una nueva categoría
+ *     tags: [Categoria]
+ */
+router.post('/', categoriaController.createCategoria);
 
-router.delete(
-    '/:id',
-    validateJWT,
-    categoriaController.deleteCategoria
-);
+/**
+ * @swagger
+ * /category/{id}:
+ *   put:
+ *     summary: Actualizar una categoría
+ *     tags: [Categoria]
+ */
+router.put('/:id', categoriaController.updateCategoria);
+
+/**
+ * @swagger
+ * /category/{id}:
+ *   delete:
+ *     summary: Eliminar una categoría
+ *     tags: [Categoria]
+ */
+router.delete('/:id', categoriaController.deleteCategoria);
 
 export default router;
