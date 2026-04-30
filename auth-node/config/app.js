@@ -11,7 +11,8 @@ import { corsOptions } from './cors.configuration.js';
 import { helmetOptions } from './helmet.configuration.js';
 import { dbConnection } from './db.configuration.js';
 import { requestLimit } from './rate.limit.configuration.js';
-import { errorHandler } from './middlewares/error.middleware.js';
+import { errorHandler } from '../middlewares/error.middleware.js';
+import { swaggerDocs } from './documentation.js';
 
 import eventoRoutes from '../src/event/event.routes.js';
 import avisosRoutes from '../src/notice/notice.routes.js'; 
@@ -45,7 +46,6 @@ const routes = (app) => {
 const middlewares = (app) => {
     app.use(express.json({ limit: '10mb' }));
     app.use(express.urlencoded({ extended: false, limit: '10mb' }));
-
     app.use(cors(corsOptions));
     app.use(helmet(helmetOptions));
     app.use(morgan('dev'));
@@ -64,13 +64,16 @@ export const initServer = async () => {
 
         await dbConnection();
 
+        swaggerDocs(app);
+
         routes(app);
 
         app.use(errorHandler);
 
         app.listen(PORT, () => {
-            console.log(` Sistema Parroquial corriendo en puerto ${PORT}`);
-            console.log(` Health check: http://localhost:${PORT}${BASE_PATH}/health`);
+            console.log(`Sistema Parroquial corriendo en puerto ${PORT}`);
+            console.log(`Health check: http://localhost:${PORT}${BASE_PATH}/health`);
+            console.log(`Swagger docs: http://localhost:${PORT}/api-docs`);
         });
 
     } catch (err) {

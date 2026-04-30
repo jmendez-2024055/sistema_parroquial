@@ -28,4 +28,4 @@ class MassScheduleService {
     }
 }
 
-export default new massScheduleService();
+export default new MassScheduleService();
