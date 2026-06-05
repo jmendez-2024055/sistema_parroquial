@@ -1,68 +1,42 @@
 using AuthService.Api.Extensions;
-//using AuthService.Api.Middlewares;
-//using AuthService.Api.ModelBinders;
+using AuthService.Api.Middlewares;
+using AuthService.Api.ModelBinders;
 using AuthService.Persistence.Data;
 using NetEscapades.AspNetCore.SecurityHeaders.Infrastructure;
 using Serilog;
-using System.Reflection;
-using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Hosting.Server.Features;
 
 var builder = WebApplication.CreateBuilder(args);
 
-System.Net.ServicePointManager.ServerCertificateValidationCallback += (sender, certificate, chain, sslPolicyErrors) => true;
 
+// Configure Serilog from appsettings.json only (avoid duplicate sinks)
 builder.Host.UseSerilog((context, services, loggerConfiguration) =>
     loggerConfiguration
         .ReadFrom.Configuration(context.Configuration)
         .ReadFrom.Services(services));
 
-builder.Services.AddControllers();
-
-builder.Services.AddEndpointsApiExplorer();
-
-
-builder.Services.AddSwaggerGen(options =>
+// Add services to the container
+builder.Services.AddControllers(options =>
 {
-    options.EnableAnnotations();
-
-    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-    options.IncludeXmlComments(xmlPath);
-
-    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-    {
-        Name = "Authorization",
-        Type = SecuritySchemeType.Http,
-        Scheme = "bearer",
-        BearerFormat = "JWT",
-        In = ParameterLocation.Header,
-        Description = "Ingresa tu token JWT."
-    });
-
-    options.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
-        {
-            new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" }
-            },
-            Array.Empty<string>()
-        }
-    });
+    // Agregar el model binder para IFileData
+    options.ModelBinderProviders.Insert(0, new FileDataModelBinderProvider());
+})
+.AddJsonOptions(o =>
+{
+    // Estandarizar las respuestas en camelCase para coincidir con auth-node
+    o.JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
 });
 
 // Configure services through extension methods
-//builder.Services.AddApiDocumentation();
+builder.Services.AddApiDocumentation();
 builder.Services.AddApplicationServices(builder.Configuration);
-// builder.Services.AddJwtAuthentication(builder.Configuration);
-// builder.Services.AddRateLimitingPolicies();
+builder.Services.AddJwtAuthentication(builder.Configuration);
+builder.Services.AddRateLimitingPolicies();
 
 // Add security services
-// builder.Services.AddSecurityPolicies(builder.Configuration);
-// builder.Services.AddSecurityOptions();
-
+builder.Services.AddSecurityPolicies(builder.Configuration);
+builder.Services.AddSecurityOptions();
 
 var app = builder.Build();
 
@@ -76,7 +50,7 @@ if (app.Environment.IsDevelopment())
 // Add Serilog request logging
 app.UseSerilogRequestLogging();
 
-// Add Security Headers
+// Add Security Headers using NetEscapades package
 app.UseSecurityHeaders(policies => policies
     .AddDefaultSecurityHeaders()
     .RemoveServerHeader()
@@ -100,19 +74,36 @@ app.UseSecurityHeaders(policies => policies
     .AddCustomHeader("Cache-Control", "no-store, no-cache, must-revalidate, private")
 );
 
-// Manejo global de excepciones
-//app.UseMiddleware<GlobalExceptionMiddleware>();
+// Global exception handling
+app.UseMiddleware<GlobalExceptionMiddleware>();
 
-// Middlewares principales (orden correcto)
-app.UseHttpsRedirection();
+// Core middlewares
+// app.UseHttpsRedirection();
 app.UseCors("DefaultCorsPolicy");
-// app.UseRateLimiter();
+app.UseRateLimiter();
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
 
-// Log de inicio: direcciones y endpoint de salud
+// Health check endpoints - both versions for compatibility
+// Standard health check endpoint
+app.MapHealthChecks("/health");
+
+// Custom health endpoint to match Node.js response format
+app.MapGet("/health", () =>
+{
+    var response = new
+    {
+        status = "Healthy",
+        timestamp = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.fffZ")
+    };
+    return Results.Ok(response);
+});
+
+app.MapHealthChecks("/api/v1/health");
+
+// Startup log: addresses and health endpoint
 var startupLogger = app.Services.GetRequiredService<ILogger<Program>>();
 app.Lifetime.ApplicationStarted.Register(() =>
 {
@@ -126,22 +117,22 @@ app.Lifetime.ApplicationStarted.Register(() =>
         {
             foreach (var addr in addresses)
             {
-                var health = $"{addr.TrimEnd('/')}/api/v1/health";
-                startupLogger.LogInformation("API de AuthService está ejecutándose en {Url}. Endpoint de salud: {HealthUrl}", addr, health);
+                var health = $"{addr.TrimEnd('/')}/health";
+                startupLogger.LogInformation("AuthService API is running at {Url}. Health endpoint: {HealthUrl}", addr, health);
             }
         }
         else
         {
-            startupLogger.LogInformation("API de AuthService iniciada. Endpoint de salud: /api/v1/health");
+            startupLogger.LogInformation("AuthService API started. Health endpoint: /health");
         }
     }
     catch (Exception ex)
     {
-        startupLogger.LogWarning(ex, "Fallo al determinar las direcciones de escucha para el log de inicio");
+        startupLogger.LogWarning(ex, "Failed to determine the listening addresses for startup log");
     }
 });
 
-// Inicializar base de datos y datos semilla
+// Initialize database and seed data
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
@@ -149,16 +140,20 @@ using (var scope = app.Services.CreateScope())
 
     try
     {
-        logger.LogInformation("Verificando conexión a la base de datos...");
+        logger.LogInformation("Checking database connection...");
+
+        // Ensure database is created (similar to Sequelize sync in Node.js)
         await context.Database.EnsureCreatedAsync();
-        logger.LogInformation("Base de datos lista. Ejecutando datos semilla...");
+
+        logger.LogInformation("Database ready. Running seed data...");
         await DataSeeder.SeedAsync(context);
-        logger.LogInformation("Inicialización de base de datos completada exitosamente");
+
+        logger.LogInformation("Database initialization completed successfully");
     }
     catch (Exception ex)
     {
-        logger.LogError(ex, "Ocurrió un error al inicializar la base de datos");
-        throw;
+        logger.LogError(ex, "An error occurred while initializing the database");
+        throw; // Re-throw to stop the application
     }
 }
 

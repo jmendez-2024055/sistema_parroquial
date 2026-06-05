@@ -4,8 +4,16 @@ namespace AuthService.Domain.Interfaces;
 
 public interface IUserRepository
 {
-    User? GetByUsername(string username);
-    User? GetByEmail(string email);
-    void Add(User user);
-    void Update(User user);
+    Task<User> CreateAsync(User user);
+    Task<IEnumerable<User>> GetUsersAsync();
+    Task<User> GetByIdAsync(string id);
+    Task<User?> GetByEmailAsync(string email);
+    Task<User?> GetByUsernameAsync(string username);
+    Task<User?> GetByEmailVerificationTokenAsync(string token);
+    Task<User?> GetByPasswordResetTokenAsync(string token);
+    Task<bool> ExistsByEmailAsync(string email);
+    Task<bool> ExistsByUsernameAsync(string username);
+    Task<User> UpdateAsync(User user);
+    Task<bool> DeleteAsync(string id);
+    Task UpdateUserRoleAsync(string userId, string roleId);
 }

@@ -45,9 +45,9 @@ namespace AuthService.Persistence.Migrations
                         .HasColumnName("updated_at");
 
                     b.HasKey("Id")
-                        .HasName("p_k_roles");
+                        .HasName("pk_roles");
 
-                    b.ToTable("roles");
+                    b.ToTable("roles", (string)null);
                 });
 
             modelBuilder.Entity("AuthService.Domain.Entities.User", b =>
@@ -101,15 +101,17 @@ namespace AuthService.Persistence.Migrations
                         .HasColumnName("username");
 
                     b.HasKey("Id")
-                        .HasName("p_k_users");
+                        .HasName("pk_users");
 
                     b.HasIndex("Email")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasDatabaseName("ix_users_email");
 
                     b.HasIndex("Username")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasDatabaseName("ix_users_username");
 
-                    b.ToTable("users");
+                    b.ToTable("users", (string)null);
                 });
 
             modelBuilder.Entity("AuthService.Domain.Entities.UserEmail", b =>
@@ -148,13 +150,13 @@ namespace AuthService.Persistence.Migrations
                         .HasColumnName("user_id");
 
                     b.HasKey("Id")
-                        .HasName("p_k_user_emails");
+                        .HasName("pk_user_emails");
 
                     b.HasIndex("UserId")
                         .IsUnique()
-                        .HasDatabaseName("i_x_user_emails_user_id");
+                        .HasDatabaseName("ix_user_emails_user_id");
 
-                    b.ToTable("user_emails");
+                    b.ToTable("user_emails", (string)null);
                 });
 
             modelBuilder.Entity("AuthService.Domain.Entities.UserPasswordReset", b =>
@@ -189,13 +191,13 @@ namespace AuthService.Persistence.Migrations
                         .HasColumnName("user_id");
 
                     b.HasKey("Id")
-                        .HasName("p_k_user_password_resets");
+                        .HasName("pk_user_password_resets");
 
                     b.HasIndex("UserId")
                         .IsUnique()
-                        .HasDatabaseName("i_x_user_password_resets_user_id");
+                        .HasDatabaseName("ix_user_password_resets_user_id");
 
-                    b.ToTable("user_password_resets");
+                    b.ToTable("user_password_resets", (string)null);
                 });
 
             modelBuilder.Entity("AuthService.Domain.Entities.UserProfile", b =>
@@ -233,13 +235,13 @@ namespace AuthService.Persistence.Migrations
                         .HasColumnName("user_id");
 
                     b.HasKey("Id")
-                        .HasName("p_k_user_profiles");
+                        .HasName("pk_user_profiles");
 
                     b.HasIndex("UserId")
                         .IsUnique()
-                        .HasDatabaseName("i_x_user_profiles_user_id");
+                        .HasDatabaseName("ix_user_profiles_user_id");
 
-                    b.ToTable("user_profiles");
+                    b.ToTable("user_profiles", (string)null);
                 });
 
             modelBuilder.Entity("AuthService.Domain.Entities.UserRole", b =>
@@ -271,15 +273,15 @@ namespace AuthService.Persistence.Migrations
                         .HasColumnName("user_id");
 
                     b.HasKey("Id")
-                        .HasName("p_k_user_roles");
+                        .HasName("pk_user_roles");
 
                     b.HasIndex("RoleId")
-                        .HasDatabaseName("i_x_user_roles_role_id");
+                        .HasDatabaseName("ix_user_roles_role_id");
 
                     b.HasIndex("UserId")
-                        .HasDatabaseName("i_x_user_roles_user_id");
+                        .HasDatabaseName("ix_user_roles_user_id");
 
-                    b.ToTable("user_roles");
+                    b.ToTable("user_roles", (string)null);
                 });
 
             modelBuilder.Entity("AuthService.Domain.Entities.UserEmail", b =>
@@ -288,7 +290,8 @@ namespace AuthService.Persistence.Migrations
                         .WithOne("UserEmail")
                         .HasForeignKey("AuthService.Domain.Entities.UserEmail", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_user_emails_users_user_id");
 
                     b.Navigation("User");
                 });
@@ -299,7 +302,8 @@ namespace AuthService.Persistence.Migrations
                         .WithOne("UserPasswordReset")
                         .HasForeignKey("AuthService.Domain.Entities.UserPasswordReset", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_user_password_resets_users_user_id");
 
                     b.Navigation("User");
                 });
@@ -310,7 +314,8 @@ namespace AuthService.Persistence.Migrations
                         .WithOne("UserProfile")
                         .HasForeignKey("AuthService.Domain.Entities.UserProfile", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_user_profiles_users_user_id");
 
                     b.Navigation("User");
                 });
@@ -321,13 +326,15 @@ namespace AuthService.Persistence.Migrations
                         .WithMany("UserRoles")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_user_roles_roles_role_id");
 
                     b.HasOne("AuthService.Domain.Entities.User", "User")
                         .WithMany("UserRoles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_user_roles_users_user_id");
 
                     b.Navigation("Role");
 

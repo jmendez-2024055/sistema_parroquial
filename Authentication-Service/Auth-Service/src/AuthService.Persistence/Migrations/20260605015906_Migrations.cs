@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AuthService.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class Migrations : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -22,7 +22,7 @@ namespace AuthService.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("p_k_roles", x => x.id);
+                    table.PrimaryKey("pk_roles", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
@@ -41,7 +41,7 @@ namespace AuthService.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("p_k_users", x => x.id);
+                    table.PrimaryKey("pk_users", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
@@ -58,9 +58,9 @@ namespace AuthService.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("p_k_user_emails", x => x.id);
+                    table.PrimaryKey("pk_user_emails", x => x.id);
                     table.ForeignKey(
-                        name: "FK_user_emails_users_user_id",
+                        name: "fk_user_emails_users_user_id",
                         column: x => x.user_id,
                         principalTable: "users",
                         principalColumn: "id",
@@ -80,9 +80,9 @@ namespace AuthService.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("p_k_user_password_resets", x => x.id);
+                    table.PrimaryKey("pk_user_password_resets", x => x.id);
                     table.ForeignKey(
-                        name: "FK_user_password_resets_users_user_id",
+                        name: "fk_user_password_resets_users_user_id",
                         column: x => x.user_id,
                         principalTable: "users",
                         principalColumn: "id",
@@ -102,9 +102,9 @@ namespace AuthService.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("p_k_user_profiles", x => x.id);
+                    table.PrimaryKey("pk_user_profiles", x => x.id);
                     table.ForeignKey(
-                        name: "FK_user_profiles_users_user_id",
+                        name: "fk_user_profiles_users_user_id",
                         column: x => x.user_id,
                         principalTable: "users",
                         principalColumn: "id",
@@ -123,15 +123,15 @@ namespace AuthService.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("p_k_user_roles", x => x.id);
+                    table.PrimaryKey("pk_user_roles", x => x.id);
                     table.ForeignKey(
-                        name: "FK_user_roles_roles_role_id",
+                        name: "fk_user_roles_roles_role_id",
                         column: x => x.role_id,
                         principalTable: "roles",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_user_roles_users_user_id",
+                        name: "fk_user_roles_users_user_id",
                         column: x => x.user_id,
                         principalTable: "users",
                         principalColumn: "id",
@@ -139,41 +139,41 @@ namespace AuthService.Persistence.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "i_x_user_emails_user_id",
+                name: "ix_user_emails_user_id",
                 table: "user_emails",
                 column: "user_id",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "i_x_user_password_resets_user_id",
+                name: "ix_user_password_resets_user_id",
                 table: "user_password_resets",
                 column: "user_id",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "i_x_user_profiles_user_id",
+                name: "ix_user_profiles_user_id",
                 table: "user_profiles",
                 column: "user_id",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "i_x_user_roles_role_id",
+                name: "ix_user_roles_role_id",
                 table: "user_roles",
                 column: "role_id");
 
             migrationBuilder.CreateIndex(
-                name: "i_x_user_roles_user_id",
+                name: "ix_user_roles_user_id",
                 table: "user_roles",
                 column: "user_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_users_email",
+                name: "ix_users_email",
                 table: "users",
                 column: "email",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_users_username",
+                name: "ix_users_username",
                 table: "users",
                 column: "username",
                 unique: true);
