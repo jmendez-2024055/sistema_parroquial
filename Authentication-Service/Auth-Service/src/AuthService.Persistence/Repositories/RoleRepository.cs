@@ -5,45 +5,43 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AuthService.Persistence.Repositories;
 
-public class RoleRepository : IRoleRepository
+public class RoleRepository(ApplicationDbContext context) : IRoleRepository
 {
-    private readonly ApplicationDbContext _context;
-
-    public RoleRepository(ApplicationDbContext context)
-    {
-        _context = context;
-    }
-
     public async Task<Role?> GetByNameAsync(string roleName)
     {
-        return await _context.Roles
+        return await (context.Roles ?? throw new InvalidOperationException("Roles DbSet is null."))
             .FirstOrDefaultAsync(r => r.Name == roleName);
     }
 
     public async Task<int> CountUsersInRoleAsync(string roleName)
     {
-        return await _context.UserRoles
+        return await (context.UserRoles ?? throw new InvalidOperationException("UserRoles DbSet is null."))
             .Include(ur => ur.Role)
             .Where(ur => ur.Role.Name == roleName)
+            .Select(ur => ur.UserId)
+            .Distinct()
             .CountAsync();
     }
 
     public async Task<IReadOnlyList<User>> GetUsersByRoleAsync(string roleName)
     {
-        return await _context.UserRoles
-            .Include(ur => ur.User)
-            .Include(ur => ur.Role)
-            .Where(ur => ur.Role.Name == roleName)
-            .Select(ur => ur.User)
+        var users = await (context.Users ?? throw new InvalidOperationException("Users DbSet is null."))
+            .Include(u => u.UserProfile)
+            .Include(u => u.UserEmail)
+            .Include(u => u.UserRoles)
+                .ThenInclude(ur => ur.Role)
+            .Where(u => u.UserRoles.Any(ur => ur.Role.Name == roleName))
             .ToListAsync();
+        return users;
     }
 
     public async Task<IReadOnlyList<string>> GetUserRoleNamesAsync(string userId)
     {
-        return await _context.UserRoles
+        var roles = await (context.UserRoles ?? throw new InvalidOperationException("UserRoles DbSet is null."))
             .Include(ur => ur.Role)
             .Where(ur => ur.UserId == userId)
             .Select(ur => ur.Role.Name)
             .ToListAsync();
+        return roles;
     }
 }

@@ -357,7 +357,6 @@ C:\sistema_parroquial\Authentication-Service\Auth-Service\src\AuthService.Api\ob
 C:\sistema_parroquial\Authentication-Service\Auth-Service\src\AuthService.Api\obj\Debug\net8.0\ref\AuthService.Api.dll
 C:\gitIN6AM2026\sistema_parroquial\Authentication-Service\auth-service\src\AuthService.Api\bin\Debug\net8.0\appsettings.Development.json
 C:\gitIN6AM2026\sistema_parroquial\Authentication-Service\auth-service\src\AuthService.Api\bin\Debug\net8.0\appsettings.json
-C:\gitIN6AM2026\sistema_parroquial\Authentication-Service\auth-service\src\AuthService.Api\bin\Debug\net8.0\AuthService.Api.staticwebassets.endpoints.json
 C:\gitIN6AM2026\sistema_parroquial\Authentication-Service\auth-service\src\AuthService.Api\bin\Debug\net8.0\AuthService.Api.exe
 C:\gitIN6AM2026\sistema_parroquial\Authentication-Service\Auth-Service\src\AuthService.Api\bin\Debug\net8.0\AuthService.Api.deps.json
 C:\gitIN6AM2026\sistema_parroquial\Authentication-Service\Auth-Service\src\AuthService.Api\bin\Debug\net8.0\AuthService.Api.runtimeconfig.json
@@ -373,7 +372,6 @@ C:\gitIN6AM2026\sistema_parroquial\Authentication-Service\auth-service\src\AuthS
 C:\gitIN6AM2026\sistema_parroquial\Authentication-Service\auth-service\src\AuthService.Api\bin\Debug\net8.0\Konscious.Security.Cryptography.Blake2.dll
 C:\gitIN6AM2026\sistema_parroquial\Authentication-Service\auth-service\src\AuthService.Api\bin\Debug\net8.0\MailKit.dll
 C:\gitIN6AM2026\sistema_parroquial\Authentication-Service\auth-service\src\AuthService.Api\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
-C:\gitIN6AM2026\sistema_parroquial\Authentication-Service\auth-service\src\AuthService.Api\bin\Debug\net8.0\Microsoft.AspNetCore.OpenApi.dll
 C:\gitIN6AM2026\sistema_parroquial\Authentication-Service\auth-service\src\AuthService.Api\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
 C:\gitIN6AM2026\sistema_parroquial\Authentication-Service\auth-service\src\AuthService.Api\bin\Debug\net8.0\Microsoft.Build.Locator.dll
 C:\gitIN6AM2026\sistema_parroquial\Authentication-Service\auth-service\src\AuthService.Api\bin\Debug\net8.0\Microsoft.CodeAnalysis.dll
@@ -511,7 +509,6 @@ C:\gitIN6AM2026\sistema_parroquial\Authentication-Service\auth-service\src\AuthS
 C:\gitIN6AM2026\sistema_parroquial\Authentication-Service\auth-service\src\AuthService.Api\bin\Debug\net8.0\AuthService.Persistence.pdb
 C:\gitIN6AM2026\sistema_parroquial\Authentication-Service\auth-service\src\AuthService.Api\bin\Debug\net8.0\AuthService.Domain.pdb
 C:\gitIN6AM2026\sistema_parroquial\Authentication-Service\auth-service\src\AuthService.Api\obj\Debug\net8.0\AuthService.Api.csproj.AssemblyReference.cache
-C:\gitIN6AM2026\sistema_parroquial\Authentication-Service\auth-service\src\AuthService.Api\obj\Debug\net8.0\rpswa.dswa.cache.json
 C:\gitIN6AM2026\sistema_parroquial\Authentication-Service\auth-service\src\AuthService.Api\obj\Debug\net8.0\AuthService.Api.GeneratedMSBuildEditorConfig.editorconfig
 C:\gitIN6AM2026\sistema_parroquial\Authentication-Service\auth-service\src\AuthService.Api\obj\Debug\net8.0\AuthService.Api.AssemblyInfoInputs.cache
 C:\gitIN6AM2026\sistema_parroquial\Authentication-Service\auth-service\src\AuthService.Api\obj\Debug\net8.0\AuthService.Api.AssemblyInfo.cs
@@ -519,15 +516,9 @@ C:\gitIN6AM2026\sistema_parroquial\Authentication-Service\auth-service\src\AuthS
 C:\gitIN6AM2026\sistema_parroquial\Authentication-Service\auth-service\src\AuthService.Api\obj\Debug\net8.0\AuthService.Api.MvcApplicationPartsAssemblyInfo.cs
 C:\gitIN6AM2026\sistema_parroquial\Authentication-Service\auth-service\src\AuthService.Api\obj\Debug\net8.0\AuthService.Api.MvcApplicationPartsAssemblyInfo.cache
 C:\gitIN6AM2026\sistema_parroquial\Authentication-Service\auth-service\src\AuthService.Api\obj\Debug\net8.0\AuthService.Api.sourcelink.json
-C:\gitIN6AM2026\sistema_parroquial\Authentication-Service\auth-service\src\AuthService.Api\obj\Debug\net8.0\rjimswa.dswa.cache.json
-C:\gitIN6AM2026\sistema_parroquial\Authentication-Service\auth-service\src\AuthService.Api\obj\Debug\net8.0\rjsmrazor.dswa.cache.json
-C:\gitIN6AM2026\sistema_parroquial\Authentication-Service\auth-service\src\AuthService.Api\obj\Debug\net8.0\rjsmcshtml.dswa.cache.json
 C:\gitIN6AM2026\sistema_parroquial\Authentication-Service\auth-service\src\AuthService.Api\obj\Debug\net8.0\scopedcss\bundle\AuthService.Api.styles.css
 C:\gitIN6AM2026\sistema_parroquial\Authentication-Service\auth-service\src\AuthService.Api\obj\Debug\net8.0\staticwebassets.build.json
-C:\gitIN6AM2026\sistema_parroquial\Authentication-Service\auth-service\src\AuthService.Api\obj\Debug\net8.0\staticwebassets.build.json.cache
 C:\gitIN6AM2026\sistema_parroquial\Authentication-Service\auth-service\src\AuthService.Api\obj\Debug\net8.0\staticwebassets.development.json
-C:\gitIN6AM2026\sistema_parroquial\Authentication-Service\auth-service\src\AuthService.Api\obj\Debug\net8.0\staticwebassets.build.endpoints.json
-C:\gitIN6AM2026\sistema_parroquial\Authentication-Service\auth-service\src\AuthService.Api\obj\Debug\net8.0\swae.build.ex.cache
 C:\gitIN6AM2026\sistema_parroquial\Authentication-Service\Auth-Service\src\AuthService.Api\obj\Debug\net8.0\AuthServ.C02AB606.Up2Date
 C:\gitIN6AM2026\sistema_parroquial\Authentication-Service\auth-service\src\AuthService.Api\obj\Debug\net8.0\AuthService.Api.dll
 C:\gitIN6AM2026\sistema_parroquial\Authentication-Service\auth-service\src\AuthService.Api\obj\Debug\net8.0\refint\AuthService.Api.dll
@@ -890,3 +881,11 @@ C:\Users\Emilio\Documents\INAMVER\sistema_parroquial\Authentication-Service\Auth
 C:\Users\Emilio\Documents\INAMVER\sistema_parroquial\Authentication-Service\Auth-Service\src\AuthService.Api\obj\Debug\net8.0\AuthService.Api.genruntimeconfig.cache
 C:\Users\Emilio\Documents\INAMVER\sistema_parroquial\Authentication-Service\Auth-Service\src\AuthService.Api\obj\Debug\net8.0\ref\AuthService.Api.dll
 C:\Users\Emilio\Documents\INAMVER\sistema_parroquial\Authentication-Service\Auth-Service\src\AuthService.Api\bin\Debug\net8.0\Swashbuckle.AspNetCore.Annotations.dll
+C:\gitIN6AM2026\sistema_parroquial\Authentication-Service\Auth-Service\src\AuthService.Api\bin\Debug\net8.0\AuthService.Api.xml
+C:\gitIN6AM2026\sistema_parroquial\Authentication-Service\Auth-Service\src\AuthService.Api\bin\Debug\net8.0\Swashbuckle.AspNetCore.Annotations.dll
+C:\gitIN6AM2026\sistema_parroquial\Authentication-Service\Auth-Service\src\AuthService.Api\obj\Debug\net8.0\staticwebassets\msbuild.AuthService.Api.Microsoft.AspNetCore.StaticWebAssets.props
+C:\gitIN6AM2026\sistema_parroquial\Authentication-Service\Auth-Service\src\AuthService.Api\obj\Debug\net8.0\staticwebassets\msbuild.build.AuthService.Api.props
+C:\gitIN6AM2026\sistema_parroquial\Authentication-Service\Auth-Service\src\AuthService.Api\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.AuthService.Api.props
+C:\gitIN6AM2026\sistema_parroquial\Authentication-Service\Auth-Service\src\AuthService.Api\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.AuthService.Api.props
+C:\gitIN6AM2026\sistema_parroquial\Authentication-Service\Auth-Service\src\AuthService.Api\obj\Debug\net8.0\staticwebassets.pack.json
+C:\gitIN6AM2026\sistema_parroquial\Authentication-Service\Auth-Service\src\AuthService.Api\obj\Debug\net8.0\AuthService.Api.xml
