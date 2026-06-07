@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Hosting.Server.Features;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
 // Configure Serilog from appsettings.json only (avoid duplicate sinks)
 builder.Host.UseSerilog((context, services, loggerConfiguration) =>
     loggerConfiguration
@@ -19,12 +18,10 @@ builder.Host.UseSerilog((context, services, loggerConfiguration) =>
 // Add services to the container
 builder.Services.AddControllers(options =>
 {
-    // Agregar el model binder para IFileData
     options.ModelBinderProviders.Insert(0, new FileDataModelBinderProvider());
 })
 .AddJsonOptions(o =>
 {
-    // Estandarizar las respuestas en camelCase para coincidir con auth-node
     o.JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
 });
 
@@ -50,7 +47,7 @@ if (app.Environment.IsDevelopment())
 // Add Serilog request logging
 app.UseSerilogRequestLogging();
 
-// Add Security Headers using NetEscapades package
+// Add Security Headers
 app.UseSecurityHeaders(policies => policies
     .AddDefaultSecurityHeaders()
     .RemoveServerHeader()
@@ -78,7 +75,6 @@ app.UseSecurityHeaders(policies => policies
 app.UseMiddleware<GlobalExceptionMiddleware>();
 
 // Core middlewares
-// app.UseHttpsRedirection();
 app.UseCors("DefaultCorsPolicy");
 app.UseRateLimiter();
 app.UseAuthentication();
@@ -86,12 +82,10 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-// Health check endpoints - both versions for compatibility
-// Standard health check endpoint
+// Health check endpoints
 app.MapHealthChecks("/health");
 
-// Custom health endpoint to match Node.js response format
-app.MapGet("/health", () =>
+app.MapGet("/health/status", () =>
 {
     var response = new
     {
@@ -103,7 +97,7 @@ app.MapGet("/health", () =>
 
 app.MapHealthChecks("/api/v1/health");
 
-// Startup log: addresses and health endpoint
+// Startup log
 var startupLogger = app.Services.GetRequiredService<ILogger<Program>>();
 app.Lifetime.ApplicationStarted.Register(() =>
 {
@@ -118,7 +112,9 @@ app.Lifetime.ApplicationStarted.Register(() =>
             foreach (var addr in addresses)
             {
                 var health = $"{addr.TrimEnd('/')}/health";
-                startupLogger.LogInformation("AuthService API is running at {Url}. Health endpoint: {HealthUrl}", addr, health);
+                startupLogger.LogInformation(
+                    "AuthService API is running at {Url}. Health endpoint: {HealthUrl}",
+                    addr, health);
             }
         }
         else
@@ -130,31 +126,29 @@ app.Lifetime.ApplicationStarted.Register(() =>
     {
         startupLogger.LogWarning(ex, "Failed to determine the listening addresses for startup log");
     }
+
+    // Inicializar DB en background para no bloquear el arranque
+    _ = Task.Run(async () =>
+    {
+        try
+        {
+            using var scope = app.Services.CreateScope();
+            var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+            var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+
+            logger.LogInformation("Checking database connection...");
+            await context.Database.EnsureCreatedAsync();
+
+            logger.LogInformation("Database ready. Running seed data...");
+            await DataSeeder.SeedAsync(context);
+
+            logger.LogInformation("Database initialization completed successfully");
+        }
+        catch (Exception ex)
+        {
+            startupLogger.LogError(ex, "An error occurred while initializing the database");
+        }
+    });
 });
-
-// Initialize database and seed data
-using (var scope = app.Services.CreateScope())
-{
-    var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
-
-    try
-    {
-        logger.LogInformation("Checking database connection...");
-
-        // Ensure database is created (similar to Sequelize sync in Node.js)
-        await context.Database.EnsureCreatedAsync();
-
-        logger.LogInformation("Database ready. Running seed data...");
-        await DataSeeder.SeedAsync(context);
-
-        logger.LogInformation("Database initialization completed successfully");
-    }
-    catch (Exception ex)
-    {
-        logger.LogError(ex, "An error occurred while initializing the database");
-        throw; // Re-throw to stop the application
-    }
-}
 
 app.Run();
