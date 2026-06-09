@@ -1,75 +1,102 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { loginRequest } from '../../../shared/apis/authService.js';
+import { loginRequest, registerRequest } from '../../../shared/apis/authService.js';
 
 export const useAuthStore = create(
   persist(
     (set, get) => ({
-      user: null,          
-      token: null,         
+      user: null,
+      token: null,
+      refreshToken: null,
       isAuthenticated: false,
-      isLoadingAuth: true, 
+      isLoadingAuth: true,
       loading: false,
       error: null,
 
       checkAuth: () => {
         const token = get().token;
-        set({
-          isLoadingAuth: false,
-          isAuthenticated: Boolean(token),
-        });
+        set({ isLoadingAuth: false, isAuthenticated: Boolean(token) });
       },
 
+      setUser:    (user)  => set({ user }),
+      setToken:   (token) => set({ token, isAuthenticated: true }),
+      clearError: ()      => set({ error: null }),
 
-      setUser: (user) => set({ user }),
-      setToken: (token) => set({ token, isAuthenticated: true }),
-      clearError: () => set({ error: null }),
-
-
+      // ── Login ──────
       login: async ({ username, password }) => {
         try {
           set({ loading: true, error: null });
 
           const data = await loginRequest({ username, password });
 
+          // El backend devuelve: { success, message, token, refreshToken, user }
           if (!data.success) {
             set({ error: data.message || 'Credenciales inválidas', loading: false });
             return { success: false, error: data.message };
           }
 
           set({
-            user: data.user,
-            token: data.token,
+            user:            data.user,
+            token:           data.token,
+            refreshToken:    data.refreshToken,
             isAuthenticated: true,
-            loading: false,
+            loading:         false,
           });
 
           return { success: true, user: data.user };
         } catch (err) {
           const message =
-            err.response?.data?.message || 'Error al conectar con el servidor';
+            err.response?.data?.message ||
+            err.response?.data?.title   ||
+            'Error al conectar con el servidor';
           set({ error: message, loading: false });
           return { success: false, error: message };
         }
       },
 
+      // ── Register ─────
+      register: async (formData) => {
+        try {
+          set({ loading: true, error: null });
+          const data = await registerRequest(formData);
+
+          if (!data.success) {
+            set({ error: data.message || 'Error al registrar', loading: false });
+            return { success: false, error: data.message };
+          }
+
+          set({ loading: false });
+          return { success: true, message: data.message };
+        } catch (err) {
+          const message =
+            err.response?.data?.message ||
+            err.response?.data?.title   ||
+            'Error al conectar con el servidor';
+          set({ error: message, loading: false });
+          return { success: false, error: message };
+        }
+      },
+
+      // ── Logout ─────
       logout: () => {
         set({
-          user: null,
-          token: null,
+          user:            null,
+          token:           null,
+          refreshToken:    null,
           isAuthenticated: false,
-          isLoadingAuth: false,
-          loading: false,
-          error: null,
+          isLoadingAuth:   false,
+          loading:         false,
+          error:           null,
         });
       },
     }),
 
     {
-      name: 'auth-storage-parroquial', 
+      name: 'auth-storage-parroquial',
       partialize: (state) => ({
-        user: state.user,
-        token: state.token,
+        user:            state.user,
+        token:           state.token,
+        refreshToken:    state.refreshToken,
         isAuthenticated: state.isAuthenticated,
       }),
     }

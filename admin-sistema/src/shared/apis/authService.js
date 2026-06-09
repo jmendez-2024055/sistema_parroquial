@@ -1,39 +1,37 @@
 import { axiosAuth } from './api.js';
 
-
+// ── Login ────
 export const loginRequest = async ({ username, password }) => {
-  const form = new FormData();
-  form.append('username', username);
-  form.append('password', password);
-
-  const response = await axiosAuth.post('/auth/login', form);
+  const response = await axiosAuth.post('/auth/login', {
+    emailOrUsername: username,
+    password,
+  });
   return response.data;
 };
 
+// ── Register ─────
 
 export const registerRequest = async (data) => {
   const form = new FormData();
   Object.entries(data).forEach(([key, value]) => {
     if (value !== undefined && value !== '') form.append(key, value);
   });
-
   const response = await axiosAuth.post('/auth/register', form);
   return response.data;
 };
 
-
 export const forgotPasswordRequest = async (email) => {
-  const form = new FormData();
-  form.append('email', email);
-  const response = await axiosAuth.post('/auth/forgot-password', form);
+  const response = await axiosAuth.post('/auth/forgot-password', { email });
   return response.data;
 };
 
 
 export const resetPasswordRequest = async ({ token, newPassword }) => {
-  const form = new FormData();
-  form.append('token', token);
-  form.append('newPassword', newPassword);
-  const response = await axiosAuth.post('/auth/reset-password', form);
+  const response = await axiosAuth.post('/auth/reset-password', { token, newPassword });
+  return response.data;
+};
+
+export const verifyEmailRequest = async ({ userId, token }) => {
+  const response = await axiosAuth.post('/auth/verify-email', { userId, token });
   return response.data;
 };
