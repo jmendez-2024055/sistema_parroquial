@@ -1,9 +1,11 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useEffect } from 'react';
-import { LoginPage }    from '../features/auth/pages/LoginPage.jsx';
-import { RegisterPage } from '../features/auth/pages/RegisterPage.jsx';
-import { VerifyEmail }  from '../features/auth/pages/VerifyEmail.jsx';
-import { useAuthStore } from '../features/auth/store/authStore.js';
+import { LoginPage }          from '../features/auth/pages/LoginPage.jsx';
+import { RegisterPage }       from '../features/auth/pages/RegisterPage.jsx';
+import { VerifyEmail }        from '../features/auth/pages/VerifyEmail.jsx';
+import { ForgotPasswordPage } from '../features/auth/pages/ForgotPasswordPage.jsx';
+import { ResetPasswordPage }  from '../features/auth/pages/ResetPasswordPage.jsx';
+import { useAuthStore }       from '../features/auth/store/authStore.js';
 
 
 const PrivateRoute = ({ children }) => {
@@ -34,7 +36,6 @@ const Dashboard = () => {
       minHeight: '100vh', background: '#f0f2f5',
       fontFamily: 'Segoe UI, Helvetica Neue, Arial, sans-serif',
     }}>
-      {/* Navbar simple */}
       <nav style={{
         background: '#fff', borderBottom: '1px solid #e8eaf0',
         padding: '0 32px', height: 60,
@@ -69,7 +70,6 @@ const Dashboard = () => {
         </div>
       </nav>
 
-      {/* Contenido */}
       <main style={{ padding: '40px 32px', maxWidth: 1100, margin: '0 auto' }}>
         <h1 style={{ fontSize: 26, fontWeight: 700, color: '#1a1a2e', marginBottom: 8 }}>
           Bienvenido{user?.name ? `, ${user.name}` : ''}
@@ -78,17 +78,16 @@ const Dashboard = () => {
           Has iniciado sesión correctamente en el Sistema Parroquial.
         </p>
 
-        {/* Cards de acceso rápido */}
         <div style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))',
           gap: 20,
         }}>
           {[
-            { title: 'Eventos', desc: 'Gestión de eventos parroquiales' },
+            { title: 'Eventos',        desc: 'Gestión de eventos parroquiales' },
             { title: 'Horario de Misas', desc: 'Administra los horarios' },
-            { title: 'Avisos', desc: 'Comunicados y noticias' },
-            { title: 'Usuarios', desc: 'Gestión de usuarios', adminOnly: true },
+            { title: 'Avisos',         desc: 'Comunicados y noticias' },
+            { title: 'Usuarios',       desc: 'Gestión de usuarios', adminOnly: true },
           ].map((item) => (
             <div key={item.title} style={{
               background: '#fff', borderRadius: 14, padding: '24px 20px',
@@ -106,7 +105,6 @@ const Dashboard = () => {
                 e.currentTarget.style.transform = 'translateY(0)';
               }}
             >
-              <div style={{ fontSize: 28, marginBottom: 12 }}>{item.icon}</div>
               <h3 style={{ fontWeight: 700, color: '#1a1a2e', margin: '0 0 6px', fontSize: 15 }}>
                 {item.title}
               </h3>
@@ -115,7 +113,6 @@ const Dashboard = () => {
           ))}
         </div>
 
-        {/* Info de sesión */}
         <div style={{
           marginTop: 40, background: '#fff', borderRadius: 14,
           padding: '20px 24px', border: '1px solid #e8eaf0',
@@ -144,9 +141,13 @@ function App() {
     <BrowserRouter>
       <Routes>
         {/* Públicas */}
-        <Route path="/login"        element={<LoginPage />} />
-        <Route path="/register"     element={<RegisterPage />} />
-        <Route path="/verify-email" element={<VerifyEmail />} />
+        <Route path="/login"          element={<LoginPage />} />
+        <Route path="/register"       element={<RegisterPage />} />
+        <Route path="/verify-email"   element={<VerifyEmail />} />
+
+        {/* Recuperación de contraseña */}
+        <Route path="/recover"        element={<ForgotPasswordPage />} />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
 
         {/* Protegidas */}
         <Route
