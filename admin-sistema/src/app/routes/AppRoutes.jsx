@@ -11,12 +11,12 @@ import { ProtectedRoutes } from './ProtectedRoutes.jsx';
 
 const DashboardPage = lazy(() => import('../../features/dashboard/pages/DashboardPage.jsx'));
 const ModulePage = lazy(() => import('../layouts/ModulePage.jsx'));
+const EventPage = lazy(() => import('../../features/event/components/EventPage.jsx'));
+const CategoryPage = lazy(() => import('../../features/category/components/CategoryPage.jsx'));
 
 const moduleRoutes = [
-  { path: 'events', title: 'Eventos', description: 'Gestiona las actividades y celebraciones parroquiales.' },
   { path: 'notices', title: 'Avisos', description: 'Administra los comunicados para la comunidad.' },
   { path: 'mass-schedules', title: 'Horarios de misa', description: 'Organiza los horarios de las celebraciones.' },
-  { path: 'categories', title: 'Categorías', description: 'Clasifica el contenido del sistema parroquial.' },
   { path: 'users', title: 'Usuarios', description: 'Administra usuarios, perfiles y accesos.' },
   { path: 'settings', title: 'Configuración', description: 'Configura los datos generales de la parroquia.' },
 ];
@@ -42,6 +42,8 @@ export const AppRoutes = () => (
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<Navigate to="dashboard" replace />} />
           <Route path="dashboard" element={<DashboardPage />} />
+          <Route path="events" element={<EventPage />} />
+          <Route path="categories" element={<CategoryPage />} />
           {moduleRoutes.map((route) => (
             <Route
               key={route.path}
