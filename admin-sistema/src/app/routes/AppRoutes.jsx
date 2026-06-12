@@ -14,9 +14,9 @@ const ModulePage = lazy(() => import('../layouts/ModulePage.jsx'));
 const EventPage = lazy(() => import('../../features/event/components/EventPage.jsx'));
 const CategoryPage = lazy(() => import('../../features/category/components/CategoryPage.jsx'));
 const NoticePage = lazy(() => import('../../features/notice/components/NoticePage.jsx'));
+const MassSchedulePage = lazy(() => import('../../features/massShedule/components/MassSchedulePage.jsx'));
 
 const moduleRoutes = [
-  { path: 'mass-schedules', title: 'Horarios de misa', description: 'Organiza los horarios de las celebraciones.' },
   { path: 'users', title: 'Usuarios', description: 'Administra usuarios, perfiles y accesos.' },
   { path: 'settings', title: 'Configuración', description: 'Configura los datos generales de la parroquia.' },
 ];
@@ -45,6 +45,7 @@ export const AppRoutes = () => (
           <Route path="events" element={<EventPage />} />
           <Route path="categories" element={<CategoryPage />} />
           <Route path="notices" element={<NoticePage />} />
+          <Route path="mass-schedules" element={<MassSchedulePage />} />
           {moduleRoutes.map((route) => (
             <Route
               key={route.path}
