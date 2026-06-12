@@ -277,6 +277,21 @@
       background: #eef0ed;
     }
 
+    .day-badge--sunday {
+      color: #a36b16;
+      background: #fff3d8;
+    }
+
+    .day-badge--saturday {
+      color: #397195;
+      background: #e4f1f8;
+    }
+
+    .day-badge--default {
+      color: #59645a;
+      background: #eef0ed;
+    }
+
     @media (max-width: 980px) {
       .stats-grid {
         gap: 16px;
