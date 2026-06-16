@@ -94,7 +94,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
                 .IsRequired()
                 .HasMaxLength(255);
             entity.Property(e => e.Status)
-                .HasDefaultValue(false);
+                .IsRequired();
             entity.Property(e => e.CreatedAt)
                 .IsRequired();
             entity.Property(e => e.UpdatedAt)
@@ -126,6 +126,9 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             entity.Property(e => e.UserId)
                 .HasMaxLength(16);
             entity.Property(e => e.Phone).HasMaxLength(8);
+            entity.Property(e => e.ProfilePicture).IsRequired().HasMaxLength(255);
+            entity.Property(e => e.CreatedAt).IsRequired();
+            entity.Property(e => e.UpdatedAt).IsRequired();
         });
 
         // Configuración de Role
@@ -174,8 +177,10 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
                 .ValueGeneratedOnAdd();
             entity.Property(e => e.UserId)
                 .HasMaxLength(16);
-            entity.Property(e => e.EmailVerified).HasDefaultValue(false);
+            entity.Property(e => e.EmailVerified).IsRequired();
             entity.Property(e => e.EmailVerificationToken).HasMaxLength(256);
+            entity.Property(e => e.CreatedAt).IsRequired();
+            entity.Property(e => e.UpdatedAt).IsRequired();
         });
 
         // Configuración de UserPasswordReset
@@ -188,6 +193,8 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             entity.Property(e => e.UserId)
                 .HasMaxLength(16);
             entity.Property(e => e.PasswordResetToken).HasMaxLength(256);
+            entity.Property(e => e.CreatedAt).IsRequired();
+            entity.Property(e => e.UpdatedAt).IsRequired();
         });
     }
 
@@ -206,7 +213,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     private void UpdateTimestamps()
     {
         var entries = ChangeTracker.Entries()
-            .Where(e => (e.Entity is User || e.Entity is Role || e.Entity is UserRole)
+            .Where(e => (e.Entity is User || e.Entity is Role || e.Entity is UserRole || e.Entity is UserEmail || e.Entity is UserPasswordReset || e.Entity is UserProfile)
                         && (e.State == EntityState.Added || e.State == EntityState.Modified));
 
         foreach (var entry in entries)
@@ -234,6 +241,30 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
                     userRole.CreatedAt = DateTime.UtcNow;
                 }
                 userRole.UpdatedAt = DateTime.UtcNow;
+            }
+            else if (entry.Entity is UserEmail userEmail)
+            {
+                if (entry.State == EntityState.Added)
+                {
+                    userEmail.CreatedAt = DateTime.UtcNow;
+                }
+                userEmail.UpdatedAt = DateTime.UtcNow;
+            }
+            else if (entry.Entity is UserPasswordReset userPasswordReset)
+            {
+                if (entry.State == EntityState.Added)
+                {
+                    userPasswordReset.CreatedAt = DateTime.UtcNow;
+                }
+                userPasswordReset.UpdatedAt = DateTime.UtcNow;
+            }
+            else if (entry.Entity is UserProfile userProfile)
+            {
+                if (entry.State == EntityState.Added)
+                {
+                    userProfile.CreatedAt = DateTime.UtcNow;
+                }
+                userProfile.UpdatedAt = DateTime.UtcNow;
             }
         }
     }

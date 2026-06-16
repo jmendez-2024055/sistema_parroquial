@@ -31,7 +31,7 @@ export const resetPasswordRequest = async ({ token, newPassword }) => {
   return response.data;
 };
 
-export const verifyEmailRequest = async ({ userId, token }) => {
-  const response = await axiosAuth.post('/auth/verify-email', { userId, token });
+export const verifyEmailRequest = async ({ token }) => {
+  const response = await axiosAuth.post('/auth/verify-email', { token });
   return response.data;
 };
