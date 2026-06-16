@@ -21,5 +21,11 @@ public class UserEmail
     public DateTime? EmailVerificationTokenExpiry { get; set; }
 
     [Required]
+    public DateTime CreatedAt { get; set; }
+
+    [Required]
+    public DateTime UpdatedAt { get; set; }
+
+    [Required]
     public User User { get; set; } = null!;
 }

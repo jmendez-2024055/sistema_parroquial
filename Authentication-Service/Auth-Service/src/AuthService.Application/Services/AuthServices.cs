@@ -70,7 +70,10 @@ public class AuthService(
             {
                 Id = userProfileId,
                 UserId = userId,
-                Phone = registerDto.Phone
+                Phone = registerDto.Phone,
+                ProfilePicture = string.Empty,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
             },
             UserEmail = new UserEmail
             {
@@ -78,7 +81,9 @@ public class AuthService(
                 UserId = userId,
                 EmailVerified = false,
                 EmailVerificationToken = emailVerificationToken,
-                EmailVerificationTokenExpiry = DateTime.UtcNow.AddHours(24)
+                EmailVerificationTokenExpiry = DateTime.UtcNow.AddHours(24),
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
             },
             UserRoles =
             [
@@ -94,7 +99,9 @@ public class AuthService(
                 Id = UuidGenerator.GenerateUserId(),
                 UserId = userId,
                 PasswordResetToken = null,
-                PasswordResetTokenExpiry = null
+                PasswordResetTokenExpiry = null,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
             },
         };
 

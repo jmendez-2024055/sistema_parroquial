@@ -57,8 +57,8 @@ export const AppRoutes = () => (
         <Route path="/dashboard" element={<Navigate to="/admin/dashboard" replace />} />
       </Route>
 
-      <Route path="/" element={<Navigate to="/admin/dashboard" replace />} />
-      <Route path="*" element={<Navigate to="/admin/dashboard" replace />} />
+      <Route path="/" element={<Navigate to="/login" replace />} />
+      <Route path="*" element={<Navigate to="/login" replace />} />
     </Routes>
   </Suspense>
 );

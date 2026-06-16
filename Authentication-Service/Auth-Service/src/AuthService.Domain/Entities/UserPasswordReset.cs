@@ -18,5 +18,11 @@ public class UserPasswordReset
     public DateTime? PasswordResetTokenExpiry { get; set; }
 
     [Required]
+    public DateTime CreatedAt { get; set; }
+
+    [Required]
+    public DateTime UpdatedAt { get; set; }
+
+    [Required]
     public User User { get; set; } = null!;
 }

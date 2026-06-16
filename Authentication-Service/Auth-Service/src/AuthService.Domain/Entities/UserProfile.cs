@@ -18,5 +18,15 @@ public class UserProfile
     public string Phone { get; set; } = string.Empty;
 
     [Required]
+    [MaxLength(255)]
+    public string ProfilePicture { get; set; } = string.Empty;
+
+    [Required]
+    public DateTime CreatedAt { get; set; }
+
+    [Required]
+    public DateTime UpdatedAt { get; set; }
+
+    [Required]
     public User User { get; set; } = null!;
 }

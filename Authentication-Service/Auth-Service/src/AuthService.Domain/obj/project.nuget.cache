@@ -1,10 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "Yi2ia7p6tmM=",
+  "dgSpecHash": "NkJgA58DTnI=",
   "success": true,
-  "projectFilePath": "C:\\Users\\Informatica\\Documents\\sistema_parroquial\\Authentication-Service\\Auth-Service\\src\\AuthService.Domain\\AuthService.Domain.csproj",
+  "projectFilePath": "C:\\gitIN6AM2026\\sistema_parroquial\\Authentication-Service\\Auth-Service\\src\\AuthService.Domain\\AuthService.Domain.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\Informatica\\.nuget\\packages\\system.componentmodel.annotations\\5.0.0\\system.componentmodel.annotations.5.0.0.nupkg.sha512"
+    "C:\\Users\\CompuFire\\.nuget\\packages\\system.componentmodel.annotations\\5.0.0\\system.componentmodel.annotations.5.0.0.nupkg.sha512"
   ],
   "logs": []
 }
