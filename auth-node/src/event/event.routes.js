@@ -1,5 +1,7 @@
 import { Router } from 'express';
 import * as eventController from './event.controller.js';
+import { validarJWT } from '../../middlewares/validar-jwt.js';
+import { esAdmin } from '../../middlewares/validar-roles.js';
 
 const router = Router();
 
@@ -90,7 +92,7 @@ router.get('/:id', eventController.obtenerPorId);
  *       201:
  *         description: Evento creado correctamente
  */
-router.post('/', eventController.crear);
+router.post('/', validarJWT, esAdmin, eventController.crear);
 
 /**
  * @swagger
@@ -138,6 +140,6 @@ router.put('/:id', eventController.actualizar);
  *       404:
  *         description: Evento no encontrado
  */
-router.delete('/:id', eventController.eliminar);
+router.delete('/:id', validarJWT, esAdmin, eventController.eliminar);
 
 export default router;

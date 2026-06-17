@@ -1,5 +1,7 @@
 import jwt from 'jsonwebtoken';
 
+const JWT_SECRET = 'E$3cr3tK3yF0rK1n4lSp0rts@In6am2024';
+
 export const validarJWT = (req, res, next) => {
     try {
         const authHeader = req.headers.authorization;
@@ -15,10 +17,11 @@ export const validarJWT = (req, res, next) => {
             ? authHeader.split(' ')[1]
             : authHeader;
 
-        const decoded = jwt.verify(token, 'TU_SECRETO'); 
+        const decoded = jwt.verify(token, JWT_SECRET); 
 
         req.user = {
-            id: decoded.id || decoded.sub || decoded.nameid
+            id: decoded.id || decoded.sub || decoded.nameid,
+            role: decoded.role || decoded.roles || []
         };
 
         if (!req.user.id) {

@@ -3,11 +3,15 @@ import { DashboardContainer } from '../../../shared/components/layout/DashboardC
 import { AppIcon } from '../../../shared/components/ui/AppIcon.jsx';
 import useNoticeStore from '../store/useNoticeStore.js';
 import NoticeForm from './NoticeForm.jsx';
+import { useAuthStore } from '../../auth/store/authStore.js';
 
 const NoticePage = () => {
     const [showForm, setShowForm] = useState(false);
     const [editingNotice, setEditingNotice] = useState(null);
     const { notices, loading, error, fetchNotices, deleteNotice } = useNoticeStore();
+    const user = useAuthStore((state) => state.user);
+    const role = user?.role ?? '';
+    const isAdmin = role === 'ADMIN_ROLE';
 
     useEffect(() => {
         fetchNotices();
@@ -26,11 +30,9 @@ const NoticePage = () => {
     };
 
     const handleDelete = async (id) => {
-        if (window.confirm('¿Estás seguro de que deseas eliminar este aviso?')) {
-            const result = await deleteNotice(id);
-            if (result.success) {
-                fetchNotices();
-            }
+        const result = await deleteNotice(id);
+        if (result.success) {
+            fetchNotices();
         }
     };
 
@@ -50,10 +52,12 @@ const NoticePage = () => {
             title="Avisos"
             description="Gestiona los comunicados y avisos para la comunidad parroquial."
             action={
-                <button className="primary-button" type="button" onClick={() => setShowForm(true)}>
-                    <AppIcon name="plus" size={18} />
-                    Nuevo Aviso
-                </button>
+                isAdmin && (
+                    <button className="primary-button" type="button" onClick={() => setShowForm(true)}>
+                        <AppIcon name="plus" size={18} />
+                        Nuevo Aviso
+                    </button>
+                )
             }
         >
             {error && (
@@ -172,71 +176,74 @@ const NoticePage = () => {
                             </p>
 
                             {/* Acciones */}
-                            <div style={{
-                                display: 'flex',
-                                justifyContent: 'flex-end',
-                                gap: '10px',
-                                marginTop: '8px',
-                                paddingTop: '12px',
-                                borderTop: '1px solid var(--line)',
-                            }}>
-                                <button
-                                    onClick={() => handleEdit(notice)}
-                                    style={{
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        gap: '6px',
-                                        padding: '8px 14px',
-                                        fontSize: '12px',
-                                        fontWeight: 600,
-                                        borderRadius: '8px',
-                                        border: '1px solid var(--dashboard-green)',
-                                        background: 'white',
-                                        color: 'var(--dashboard-green)',
-                                        cursor: 'pointer',
-                                        transition: 'all .2s ease',
-                                    }}
-                                    onMouseEnter={(e) => {
-                                        e.currentTarget.style.background = 'var(--dashboard-green)';
-                                        e.currentTarget.style.color = 'white';
-                                    }}
-                                    onMouseLeave={(e) => {
-                                        e.currentTarget.style.background = 'white';
-                                        e.currentTarget.style.color = 'var(--dashboard-green)';
-                                    }}
-                                >
-                                    <AppIcon name="pencil" size={14} />
-                                    Editar
-                                </button>
-                                <button
-                                    onClick={() => handleDelete(notice._id)}
-                                    style={{
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        gap: '6px',
-                                        padding: '8px 14px',
-                                        fontSize: '12px',
-                                        fontWeight: 600,
-                                        borderRadius: '8px',
-                                        border: '1px solid #d9534f',
-                                        background: 'white',
-                                        color: '#d9534f',
-                                        cursor: 'pointer',
-                                        transition: 'all .2s ease',
-                                    }}
-                                    onMouseEnter={(e) => {
-                                        e.currentTarget.style.background = '#d9534f';
-                                        e.currentTarget.style.color = 'white';
-                                    }}
-                                    onMouseLeave={(e) => {
-                                        e.currentTarget.style.background = 'white';
-                                        e.currentTarget.style.color = '#d9534f';
-                                    }}
-                                >
-                                    <AppIcon name="trash" size={14} />
-                                    Eliminar
-                                </button>
-                            </div>
+                            {isAdmin && (
+                                <div style={{
+                                    display: 'flex',
+                                    justifyContent: 'flex-end',
+                                    gap: '10px',
+                                    marginTop: '8px',
+                                    paddingTop: '12px',
+                                    borderTop: '1px solid var(--line)',
+                                }}>
+                                    <button
+                                        onClick={() => handleEdit(notice)}
+                                        style={{
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            gap: '6px',
+                                            padding: '8px 14px',
+                                            fontSize: '12px',
+                                            fontWeight: 600,
+                                            borderRadius: '8px',
+                                            border: '1px solid var(--dashboard-green)',
+                                            background: 'white',
+                                            color: 'var(--dashboard-green)',
+                                            cursor: 'pointer',
+                                            transition: 'all .2s ease',
+                                        }}
+                                        onMouseEnter={(e) => {
+                                            e.currentTarget.style.background = 'var(--dashboard-green)';
+                                            e.currentTarget.style.color = 'white';
+                                        }}
+                                        onMouseLeave={(e) => {
+                                            e.currentTarget.style.background = 'white';
+                                            e.currentTarget.style.color = 'var(--dashboard-green)';
+                                        }}
+                                    >
+                                        <AppIcon name="pencil" size={14} />
+                                        Editar
+                                    </button>
+                                    <button
+                                        onClick={() => handleDelete(notice._id)}
+                                        style={{
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            gap: '6px',
+                                            padding: '8px 14px',
+                                            fontSize: '12px',
+                                            fontWeight: 600,
+                                            borderRadius: '8px',
+                                            border: '1px solid #d9534f',
+                                            background: 'white',
+                                            color: '#d9534f',
+                                            cursor: 'pointer',
+                                            transition: 'all .2s ease',
+                                        }}
+                                        onMouseEnter={(e) => {
+                                            e.currentTarget.style.background = '#d9534f';
+                                            e.currentTarget.style.color = 'white';
+                                        }}
+                                        onMouseLeave={(e) => {
+                                            e.currentTarget.style.background = 'white';
+                                            e.currentTarget.style.color = '#d9534f';
+                                        }}
+                                    >
+                                        <AppIcon name="trash" size={14} />
+                                        Eliminar
+                                    </button>
+                                </div>
+                            )}
                         </div>
                     ))}
                 </div>

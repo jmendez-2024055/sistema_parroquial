@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import useNoticeStore from '../store/useNoticeStore.js';
+import { useAuthStore } from '../../auth/store/authStore.js';
 
 const initialForm = {
     titulo: '',
@@ -56,9 +57,6 @@ const NoticeForm = ({ notice, onClose, onSuccess }) => {
             setErrors({ submit: 'Necesitas iniciar sesión para realizar esta acción.' });
             return;
         }
-
-        const confirmed = window.confirm(notice ? '¿Confirmas actualizar este aviso?' : '¿Confirmas crear este aviso?');
-        if (!confirmed) return;
 
         try {
             let result;

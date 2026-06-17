@@ -24,7 +24,7 @@ const avisoSchema = new Schema(
             default: 'ACTIVO'
         },
         usuario: {
-            type: Schema.Types.ObjectId,
+            type: String,
             required: true
         }
     },
