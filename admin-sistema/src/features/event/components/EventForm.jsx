@@ -10,14 +10,29 @@ const initialForm = {
     idCategoria: '',
 };
 
-const EventForm = ({ onClose, onSuccess }) => {
+const EventForm = ({ onClose, onSuccess, evento }) => {
     const [form, setForm] = useState(initialForm);
     const [errors, setErrors] = useState({});
-    const { categorias, fetchCategorias, createEvento, loading } = useEventStore();
+    const { categorias, fetchCategorias, createEvento, updateEvento, loading } = useEventStore();
 
     useEffect(() => {
         fetchCategorias();
     }, []);
+
+    useEffect(() => {
+        if (evento) {
+            setForm({
+                titulo: evento.titulo || '',
+                descripcion: evento.descripcion || '',
+                fecha: evento.fecha ? evento.fecha.split('T')[0] : '',
+                hora: evento.hora || '',
+                lugar: evento.lugar || '',
+                idCategoria: evento.idCategoria?._id || evento.idCategoria || '',
+            });
+        } else {
+            setForm(initialForm);
+        }
+    }, [evento]);
 
     const validate = () => {
         const newErrors = {};
@@ -41,7 +56,12 @@ const EventForm = ({ onClose, onSuccess }) => {
             setErrors(validationErrors);
             return;
         }
-        const result = await createEvento(form);
+        let result;
+        if (evento) {
+            result = await updateEvento(evento._id, form);
+        } else {
+            result = await createEvento(form);
+        }
         if (result.success) {
             onSuccess?.();
             onClose?.();
@@ -81,7 +101,7 @@ const EventForm = ({ onClose, onSuccess }) => {
                             margin: '4px 0 0',
                             fontFamily: "'Playfair Display', serif",
                             fontSize: '20px', color: 'var(--green-950)',
-                        }}>Nuevo Evento</h2>
+                        }}>{evento ? 'Editar Evento' : 'Nuevo Evento'}</h2>
                     </div>
                     <button onClick={onClose} style={{
                         display: 'grid', placeItems: 'center',
@@ -197,7 +217,7 @@ const EventForm = ({ onClose, onSuccess }) => {
                             cursor: 'pointer', fontSize: '12px', fontWeight: 600, color: 'var(--muted)',
                         }}>Cancelar</button>
                         <button type="submit" disabled={loading} className="primary-button">
-                            {loading ? 'Guardando...' : 'Guardar Evento'}
+                            {loading ? 'Guardando...' : (evento ? 'Actualizar Evento' : 'Guardar Evento')}
                         </button>
                     </div>
                 </form>

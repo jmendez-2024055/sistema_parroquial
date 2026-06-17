@@ -10,6 +10,7 @@ import {
 
 import { validarCampos } from '../../middlewares/validar-campos.js';
 import { validarJWT } from '../../middlewares/validar-jwt.js';
+import { esAdmin } from '../../middlewares/validar-roles.js';
 
 const router = Router();
 
@@ -76,7 +77,7 @@ const validarAviso = [
  *       401:
  *         description: No autorizado
  */
-router.post('/', validarJWT, validarAviso, crearAviso);
+router.post('/', validarJWT, esAdmin, validarAviso, crearAviso);
 
 /**
  * @swagger
@@ -108,7 +109,7 @@ router.post('/', validarJWT, validarAviso, crearAviso);
  *       404:
  *         description: Aviso no encontrado
  */
-router.put('/:id', validarJWT, validarAviso, editarAviso);
+router.put('/:id', validarJWT, esAdmin, validarAviso, editarAviso);
 
 /**
  * @swagger
@@ -132,7 +133,7 @@ router.put('/:id', validarJWT, validarAviso, editarAviso);
  *       404:
  *         description: Aviso no encontrado
  */
-router.delete('/:id', validarJWT, eliminarAviso);
+router.delete('/:id', validarJWT, esAdmin, eliminarAviso);
 
 /**
  * @swagger

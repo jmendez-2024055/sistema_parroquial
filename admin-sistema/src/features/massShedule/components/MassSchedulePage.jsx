@@ -3,6 +3,7 @@ import { DashboardContainer } from '../../../shared/components/layout/DashboardC
 import { AppIcon } from '../../../shared/components/ui/AppIcon.jsx';
 import useMassScheduleStore from '../store/useMassScheduleStore.js';
 import MassScheduleForm from './MassScheduleForm.jsx';
+import { useAuthStore } from '../../auth/store/authStore.js';
 
 const dayOrder = {
     'Domingo': 0,
@@ -26,6 +27,9 @@ const MassSchedulePage = () => {
     const [showForm, setShowForm] = useState(false);
     const [editingSchedule, setEditingSchedule] = useState(null);
     const { massSchedules, loading, error, fetchMassSchedules, deleteMassSchedule } = useMassScheduleStore();
+    const user = useAuthStore((state) => state.user);
+    const role = user?.role ?? '';
+    const isAdmin = role === 'ADMIN_ROLE';
 
     useEffect(() => { fetchMassSchedules(); }, []);
 
@@ -57,10 +61,12 @@ const MassSchedulePage = () => {
             title="Horarios de Misa"
             description="Gestiona los horarios de las celebraciones eucarísticas."
             action={
-                <button className="primary-button" type="button" onClick={() => setShowForm(true)}>
-                    <AppIcon name="plus" size={18} />
-                    Nuevo Horario
-                </button>
+                isAdmin && (
+                    <button className="primary-button" type="button" onClick={() => setShowForm(true)}>
+                        <AppIcon name="plus" size={18} />
+                        Nuevo Horario
+                    </button>
+                )
             }
         >
             {error && (
@@ -230,56 +236,59 @@ const MassSchedulePage = () => {
                             </div>
 
                             {/* Acciones */}
-                            <div style={{ 
-                                display: 'flex', 
-                                justifyContent: 'flex-end', 
-                                gap: '10px', 
-                                marginTop: 'auto',
-                                paddingTop: '12px',
-                                borderTop: '1px solid var(--line)',
-                            }}>
-                                <button
-                                    type="button"
-                                    onClick={() => handleEdit(schedule)}
-                                    style={{
-                                        padding: '8px 16px', borderRadius: '8px',
-                                        border: '1px solid var(--green-200)', 
-                                        background: 'var(--green-50)',
-                                        color: 'var(--green-700)', cursor: 'pointer',
-                                        fontSize: '12px', fontWeight: 600,
-                                        transition: 'all 0.2s ease',
-                                    }}
-                                    onMouseEnter={e => {
-                                        e.currentTarget.style.background = 'var(--green-100)';
-                                        e.currentTarget.style.borderColor = 'var(--green-300)';
-                                    }}
-                                    onMouseLeave={e => {
-                                        e.currentTarget.style.background = 'var(--green-50)';
-                                        e.currentTarget.style.borderColor = 'var(--green-200)';
-                                    }}
-                                >
-                                    Editar
-                                </button>
-                                <button
-                                    type="button"
-                                    onClick={() => deleteMassSchedule(schedule._id)}
-                                    style={{
-                                        padding: '8px 16px', borderRadius: '8px',
-                                        border: '1px solid #fed7d7', background: '#fff5f5',
-                                        color: '#c53030', cursor: 'pointer',
-                                        fontSize: '12px', fontWeight: 600,
-                                        transition: 'all 0.2s ease',
-                                    }}
-                                    onMouseEnter={e => {
-                                        e.currentTarget.style.background = '#fed7d7';
-                                    }}
-                                    onMouseLeave={e => {
-                                        e.currentTarget.style.background = '#fff5f5';
-                                    }}
-                                >
-                                    Eliminar
-                                </button>
-                            </div>
+                            {isAdmin && (
+                                <div style={{ 
+                                    display: 'flex', 
+                                    justifyContent: 'flex-end', 
+                                    gap: '10px', 
+                                    marginTop: 'auto',
+                                    paddingTop: '12px',
+                                    borderTop: '1px solid var(--line)',
+                                }}>
+                                    <button
+                                        type="button"
+                                        onClick={() => handleEdit(schedule)}
+                                        style={{
+                                            padding: '8px 16px', borderRadius: '8px',
+                                            border: '1px solid var(--green-200)', 
+                                            background: 'var(--green-50)',
+                                            color: 'var(--green-700)', cursor: 'pointer',
+                                            fontSize: '12px', fontWeight: 600,
+                                            transition: 'all 0.2s ease',
+                                        }}
+                                        onMouseEnter={e => {
+                                            e.currentTarget.style.background = 'var(--green-100)';
+                                            e.currentTarget.style.borderColor = 'var(--green-300)';
+                                        }}
+                                        onMouseLeave={e => {
+                                            e.currentTarget.style.background = 'var(--green-50)';
+                                            e.currentTarget.style.borderColor = 'var(--green-200)';
+                                        }}
+                                    >
+                                        Editar
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={() => deleteMassSchedule(schedule._id)}
+                                        style={{
+                                            padding: '8px 16px', borderRadius: '8px',
+                                            border: '1px solid #fed7d7', background: '#fff5f5',
+                                            color: '#c53030', cursor: 'pointer',
+                                            fontSize: '12px', fontWeight: 600,
+                                            transition: 'all 0.2s ease',
+                                            display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                        }}
+                                        onMouseEnter={e => {
+                                            e.currentTarget.style.background = '#fed7d7';
+                                        }}
+                                        onMouseLeave={e => {
+                                            e.currentTarget.style.background = '#fff5f5';
+                                        }}
+                                    >
+                                        Eliminar
+                                    </button>
+                                </div>
+                            )}
                         </div>
                     ))}
                 </div>

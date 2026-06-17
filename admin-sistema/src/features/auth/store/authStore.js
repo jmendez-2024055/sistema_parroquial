@@ -29,21 +29,21 @@ export const useAuthStore = create(
 
           const data = await loginRequest({ username, password });
 
-          // El backend devuelve: { success, message, token, refreshToken, user }
+          // El backend C# devuelve: { success, message, accessToken, refreshToken, userDetails }
           if (!data.success) {
             set({ error: data.message || 'Credenciales inválidas', loading: false });
             return { success: false, error: data.message };
           }
 
           set({
-            user:            data.user,
-            token:           data.token,
+            user:            data.userDetails,
+            token:           data.accessToken,
             refreshToken:    data.refreshToken,
             isAuthenticated: true,
             loading:         false,
           });
 
-          return { success: true, user: data.user };
+          return { success: true, user: data.userDetails };
         } catch (err) {
           const message =
             err.response?.data?.message ||

@@ -1,5 +1,7 @@
 import { Router } from 'express';
 import massScheduleController from './massSchedule.controller.js';
+import { validarJWT } from '../../middlewares/validar-jwt.js';
+import { esAdmin } from '../../middlewares/validar-roles.js';
 
 const router = Router();
 
@@ -89,7 +91,7 @@ router.get('/:id', massScheduleController.getById);
  *       201:
  *         description: Horario creado correctamente
  */
-router.post('/', massScheduleController.create);
+router.post('/', validarJWT, esAdmin, massScheduleController.create);
 
 /**
  * @swagger
@@ -137,6 +139,6 @@ router.put('/:id', massScheduleController.update);
  *       404:
  *         description: No encontrado
  */
-router.delete('/:id', massScheduleController.delete);
+router.delete('/:id', validarJWT, esAdmin, massScheduleController.delete);
 
 export default router;

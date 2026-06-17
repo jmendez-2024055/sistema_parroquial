@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import * as categoriaController from './category.controller.js';
+import { validarJWT } from '../../middlewares/validar-jwt.js';
 
 const router = Router();
 
@@ -38,7 +39,7 @@ const router = Router();
  *     summary: Obtener todas las categorías
  *     tags: [Categoria]
  */
-router.get('/', categoriaController.getCategorias);
+router.get('/', validarJWT, categoriaController.getCategorias);
 
 /**
  * @swagger

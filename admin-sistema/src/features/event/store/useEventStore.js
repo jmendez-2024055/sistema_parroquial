@@ -41,6 +41,21 @@ const useEventStore = create((set, get) => ({
         }
     },
 
+    updateEvento: async (id, data) => {
+        set({ loading: true, error: null });
+        try {
+            const res = await eventService.updateEvento(id, data);
+            set((state) => ({
+                eventos: state.eventos.map((e) => e._id === id ? res.data.data : e),
+                loading: false,
+            }));
+            return { success: true };
+        } catch (err) {
+            set({ error: err.response?.data?.message || 'Error al actualizar evento', loading: false });
+            return { success: false };
+        }
+    },
+
     deleteEvento: async (id) => {
         try {
             await eventService.deleteEvento(id);

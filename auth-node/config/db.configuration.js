@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { seedCategorias } from '../src/category/category.seeder.js';
 
 export const dbConnection = async () => {
     mongoose.connection.setMaxListeners(20); // ← agrega esta línea
@@ -11,16 +12,18 @@ export const dbConnection = async () => {
             console.log('Mongo DB | Intentando conectar a mongo DB');
         });
         mongoose.connection.on('connected', () => {
-            console.log('Mongo DB | Conectando a mongo DB');          
+            console.log('Mongo DB | Conectando a mongo DB');
         });
-        mongoose.connection.on('open', () => {
-            console.log('Mongo DB | Conectado a la base de datos');          
+        mongoose.connection.on('open', async () => {
+            console.log('Mongo DB | Conectado a la base de datos');
+            // Ejecutar seeder de categorías
+            await seedCategorias();
         });
         mongoose.connection.on('reconnected', () => {
-            console.log('Mongo DB | Reconectando a mongo DB');          
+            console.log('Mongo DB | Reconectando a mongo DB');
         });
         mongoose.connection.on('disconnected', () => {
-            console.log('Mongo DB | Desconectado de mongo DB');           
+            console.log('Mongo DB | Desconectado de mongo DB');
         });
         await mongoose.connect(process.env.URI_MONGODB,{
             serverSelectionTimeoutMS: 5000,

@@ -3,6 +3,7 @@ import { DashboardContainer } from '../../../shared/components/layout/DashboardC
 import { AppIcon } from '../../../shared/components/ui/AppIcon.jsx';
 import useEventStore from '../store/useEventStore.js';
 import EventForm from './EventForm.jsx';
+import { useAuthStore } from '../../auth/store/authStore.js';
 
 const categoryBadgeClass = (nombre) => {
     const map = {
@@ -16,9 +17,28 @@ const categoryBadgeClass = (nombre) => {
 
 const EventPage = () => {
     const [showForm, setShowForm] = useState(false);
+    const [editingEvent, setEditingEvent] = useState(null);
     const { eventos, loading, error, fetchEventos, deleteEvento } = useEventStore();
+    const user = useAuthStore((state) => state.user);
+    const role = user?.role ?? '';
+    const isAdmin = role === 'ADMIN_ROLE';
 
     useEffect(() => { fetchEventos(); }, []);
+
+    const handleEdit = (evento) => {
+        setEditingEvent(evento);
+        setShowForm(true);
+    };
+
+    const handleCloseForm = () => {
+        setEditingEvent(null);
+        setShowForm(false);
+    };
+
+    const handleSuccess = () => {
+        fetchEventos();
+        handleCloseForm();
+    };
 
     const formatFecha = (fecha) =>
         new Date(fecha).toLocaleDateString('es-GT', {
@@ -31,10 +51,12 @@ const EventPage = () => {
             title="Eventos"
             description="Gestiona las actividades y celebraciones parroquiales."
             action={
-                <button className="primary-button" type="button" onClick={() => setShowForm(true)}>
-                    <AppIcon name="plus" size={18} />
-                    Nuevo Evento
-                </button>
+                isAdmin && (
+                    <button className="primary-button" type="button" onClick={() => setShowForm(true)}>
+                        <AppIcon name="plus" size={18} />
+                        Nuevo Evento
+                    </button>
+                )
             }
         >
             {error && (
@@ -147,20 +169,35 @@ const EventPage = () => {
                                 </div>
 
                                 {/* Acciones */}
-                                <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 'auto' }}>
-                                    <button
-                                        type="button"
-                                        onClick={() => deleteEvento(evento._id)}
-                                        style={{
-                                            padding: '6px 14px', borderRadius: '8px',
-                                            border: '1px solid #fed7d7', background: '#fff5f5',
-                                            color: '#c53030', cursor: 'pointer',
-                                            fontSize: '12px', fontWeight: 600,
-                                        }}
-                                    >
-                                        Eliminar
-                                    </button>
-                                </div>
+                                {isAdmin && (
+                                    <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px', marginTop: 'auto' }}>
+                                        <button
+                                            type="button"
+                                            onClick={() => handleEdit(evento)}
+                                            style={{
+                                                padding: '6px 14px', borderRadius: '8px',
+                                                border: '1px solid var(--green-200)', background: 'var(--green-50)',
+                                                color: 'var(--green-700)', cursor: 'pointer',
+                                                fontSize: '12px', fontWeight: 600,
+                                            }}
+                                        >
+                                            Editar
+                                        </button>
+                                        <button
+                                            type="button"
+                                            onClick={() => deleteEvento(evento._id)}
+                                            style={{
+                                                padding: '6px 14px', borderRadius: '8px',
+                                                border: '1px solid #fed7d7', background: '#fff5f5',
+                                                color: '#c53030', cursor: 'pointer',
+                                                fontSize: '12px', fontWeight: 600,
+                                                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                            }}
+                                        >
+                                            Eliminar
+                                        </button>
+                                    </div>
+                                )}
                             </div>
                         );
                     })}
@@ -169,8 +206,9 @@ const EventPage = () => {
 
             {showForm && (
                 <EventForm
-                    onClose={() => setShowForm(false)}
-                    onSuccess={() => fetchEventos()}
+                    evento={editingEvent}
+                    onClose={handleCloseForm}
+                    onSuccess={handleSuccess}
                 />
             )}
         </DashboardContainer>
