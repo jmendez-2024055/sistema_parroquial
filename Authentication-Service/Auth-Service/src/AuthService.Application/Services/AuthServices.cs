@@ -50,12 +50,18 @@ public class AuthService(
         var userEmailId = UuidGenerator.GenerateUserId();
         var userRoleId = UuidGenerator.GenerateUserId();
 
-        // Obtener el rol por defecto (USER_ROLE) ya seedado en DB
-        var defaultRole = await roleRepository.GetByNameAsync(RoleConstants.USER_ROLE);
-        if (defaultRole == null)
+        // Obtener el rol (usar el proporcionado o USER_ROLE por defecto)
+        var roleName = string.IsNullOrEmpty(registerDto.Role) ? RoleConstants.USER_ROLE : registerDto.Role;
+        var role = await roleRepository.GetByNameAsync(roleName);
+        if (role == null)
         {
-            throw new InvalidOperationException($"Default role '{RoleConstants.USER_ROLE}' not found. Ensure seeding runs before registration.");
+            throw new InvalidOperationException($"Role '{roleName}' not found. Ensure seeding runs before registration.");
         }
+
+        // Si el rol es especificado (creado por admin), el usuario está activo y no requiere verificación de email
+        var isAdminCreated = !string.IsNullOrEmpty(registerDto.Role);
+        var userStatus = isAdminCreated;
+        var emailVerified = isAdminCreated;
 
         var user = new User
         {
@@ -65,7 +71,7 @@ public class AuthService(
             Username = registerDto.Username,
             Email = registerDto.Email.ToLowerInvariant(),
             Password = passwordHashService.HashPassword(registerDto.Password),
-            Status = false,
+            Status = userStatus,
             UserProfile = new UserProfile
             {
                 Id = userProfileId,
@@ -79,9 +85,9 @@ public class AuthService(
             {
                 Id = userEmailId,
                 UserId = userId,
-                EmailVerified = false,
-                EmailVerificationToken = emailVerificationToken,
-                EmailVerificationTokenExpiry = DateTime.UtcNow.AddHours(24),
+                EmailVerified = emailVerified,
+                EmailVerificationToken = emailVerified ? null : emailVerificationToken,
+                EmailVerificationTokenExpiry = emailVerified ? null : DateTime.UtcNow.AddHours(24),
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow
             },
@@ -91,7 +97,7 @@ public class AuthService(
                 {
                     Id = userRoleId,
                     UserId = userId,
-                    RoleId = defaultRole.Id
+                    RoleId = role.Id
                 }
             ],
             UserPasswordReset = new UserPasswordReset //Generar el objeto.

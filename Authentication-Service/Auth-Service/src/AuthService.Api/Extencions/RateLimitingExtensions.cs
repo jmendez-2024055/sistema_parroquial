@@ -9,28 +9,28 @@ public static class RateLimitingExtensions
     {
         services.AddRateLimiter(options =>
         {
-            // Rate limiting para autenticación
+            // Rate limiting para autenticación (aumentado para desarrollo)
             options.AddPolicy("AuthPolicy", context =>
                 RateLimitPartition.GetFixedWindowLimiter(
                     partitionKey: context.Connection.RemoteIpAddress?.ToString() ?? "unknown",
                     factory: partition => new FixedWindowRateLimiterOptions
                     {
                         AutoReplenishment = true,
-                        PermitLimit = 5, // 5 intentos
+                        PermitLimit = 100, // 100 intentos (aumentado de 5)
                         Window = TimeSpan.FromMinutes(1) // por minuto
                     }));
 
-            // Rate limiting general para API
+            // Rate limiting general para API (aumentado para desarrollo)
             options.AddPolicy("ApiPolicy", context =>
                 RateLimitPartition.GetTokenBucketLimiter(
                     partitionKey: context.Connection.RemoteIpAddress?.ToString() ?? "unknown",
                     factory: partition => new TokenBucketRateLimiterOptions
                     {
-                        TokenLimit = 100, // 100 tokens
+                        TokenLimit = 1000, // 1000 tokens (aumentado de 100)
                         QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
-                        QueueLimit = 5,
+                        QueueLimit = 50, // (aumentado de 5)
                         ReplenishmentPeriod = TimeSpan.FromMinutes(1), // se repone cada minuto
-                        TokensPerPeriod = 20, // 20 tokens por minuto
+                        TokensPerPeriod = 200, // 200 tokens por minuto (aumentado de 20)
                         AutoReplenishment = true
                     }));
 

@@ -1,10 +1,10 @@
 .parish-dashboard {
-      --dashboard-green: #4f8a10;
-      --dashboard-green-dark: #2e6b0f;
-      --dashboard-bg: #fafaf7;
-      --dashboard-text: #1d2719;
-      --dashboard-muted: #71806a;
-      --dashboard-line: #e6eadf;
+      --dashboard-green: var(--primary);
+      --dashboard-green-dark: var(--secondary);
+      --dashboard-bg: var(--background);
+      --dashboard-text: var(--text);
+      --dashboard-muted: var(--muted);
+      --dashboard-line: var(--line);
       width: min(100%, 1320px);
       min-height: calc(100vh - 154px);
       margin: 0 auto;

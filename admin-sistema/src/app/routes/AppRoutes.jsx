@@ -7,7 +7,7 @@ import { ResetPasswordPage } from '../../features/auth/pages/ResetPasswordPage.j
 import { UnauthorizedPage } from '../../features/auth/pages/UnauthorizedPage.jsx';
 import { VerifyEmail } from '../../features/auth/pages/VerifyEmail.jsx';
 import { AdminLayout } from '../layouts/AdminLayout.jsx';
-import { ProtectedRoutes } from './ProtectedRoutes.jsx';
+import { ProtectedRoutes, AdminOnlyRoute } from './ProtectedRoutes.jsx';
 
 const DashboardPage = lazy(() => import('../../features/dashboard/pages/DashboardPage.jsx'));
 const ModulePage = lazy(() => import('../layouts/ModulePage.jsx'));
@@ -15,11 +15,10 @@ const EventPage = lazy(() => import('../../features/event/components/EventPage.j
 const CategoryPage = lazy(() => import('../../features/category/components/CategoryPage.jsx'));
 const NoticePage = lazy(() => import('../../features/notice/components/NoticePage.jsx'));
 const MassSchedulePage = lazy(() => import('../../features/massShedule/components/MassSchedulePage.jsx'));
+const UsersPage = lazy(() => import('../../features/user/components/UsersPage.jsx'));
+const SettingsPage = lazy(() => import('../../features/settings/pages/SettingsPage.jsx'));
 
-const moduleRoutes = [
-  { path: 'users', title: 'Usuarios', description: 'Administra usuarios, perfiles y accesos.' },
-  { path: 'settings', title: 'Configuración', description: 'Configura los datos generales de la parroquia.' },
-];
+const moduleRoutes = [];
 
 const RouteLoader = () => (
   <div className="route-loader" role="status">
@@ -46,13 +45,10 @@ export const AppRoutes = () => (
           <Route path="categories" element={<CategoryPage />} />
           <Route path="notices" element={<NoticePage />} />
           <Route path="mass-schedules" element={<MassSchedulePage />} />
-          {moduleRoutes.map((route) => (
-            <Route
-              key={route.path}
-              path={route.path}
-              element={<ModulePage title={route.title} description={route.description} />}
-            />
-          ))}
+          <Route path="users" element={<UsersPage />} />
+          <Route element={<AdminOnlyRoute />}>
+            <Route path="settings" element={<SettingsPage />} />
+          </Route>
         </Route>
         <Route path="/dashboard" element={<Navigate to="/admin/dashboard" replace />} />
       </Route>
