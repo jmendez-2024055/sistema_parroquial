@@ -28,4 +28,5 @@ public class RegisterDto
     [StringLength(8, MinimumLength = 8)]
     public string Phone { get; set; } = string.Empty;
 
-    }
+    public string? Role { get; set; } // Optional role for admin-created users
+}

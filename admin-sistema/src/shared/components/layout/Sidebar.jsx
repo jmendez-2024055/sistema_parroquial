@@ -48,10 +48,12 @@ export const Sidebar = ({ isOpen, onClose }) => {
         </nav>
 
         <div className="sidebar__footer">
-          <NavLink to="/admin/settings" onClick={onClose} className="sidebar__link">
-            <AppIcon name="settings" />
-            <span>Configuración</span>
-          </NavLink>
+          {isAdmin && (
+            <NavLink to="/admin/settings" onClick={onClose} className="sidebar__link">
+              <AppIcon name="settings" />
+              <span>Configuración</span>
+            </NavLink>
+          )}
           <div className="sidebar__version">Sistema Parroquial · v1.0</div>
         </div>
       </aside>
