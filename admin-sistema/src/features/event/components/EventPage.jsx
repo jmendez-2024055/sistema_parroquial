@@ -156,14 +156,14 @@ const EventPage = () => {
                                     background: 'var(--green-50)',
                                 }}>
                                     <span style={{ fontSize: '12px', color: 'var(--green-800)', display: 'flex', alignItems: 'center', gap: 6 }}>
-                                        📅 {formatFecha(evento.fecha)}
+                                        <AppIcon name="calendar" size={14} /> {formatFecha(evento.fecha)}
                                     </span>
                                     <span style={{ fontSize: '12px', color: 'var(--green-800)', display: 'flex', alignItems: 'center', gap: 6 }}>
-                                        🕐 {evento.hora}
+                                        <AppIcon name="clock" size={14} /> {evento.hora}
                                     </span>
                                     {evento.lugar && (
                                         <span style={{ fontSize: '12px', color: 'var(--green-800)', display: 'flex', alignItems: 'center', gap: 6 }}>
-                                            📍 {evento.lugar}
+                                            <AppIcon name="map-pin" size={14} /> {evento.lugar}
                                         </span>
                                     )}
                                 </div>

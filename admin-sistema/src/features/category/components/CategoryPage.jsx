@@ -172,15 +172,15 @@ const CategoryPage = () => {
                                                         display: 'flex', alignItems: 'center',
                                                         gap: '16px', flexShrink: 0,
                                                     }}>
-                                                        <span style={{ fontSize: '12px', color: 'var(--green-800)' }}>
-                                                            📅 {formatFecha(evento.fecha)}
+                                                        <span style={{ fontSize: '12px', color: 'var(--green-800)', display: 'flex', alignItems: 'center', gap: 6 }}>
+                                                            <AppIcon name="calendar" size={14} /> {formatFecha(evento.fecha)}
                                                         </span>
-                                                        <span style={{ fontSize: '12px', color: 'var(--green-800)' }}>
-                                                            🕐 {evento.hora}
+                                                        <span style={{ fontSize: '12px', color: 'var(--green-800)', display: 'flex', alignItems: 'center', gap: 6 }}>
+                                                            <AppIcon name="clock" size={14} /> {evento.hora}
                                                         </span>
                                                         {evento.lugar && (
-                                                            <span style={{ fontSize: '12px', color: 'var(--green-800)' }}>
-                                                                📍 {evento.lugar}
+                                                            <span style={{ fontSize: '12px', color: 'var(--green-800)', display: 'flex', alignItems: 'center', gap: 6 }}>
+                                                                <AppIcon name="map-pin" size={14} /> {evento.lugar}
                                                             </span>
                                                         )}
                                                     </div>

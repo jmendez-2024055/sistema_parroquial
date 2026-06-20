@@ -179,13 +179,13 @@ export const UsersPage = () => {
                     background: 'var(--green-50)',
                   }}>
                     <span style={{ fontSize: '12px', color: 'var(--green-800)', display: 'flex', alignItems: 'center', gap: 6 }}>
-                      📧 {user.email}
+                      <AppIcon name="mail" size={14} /> {user.email}
                     </span>
                     <span style={{ fontSize: '12px', color: 'var(--green-800)', display: 'flex', alignItems: 'center', gap: 6 }}>
-                      📱 {user.phone}
+                      <AppIcon name="phone" size={14} /> {user.phone}
                     </span>
                     <span style={{ fontSize: '12px', color: 'var(--green-800)', display: 'flex', alignItems: 'center', gap: 6 }}>
-                      📅 Creado: {formatFecha(user.createdAt)}
+                      <AppIcon name="calendar" size={14} /> Creado: {formatFecha(user.createdAt)}
                     </span>
                   </div>
 

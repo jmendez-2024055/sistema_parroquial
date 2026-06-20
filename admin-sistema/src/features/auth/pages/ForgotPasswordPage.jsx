@@ -79,7 +79,7 @@ export const ForgotPasswordPage = () => {
 
         {/* Logo */}
         <div className={styles.logoWrap}>
-          <div className={styles.logoIcon} style={{ background: theme.accent }}>✝</div>
+          <div className={styles.logoIcon} style={{ background: theme.accent }}>SP</div>
         </div>
         <h1 className={styles.title}>Sistema Parroquial</h1>
         <p className={styles.subtitle} style={{ color: theme.subtitleColor }}>
@@ -147,7 +147,11 @@ export const ForgotPasswordPage = () => {
               {/* Error del servidor */}
               {status === 'error' && (
                 <div className={styles.globalError} role="alert">
-                  <span style={{ marginRight: 6 }}>⚠</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="12" cy="12" r="10" />
+                    <line x1="12" y1="8" x2="12" y2="12" />
+                    <line x1="12" y1="16" x2="12.01" y2="16" />
+                  </svg>
                   {message}
                 </div>
               )}

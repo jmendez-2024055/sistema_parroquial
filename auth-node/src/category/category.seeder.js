@@ -29,11 +29,10 @@ export const seedCategorias = async () => {
       ];
 
       await Categoria.insertMany(categorias);
-      console.log('✅ Categorías inicializadas correctamente');
     } else {
-      console.log('ℹ️ Las categorías ya existen en la base de datos');
+      // Categorías ya existen
     }
   } catch (error) {
-    console.error('❌ Error al inicializar categorías:', error);
+    // Error silencioso al inicializar categorías
   }
 };

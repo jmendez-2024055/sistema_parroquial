@@ -160,7 +160,7 @@ const MassSchedulePage = () => {
                                     color: 'var(--green-700)',
                                     fontSize: '20px',
                                 }}>
-                                    ⛪
+                                    <AppIcon name="church" size={24} />
                                 </div>
                             </div>
 
@@ -211,7 +211,7 @@ const MassSchedulePage = () => {
                                     color: 'var(--green-700)',
                                     fontSize: '16px',
                                 }}>
-                                    👤
+                                    <AppIcon name="user" size={18} />
                                 </div>
                                 <div>
                                     <span style={{

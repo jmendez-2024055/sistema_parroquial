@@ -1,0 +1,25 @@
+{
+  "js/ts.tsserver.watchOptions": {
+    "excludeDirectories": ["**/node_modules", "**/.pnpm"]
+  },
+  "js/ts.preferences.includePackageJsonAutoImports": "off",
+  "js/ts.suggest.autoImports": false,
+  "eslint.workingDirectories": ["auth-node"],
+  "eslint.options": {
+    "ignorePath": ".gitignore"
+  },
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    "**/node_modules": true,
+    "**/.pnpm": true
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/.pnpm": true,
+    "**/bower_components": true
+  }
+}
