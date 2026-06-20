@@ -144,7 +144,7 @@ export const ResetPasswordPage = () => {
 
         {/* Logo */}
         <div className={styles.logoWrap}>
-          <div className={styles.logoIcon} style={{ background: theme.accent }}>✝</div>
+          <div className={styles.logoIcon} style={{ background: theme.accent }}>SP</div>
         </div>
         <h1 className={styles.title}>Sistema Parroquial</h1>
         <p className={styles.subtitle} style={{ color: theme.subtitleColor }}>
@@ -174,7 +174,10 @@ export const ResetPasswordPage = () => {
               color: theme.accent, fontSize: 26, marginBottom: 16,
               boxShadow: `0 4px 16px ${theme.btnShadow}`,
             }}>
-              🔑
+              <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+              </svg>
             </div>
 
             <h2 className={styles.formTitle}>Crear nueva contraseña</h2>
@@ -270,7 +273,11 @@ export const ResetPasswordPage = () => {
               {/* Error del servidor */}
               {status === 'error' && (
                 <div className={styles.globalError} role="alert">
-                  <span style={{ marginRight: 6 }}>⚠</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="12" cy="12" r="10" />
+                    <line x1="12" y1="8" x2="12" y2="12" />
+                    <line x1="12" y1="16" x2="12.01" y2="16" />
+                  </svg>
                   {message}
                 </div>
               )}

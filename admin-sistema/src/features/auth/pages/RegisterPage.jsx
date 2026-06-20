@@ -117,7 +117,7 @@ export const RegisterPage = () => {
 
         {/* Logo */}
         <div className={styles.logoWrap}>
-          <div className={styles.logoIcon} style={{ background: theme.accent }}>✝</div>
+          <div className={styles.logoIcon} style={{ background: theme.accent }}>SP</div>
         </div>
 
         <h1 className={styles.title}>Sistema Parroquial</h1>

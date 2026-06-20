@@ -21,7 +21,7 @@ export const Sidebar = ({ isOpen, onClose }) => {
     <>
       <aside className={`sidebar ${isOpen ? 'sidebar--open' : ''}`}>
         <div className="sidebar__brand">
-          <div className="sidebar__brand-mark">✝</div>
+          <div className="sidebar__brand-mark">SP</div>
           <div>
             <strong>San Cristóbal</strong>
             <span>Administración parroquial</span>

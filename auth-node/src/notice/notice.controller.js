@@ -4,7 +4,7 @@ export const crearAviso = async (req, res, next) => {
     try {
         const data = {
             ...req.body,
-            usuario: req.user.id // 🔥 viene del token
+            usuario: req.user.id // viene del token JWT
         };
 
         const aviso = await avisosService.crearAviso(data);
