@@ -4,7 +4,8 @@ class MassScheduleController {
 
     async getAll(req, res, next) {
         try {
-            const data = await massScheduleService.getAll();
+            const parishId = req.user?.parishId || null;
+            const data = await massScheduleService.getAll(parishId);
 
             res.json({
                 success: true,
@@ -18,7 +19,8 @@ class MassScheduleController {
 
     async getById(req, res, next) {
         try {
-            const data = await massScheduleService.getById(req.params.id);
+            const parishId = req.user.parishId;
+            const data = await massScheduleService.getById(req.params.id, parishId);
 
             if (!data) {
                 return res.status(404).json({
@@ -39,12 +41,16 @@ class MassScheduleController {
 
     async create(req, res, next) {
         try {
-            const data = await massScheduleService.create(req.body);
+            const data = {
+                ...req.body,
+                parishId: req.user.parishId
+            };
+            const result = await massScheduleService.create(data);
 
             res.status(201).json({
                 success: true,
                 message: 'Horario de misa creado correctamente',
-                data
+                data: result
             });
 
         } catch (error) {
@@ -54,7 +60,8 @@ class MassScheduleController {
 
     async update(req, res, next) {
         try {
-            const data = await massScheduleService.update(req.params.id, req.body);
+            const parishId = req.user.parishId;
+            const data = await massScheduleService.update(req.params.id, req.body, parishId);
 
             if (!data) {
                 return res.status(404).json({
@@ -77,7 +84,8 @@ class MassScheduleController {
     
     async delete(req, res, next) {
         try {
-            const data = await massScheduleService.delete(req.params.id);
+            const parishId = req.user.parishId;
+            const data = await massScheduleService.delete(req.params.id, parishId);
 
             if (!data) {
                 return res.status(404).json({

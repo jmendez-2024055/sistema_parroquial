@@ -26,6 +26,15 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IEmailService, EmailService>();
         services.AddScoped<IRefreshTokenService, RefreshTokenService>();
         services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
+        services.AddScoped<IParishService, ParishService>();
+        services.AddScoped<IAdminRequestService, AdminRequestService>();
+
+        // Configure HttpClient for ParishService
+        services.AddHttpClient<IParishService, ParishService>(client =>
+        {
+            client.BaseAddress = new Uri(configuration["ParishApi:BaseUrl"] ?? "http://localhost:3000");
+            client.Timeout = TimeSpan.FromSeconds(30);
+        });
 
         // Configure health checks
         services.AddHealthChecks();

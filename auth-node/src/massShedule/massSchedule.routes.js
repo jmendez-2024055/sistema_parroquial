@@ -73,7 +73,7 @@ router.get('/', massScheduleController.getAll);
  *       404:
  *         description: No encontrado
  */
-router.get('/:id', massScheduleController.getById);
+router.get('/:id', validarJWT, massScheduleController.getById);
 
 /**
  * @swagger
@@ -118,7 +118,7 @@ router.post('/', validarJWT, esAdmin, massScheduleController.create);
  *       404:
  *         description: No encontrado
  */
-router.put('/:id', massScheduleController.update);
+router.put('/:id', validarJWT, esAdmin, massScheduleController.update);
 
 /**
  * @swagger

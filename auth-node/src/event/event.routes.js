@@ -74,7 +74,7 @@ router.get('/', eventController.listar);
  *       404:
  *         description: Evento no encontrado
  */
-router.get('/:id', eventController.obtenerPorId);
+router.get('/:id', validarJWT, eventController.obtenerPorId);
 
 /**
  * @swagger
@@ -119,7 +119,7 @@ router.post('/', validarJWT, esAdmin, eventController.crear);
  *       404:
  *         description: Evento no encontrado
  */
-router.put('/:id', eventController.actualizar);
+router.put('/:id', validarJWT, esAdmin, eventController.actualizar);
 
 /**
  * @swagger

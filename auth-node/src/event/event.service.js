@@ -11,25 +11,36 @@ export const crearEvento = async (data) => {
     }
 };
 
-export const obtenerEventos = async () => {
+export const obtenerEventos = async (parishId) => {
     try {
-        return await Evento.find().populate('idCategoria');
+        const query = parishId ? { parishId } : {};
+        return await Evento.find(query).populate('idCategoria');
     } catch (error) {
         throw new Error('Error al obtener eventos');
     }
 };
 
-export const obtenerEventoPorId = async (id) => {
+export const obtenerEventoPorId = async (id, parishId) => {
     try {
-        return await Evento.findById(id).populate('idCategoria');
+        const evento = await Evento.findById(id).populate('idCategoria');
+        if (!evento || evento.parishId !== parishId) {
+            return null;
+        }
+        return evento;
     } catch (error) {
         throw new Error('Error al buscar el evento');
     }
 };
 
-export const actualizarEvento = async (id, data) => {
+export const actualizarEvento = async (id, data, parishId) => {
     try {
-        const evento = await Evento.findByIdAndUpdate(
+        const evento = await Evento.findById(id);
+        if (!evento || evento.parishId !== parishId) {
+            return null;
+        }
+        // Prevent parishId from being overwritten
+        delete data.parishId;
+        const updated = await Evento.findByIdAndUpdate(
             id,
             data,
             {
@@ -38,16 +49,20 @@ export const actualizarEvento = async (id, data) => {
             }
         ).populate('idCategoria');
 
-        return evento; 
+        return updated; 
     } catch (error) {
         throw new Error('Error al actualizar el evento');
     }
 };
 
-export const eliminarEvento = async (id) => {
+export const eliminarEvento = async (id, parishId) => {
     try {
-        const evento = await Evento.findByIdAndDelete(id);
-        return evento; 
+        const evento = await Evento.findById(id);
+        if (!evento || evento.parishId !== parishId) {
+            return null;
+        }
+        const deleted = await Evento.findByIdAndDelete(id);
+        return deleted; 
     } catch (error) {
         throw new Error('Error al eliminar el evento');
     }

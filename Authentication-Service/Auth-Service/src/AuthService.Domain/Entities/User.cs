@@ -47,4 +47,11 @@ public class User
     // Refresh tokens
     public ICollection<RefreshToken> RefreshTokens { get; set; } = new List<RefreshToken>();
 
+    // Parroquia asignada al usuario
+    public string? ParishId { get; set; }
+
+    // Estado de solicitud de administrador de parroquia
+    // Valores posibles: NONE, PENDING, APPROVED, REJECTED
+    public string AdminRequestStatus { get; set; } = "NONE";
+
 }

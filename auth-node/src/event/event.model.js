@@ -1,6 +1,11 @@
 import mongoose from 'mongoose';
 
 const eventoSchema = new mongoose.Schema({
+    parishId: {
+        type: String,
+        required: true,
+        index: true
+    },
     titulo: {
         type: String,
         required: true,

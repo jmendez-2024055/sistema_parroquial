@@ -21,6 +21,7 @@ public class AuthService(
     IPasswordHashService passwordHashService,
     IJwtTokenService jwtTokenService,
     IEmailService emailService,
+    IParishService parishService,
     // IConfiguration configuration, // Removed unused parameter
     ILogger<AuthService> logger) : IAuthService
 {
@@ -50,18 +51,42 @@ public class AuthService(
         var userEmailId = UuidGenerator.GenerateUserId();
         var userRoleId = UuidGenerator.GenerateUserId();
 
-        // Obtener el rol (usar el proporcionado o USER_ROLE por defecto)
-        var roleName = string.IsNullOrEmpty(registerDto.Role) ? RoleConstants.USER_ROLE : registerDto.Role;
-        var role = await roleRepository.GetByNameAsync(roleName);
+        // SIEMPRE usar USER_ROLE para el registro público - sin excepciones
+        var role = await roleRepository.GetByNameAsync(RoleConstants.USER_ROLE);
         if (role == null)
         {
-            throw new InvalidOperationException($"Role '{roleName}' not found. Ensure seeding runs before registration.");
+            throw new InvalidOperationException($"Role '{RoleConstants.USER_ROLE}' not found. Ensure seeding runs before registration.");
         }
 
-        // Si el rol es especificado (creado por admin), el usuario está activo y no requiere verificación de email
-        var isAdminCreated = !string.IsNullOrEmpty(registerDto.Role);
-        var userStatus = isAdminCreated;
-        var emailVerified = isAdminCreated;
+        // Todos los usuarios registrados por el endpoint público requieren verificación de email
+        var userStatus = false;
+        var emailVerified = false;
+
+        // Determinar la parroquia del usuario
+        string? parishId = null;
+        string? parishName = null;
+
+        if (!string.IsNullOrEmpty(registerDto.ParishId))
+        {
+            // Si el usuario seleccionó una parroquia específica manualmente
+            parishId = registerDto.ParishId;
+            var parish = await parishService.GetParishByIdAsync(parishId);
+            parishName = parish?.Nombre;
+        }
+        else if (registerDto.Latitude.HasValue && registerDto.Longitude.HasValue)
+        {
+            // Si el usuario proporcionó coordenadas, buscar la parroquia más cercana
+            var nearestParish = await parishService.FindNearestParishAsync(
+                registerDto.Latitude.Value, 
+                registerDto.Longitude.Value
+            );
+            if (nearestParish != null)
+            {
+                parishId = nearestParish.Id;
+                parishName = nearestParish.Nombre;
+                logger.LogInformation("Parroquia más cercana asignada: {ParishName} ({Distance}km)", parishName, nearestParish.DistanciaKm);
+            }
+        }
 
         var user = new User
         {
@@ -109,6 +134,8 @@ public class AuthService(
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow
             },
+            ParishId = parishId,
+            AdminRequestStatus = registerDto.SolicitarAdmin ? "PENDING" : "NONE"
         };
 
         // Guardar usuario y entidades relacionadas
@@ -209,7 +236,8 @@ public class AuthService(
             Status = user.Status,
             IsEmailVerified = user.UserEmail?.EmailVerified ?? false,
             CreatedAt = user.CreatedAt,
-            UpdatedAt = user.UpdatedAt
+            UpdatedAt = user.UpdatedAt,
+            ParishId = user.ParishId
         };
     }
 

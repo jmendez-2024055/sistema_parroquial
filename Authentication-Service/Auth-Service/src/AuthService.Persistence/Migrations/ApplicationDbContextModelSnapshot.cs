@@ -108,6 +108,14 @@ namespace AuthService.Persistence.Migrations
                         .HasColumnType("character varying(16)")
                         .HasColumnName("id");
 
+                    b.Property<string>("AdminRequestStatus")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)")
+                        .HasDefaultValue("NONE")
+                        .HasColumnName("admin_request_status");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
@@ -123,6 +131,11 @@ namespace AuthService.Persistence.Migrations
                         .HasMaxLength(25)
                         .HasColumnType("character varying(25)")
                         .HasColumnName("name");
+
+                    b.Property<string>("ParishId")
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)")
+                        .HasColumnName("parish_id");
 
                     b.Property<string>("Password")
                         .IsRequired()
