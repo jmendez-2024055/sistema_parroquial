@@ -134,13 +134,14 @@ app.Lifetime.ApplicationStarted.Register(() =>
         {
             using var scope = app.Services.CreateScope();
             var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+            var configuration = scope.ServiceProvider.GetRequiredService<IConfiguration>();
             var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
 
             logger.LogInformation("Checking database connection...");
             await context.Database.EnsureCreatedAsync();
 
             logger.LogInformation("Database ready. Running seed data...");
-            await DataSeeder.SeedAsync(context);
+            await DataSeeder.SeedAsync(context, configuration, logger);
 
             logger.LogInformation("Database initialization completed successfully");
         }
