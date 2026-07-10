@@ -3,7 +3,10 @@ import Category from '../category/category.model.js';
 
 export const crear = async (req, res, next) => {
     try {
-        const data = req.body;
+        const data = {
+            ...req.body,
+            parishId: req.user.parishId
+        };
 
         const categoria = await Category.findById(data.idCategoria);
         if (!categoria) {
@@ -28,7 +31,8 @@ export const crear = async (req, res, next) => {
 
 export const listar = async (req, res, next) => {
     try {
-        const eventos = await eventoService.obtenerEventos();
+        const parishId = req.user.parishId;
+        const eventos = await eventoService.obtenerEventos(parishId);
 
         res.json({
             success: true,

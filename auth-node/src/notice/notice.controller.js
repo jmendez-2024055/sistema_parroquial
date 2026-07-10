@@ -4,7 +4,8 @@ export const crearAviso = async (req, res, next) => {
     try {
         const data = {
             ...req.body,
-            usuario: req.user.id // viene del token JWT
+            usuario: req.user.id, // viene del token JWT
+            parishId: req.user.parishId
         };
 
         const aviso = await avisosService.crearAviso(data);
@@ -22,7 +23,8 @@ export const crearAviso = async (req, res, next) => {
 
 export const listarAvisos = async (req, res, next) => {
     try {
-        const avisos = await avisosService.listarAvisos();
+        const parishId = req.user.parishId;
+        const avisos = await avisosService.listarAvisos(parishId);
 
         res.json({
             success: true,

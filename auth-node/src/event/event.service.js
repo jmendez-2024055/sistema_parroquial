@@ -11,9 +11,10 @@ export const crearEvento = async (data) => {
     }
 };
 
-export const obtenerEventos = async () => {
+export const obtenerEventos = async (parishId) => {
     try {
-        return await Evento.find().populate('idCategoria');
+        const query = parishId ? { parishId } : {};
+        return await Evento.find(query).populate('idCategoria');
     } catch (error) {
         throw new Error('Error al obtener eventos');
     }

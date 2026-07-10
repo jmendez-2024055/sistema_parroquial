@@ -4,8 +4,9 @@ export const crearAviso = async (data) => {
     return await Aviso.create(data);
 };
 
-export const listarAvisos = async () => {
-    return await Aviso.find()
+export const listarAvisos = async (parishId) => {
+    const query = parishId ? { parishId } : {};
+    return await Aviso.find(query)
         .sort({ fechaPublicacion: -1 });
 };
 

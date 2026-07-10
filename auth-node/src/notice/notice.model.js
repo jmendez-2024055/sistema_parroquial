@@ -2,6 +2,11 @@ import { Schema, model } from 'mongoose';
 
 const avisoSchema = new Schema(
     {
+        parishId: {
+            type: String,
+            required: true,
+            index: true
+        },
         titulo: {
             type: String,
             required: [true, 'El título es obligatorio'],

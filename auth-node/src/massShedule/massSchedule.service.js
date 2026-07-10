@@ -2,8 +2,9 @@ import massSchedule from './massSchedule.model.js';
 
 class MassScheduleService {
 
-    async getAll() {
-        return await massSchedule.find().sort({ diaSemana: 1, hora: 1 });
+    async getAll(parishId) {
+        const query = parishId ? { parishId } : {};
+        return await massSchedule.find(query).sort({ diaSemana: 1, hora: 1 });
     }
 
     async getById(id) {

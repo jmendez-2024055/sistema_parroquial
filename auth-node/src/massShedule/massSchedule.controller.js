@@ -4,7 +4,8 @@ class MassScheduleController {
 
     async getAll(req, res, next) {
         try {
-            const data = await massScheduleService.getAll();
+            const parishId = req.user.parishId;
+            const data = await massScheduleService.getAll(parishId);
 
             res.json({
                 success: true,
@@ -39,12 +40,16 @@ class MassScheduleController {
 
     async create(req, res, next) {
         try {
-            const data = await massScheduleService.create(req.body);
+            const data = {
+                ...req.body,
+                parishId: req.user.parishId
+            };
+            const result = await massScheduleService.create(data);
 
             res.status(201).json({
                 success: true,
                 message: 'Horario de misa creado correctamente',
-                data
+                data: result
             });
 
         } catch (error) {
