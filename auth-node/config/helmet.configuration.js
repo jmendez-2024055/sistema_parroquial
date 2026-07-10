@@ -10,7 +10,7 @@ export const helmetOptions = {
             fontSrc: ["'self'"],
             objectSrc: ["'none'"],
             baseUri: ["'self'"],
-            frameAcestors: ["'none'"]
+            frameAncestors: ["'none'"]
         }
     },
     hats: false,

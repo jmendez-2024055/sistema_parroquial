@@ -380,7 +380,9 @@ const seedParishes = async () => {
   }
 };
 
-// Ejecutar seeder si se llama directamente
-seedParishes();
+// Ejecutar seeder solo si se llama directamente (no al importar)
+if (import.meta.url === `file://${process.argv[1]}`) {
+  seedParishes();
+}
 
 export default seedParishes;

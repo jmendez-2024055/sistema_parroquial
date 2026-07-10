@@ -165,6 +165,6 @@ router.get('/', listarAvisos);
  *       404:
  *         description: Aviso no encontrado
  */
-router.get('/:id', obtenerAvisoPorId);
+router.get('/:id', validarJWT, obtenerAvisoPorId);
 
 export default router;

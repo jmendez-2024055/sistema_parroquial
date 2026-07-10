@@ -31,7 +31,7 @@ export const crear = async (req, res, next) => {
 
 export const listar = async (req, res, next) => {
     try {
-        const parishId = req.user.parishId;
+        const parishId = req.user?.parishId || null;
         const eventos = await eventoService.obtenerEventos(parishId);
 
         res.json({
@@ -46,7 +46,8 @@ export const listar = async (req, res, next) => {
 
 export const obtenerPorId = async (req, res, next) => {
     try {
-        const evento = await eventoService.obtenerEventoPorId(req.params.id);
+        const parishId = req.user.parishId;
+        const evento = await eventoService.obtenerEventoPorId(req.params.id, parishId);
 
         if (!evento) {
             return res.status(404).json({
@@ -67,6 +68,7 @@ export const obtenerPorId = async (req, res, next) => {
 
 export const actualizar = async (req, res, next) => {
     try {
+        const parishId = req.user.parishId;
         const data = req.body;
 
         if (data.idCategoria) {
@@ -79,7 +81,7 @@ export const actualizar = async (req, res, next) => {
             }
         }
 
-        const evento = await eventoService.actualizarEvento(req.params.id, data);
+        const evento = await eventoService.actualizarEvento(req.params.id, data, parishId);
 
         if (!evento) {
             return res.status(404).json({
@@ -101,7 +103,8 @@ export const actualizar = async (req, res, next) => {
 
 export const eliminar = async (req, res, next) => {
     try {
-        const evento = await eventoService.eliminarEvento(req.params.id);
+        const parishId = req.user.parishId;
+        const evento = await eventoService.eliminarEvento(req.params.id, parishId);
 
         if (!evento) {
             return res.status(404).json({

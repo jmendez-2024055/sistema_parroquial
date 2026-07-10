@@ -10,11 +10,21 @@ export const listarAvisos = async (parishId) => {
         .sort({ fechaPublicacion: -1 });
 };
 
-export const obtenerAvisoPorId = async (id) => {
-    return await Aviso.findById(id);
+export const obtenerAvisoPorId = async (id, parishId) => {
+    const aviso = await Aviso.findById(id);
+    if (!aviso || aviso.parishId !== parishId) {
+        return null;
+    }
+    return aviso;
 };
 
-export const editarAviso = async (id, data) => {
+export const editarAviso = async (id, data, parishId) => {
+    const aviso = await Aviso.findById(id);
+    if (!aviso || aviso.parishId !== parishId) {
+        return null;
+    }
+    // Prevent parishId from being overwritten
+    delete data.parishId;
     return await Aviso.findByIdAndUpdate(
         id,
         data,
@@ -22,6 +32,10 @@ export const editarAviso = async (id, data) => {
     );
 };
 
-export const eliminarAviso = async (id) => {
+export const eliminarAviso = async (id, parishId) => {
+    const aviso = await Aviso.findById(id);
+    if (!aviso || aviso.parishId !== parishId) {
+        return null;
+    }
     return await Aviso.findByIdAndDelete(id);
 };
