@@ -99,6 +99,13 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
                 .IsRequired();
             entity.Property(e => e.UpdatedAt)
                 .IsRequired();
+            entity.Property(e => e.ParishId)
+                .HasMaxLength(255)
+                .IsRequired(false);
+            entity.Property(e => e.AdminRequestStatus)
+                .HasMaxLength(20)
+                .HasDefaultValue("NONE")
+                .IsRequired();
             entity.HasIndex(e => e.Username).IsUnique();
             entity.HasIndex(e => e.Email).IsUnique();
             // Relaciones
