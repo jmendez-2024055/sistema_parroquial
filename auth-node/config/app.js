@@ -18,6 +18,7 @@ import eventoRoutes from '../src/event/event.routes.js';
 import avisosRoutes from '../src/notice/notice.routes.js'; 
 import massScheduleRoutes from '../src/massShedule/massSchedule.routes.js';
 import categoriaRoutes from '../src/category/category.routes.js';
+import parishRoutes from '../src/parish/parish.routes.js';
 
 const BASE_PATH = '/SistemaParroquial/v1';
 
@@ -26,6 +27,7 @@ const routes = (app) => {
     app.use(`${BASE_PATH}/avisos`, avisosRoutes);
     app.use(`${BASE_PATH}/misa`, massScheduleRoutes);
     app.use(`${BASE_PATH}/categorias`, categoriaRoutes);
+    app.use(`${BASE_PATH}/parroquias`, parishRoutes);
 
     app.get(`${BASE_PATH}/health`, (req, res) => {
         res.status(200).json({

@@ -6,7 +6,12 @@ export const getUserById = (userId) => axiosAuth.post('/auth/profile/by-id', { u
 export const createUser = (data) => {
   const form = new FormData();
   Object.entries(data).forEach(([key, value]) => {
-    if (value !== undefined && value !== '') form.append(key, value);
+    // Se excluyen null y undefined explícitamente: FormData los convierte
+    // al texto literal "null"/"undefined", lo que rompe el binding de
+    // campos nullable (Latitude, Longitude, ParishId) en el backend .NET.
+    if (value !== undefined && value !== null && value !== '') {
+      form.append(key, value);
+    }
   });
   return axiosAuth.post('/auth/register', form);
 };

@@ -2,6 +2,8 @@
 
 Sistema backend para la gestión de información de la **Parroquia San Cristóbal**, zona 11, Ciudad de Guatemala. Permite centralizar eventos, avisos, horarios de misa y usuarios mediante APIs REST probadas en Postman.
 
+**Nueva funcionalidad:** Sistema de geolocalización para asignar automáticamente la parroquia más cercana a cada usuario.
+
 ---
 
 ## Tecnologías
@@ -9,8 +11,10 @@ Sistema backend para la gestión de información de la **Parroquia San Cristóba
 | Servicio | Tecnología |
 |---|---|
 | Autenticación (Auth) | .NET Web API (C#) + JWT |
-| Roles, Categorías, Eventos, Avisos, Horarios | Node.js + Express |
+| Roles, Categorías, Eventos, Avisos, Horarios, Parroquias | Node.js + Express |
 | Base de datos | MongoDB + Mongoose |
+| Frontend Administrativo | React + Vite + Zustand |
+| Geolocalización | HTML5 Geolocation API + Fórmula Haversine |
 | Pruebas | Postman |
 
 ---
@@ -217,6 +221,45 @@ JWT_SECRET=tu_clave_secreta
   "hora": "09:00",
   "tipoMisa": "Misa Dominical",
   "celebrante": "Padre Carlos Méndez"
+}
+```
+
+---
+
+### Parroquias – `http://localhost:3000`
+
+| Método | Endpoint | Descripción | Protegido |
+|---|---|---|---|
+| POST | `/api/parroquias` | Crear nueva parroquia | Sí |
+| GET | `/api/parroquias` | Listar todas las parroquias | No |
+| GET | `/api/parroquias/:id` | Obtener parroquia por ID | No |
+| GET | `/api/parroquias/nearest?lat=X&lon=Y` | Parroquia más cercana | No |
+| GET | `/api/parroquias/nearby?lat=X&lon=Y&radius=Z` | Parroquias en radio | No |
+| PUT | `/api/parroquias/:id` | Actualizar parroquia | Sí |
+| DELETE | `/api/parroquias/:id` | Eliminar parroquia | Sí |
+
+**Body – POST /api/parroquias**
+```json
+{
+  "nombre": "Parroquia San Cristóbal",
+  "direccion": "Zona 11, Ciudad de Guatemala",
+  "ubicacion": {
+    "latitud": 14.6133,
+    "longitud": -90.5353
+  },
+  "contacto": {
+    "telefono": "+502 2222-0000",
+    "email": "sancristobal@parroquia.gt"
+  },
+  "horarios": [
+    {
+      "dia": "Domingo",
+      "horarios": [
+        { "hora": "07:00", "tipoMisa": "Misa Matutina" },
+        { "hora": "09:00", "tipoMisa": "Misa Principal" }
+      ]
+    }
+  ]
 }
 ```
 
