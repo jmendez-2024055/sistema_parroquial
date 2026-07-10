@@ -28,5 +28,13 @@ public class RegisterDto
     [StringLength(8, MinimumLength = 8)]
     public string Phone { get; set; } = string.Empty;
 
-    public string? Role { get; set; } // Optional role for admin-created users
+    // Solicitar ser administrador de la parroquia asignada
+    public bool SolicitarAdmin { get; set; } = false;
+
+    // Coordenadas para asignar automáticamente la parroquia más cercana
+    public double? Latitude { get; set; }
+    public double? Longitude { get; set; }
+    
+    // Opcional: ID de parroquia específica (si el usuario selecciona manualmente)
+    public string? ParishId { get; set; }
 }
