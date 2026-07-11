@@ -7,7 +7,11 @@ const navigation = [
   { to: '/admin/events', label: 'Eventos', icon: 'calendar' },
   { to: '/admin/notices', label: 'Avisos', icon: 'notice' },
   { to: '/admin/mass-schedules', label: 'Horarios de misa', icon: 'church' },
+  { to: '/admin/intenciones', label: 'Intenciones', icon: 'heart' },
+  { to: '/admin/groups', label: 'Grupos', icon: 'users' },
   { to: '/admin/users', label: 'Usuarios', icon: 'users', adminOnly: true },
+  { to: '/admin/group-requests', label: 'Solicitudes de grupos', icon: 'users', adminOnly: true },
+  { to: '/admin/group-management', label: 'Gestión de grupos', icon: 'settings', adminOnly: true },
 ];
 
 export const Sidebar = ({ isOpen, onClose }) => {

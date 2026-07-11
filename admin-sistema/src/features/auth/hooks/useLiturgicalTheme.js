@@ -1,29 +1,6 @@
 import { useState, useEffect } from 'react';
-import { liturgicalThemes, loadSavedTheme } from '../../../shared/themes/liturgicalThemes.js';
-
-// ── Función que calcula la temporada actual ───────────────────────
-const getCurrentSeason = () => {
-  // Primero verificar si hay un tema guardado en localStorage
-  const savedTheme = localStorage.getItem('liturgicalTheme');
-  if (savedTheme && liturgicalThemes[savedTheme]) {
-    return savedTheme;
-  }
-
-  // Si no hay tema guardado, calcular por fecha
-  const now   = new Date();
-  const month = now.getMonth() + 1; // 1-12
-  const day   = now.getDate();
-
-  if ((month === 11 && day >= 27) || (month === 12 && day <= 24))
-    return 'adviento';
-  if ((month === 12 && day >= 25) || (month === 1 && day <= 12))
-    return 'navidad';
-  if (month === 2 || (month === 3 && day <= 20))
-    return 'cuaresma';
-  if (month >= 4 && month <= 5)
-    return 'pascua';
-  return 'ordinario';
-};
+import { liturgicalThemes, applyLiturgicalTheme } from '../../../shared/themes/liturgicalThemes.js';
+import { getCurrentLiturgicalSeason } from '../../../shared/utils/liturgicalCalendar.js';
 
 // ── Convertir tema litúrgico a formato para páginas de auth ──────────
 const convertToAuthTheme = (liturgicalTheme) => {
@@ -46,13 +23,13 @@ const convertToAuthTheme = (liturgicalTheme) => {
 
 // ── Hook principal ────────────────────────────────────────────────
 export const useLiturgicalTheme = () => {
-  const [season, setSeason] = useState(getCurrentSeason);
+  const [season, setSeason] = useState(getCurrentLiturgicalSeason);
   const liturgicalTheme = liturgicalThemes[season] || liturgicalThemes.ordinario;
   const theme = convertToAuthTheme(liturgicalTheme);
 
   useEffect(() => {
     // Aplicar el tema litúrgico al cargar
-    loadSavedTheme();
+    applyLiturgicalTheme(season);
 
     // Aplica variables CSS al body para que toda la página cambie
     const applyTheme = (t) => {
@@ -64,9 +41,10 @@ export const useLiturgicalTheme = () => {
 
     // Revisa cada hora si cambió la temporada litúrgica
     const interval = setInterval(() => {
-      const newSeason = getCurrentSeason();
+      const newSeason = getCurrentLiturgicalSeason();
       setSeason((prev) => {
         if (prev !== newSeason) {
+          applyLiturgicalTheme(newSeason);
           const newLiturgicalTheme = liturgicalThemes[newSeason] || liturgicalThemes.ordinario;
           const newAuthTheme = convertToAuthTheme(newLiturgicalTheme);
           applyTheme(newAuthTheme);

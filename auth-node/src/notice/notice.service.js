@@ -34,7 +34,7 @@ export const editarAviso = async (id, data, parishId) => {
 
 export const eliminarAviso = async (id, parishId) => {
     const aviso = await Aviso.findById(id);
-    if (!aviso || aviso.parishId !== parishId) {
+    if (!aviso) {
         return null;
     }
     return await Aviso.findByIdAndDelete(id);

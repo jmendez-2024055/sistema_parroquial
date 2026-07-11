@@ -30,9 +30,13 @@ const NoticePage = () => {
     };
 
     const handleDelete = async (id) => {
-        const result = await deleteNotice(id);
-        if (result.success) {
-            fetchNotices();
+        if (window.confirm('¿Estás seguro de eliminar este aviso?')) {
+            try {
+                await deleteNotice(id);
+                fetchNotices();
+            } catch (err) {
+                console.error('Error al eliminar aviso:', err);
+            }
         }
     };
 

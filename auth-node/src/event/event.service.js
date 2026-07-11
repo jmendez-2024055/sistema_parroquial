@@ -58,7 +58,7 @@ export const actualizarEvento = async (id, data, parishId) => {
 export const eliminarEvento = async (id, parishId) => {
     try {
         const evento = await Evento.findById(id);
-        if (!evento || evento.parishId !== parishId) {
+        if (!evento) {
             return null;
         }
         const deleted = await Evento.findByIdAndDelete(id);

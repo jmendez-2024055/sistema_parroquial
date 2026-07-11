@@ -40,6 +40,17 @@ const EventPage = () => {
         handleCloseForm();
     };
 
+    const handleDelete = async (id) => {
+        if (window.confirm('¿Estás seguro de eliminar este evento?')) {
+            try {
+                await deleteEvento(id);
+                fetchEventos();
+            } catch (err) {
+                console.error('Error al eliminar evento:', err);
+            }
+        }
+    };
+
     const formatFecha = (fecha) =>
         new Date(fecha).toLocaleDateString('es-GT', {
             day: '2-digit', month: 'long', year: 'numeric',
@@ -185,7 +196,7 @@ const EventPage = () => {
                                         </button>
                                         <button
                                             type="button"
-                                            onClick={() => deleteEvento(evento._id)}
+                                            onClick={() => handleDelete(evento._id)}
                                             style={{
                                                 padding: '6px 14px', borderRadius: '8px',
                                                 border: '1px solid #fed7d7', background: '#fff5f5',

@@ -1,3 +1,5 @@
+import { getCurrentLiturgicalSeason } from '../utils/liturgicalCalendar.js';
+
 // Paletas de colores para tiempos litúrgicos
 export const liturgicalThemes = {
   ordinario: {
@@ -135,17 +137,11 @@ export const applyLiturgicalTheme = (themeKey) => {
   Object.entries(cssVariables).forEach(([key, value]) => {
     root.style.setProperty(key, value);
   });
-
-  // Guardar en localStorage
-  localStorage.setItem('liturgicalTheme', themeKey);
 };
 
-// Función para cargar el tema guardado
-export const loadSavedTheme = () => {
-  const savedTheme = localStorage.getItem('liturgicalTheme');
-  if (savedTheme && liturgicalThemes[savedTheme]) {
-    applyLiturgicalTheme(savedTheme);
-    return savedTheme;
-  }
-  return 'ordinario';
+// Función para aplicar el tema automáticamente basado en la fecha actual
+export const applyAutomaticTheme = () => {
+  const currentSeason = getCurrentLiturgicalSeason();
+  applyLiturgicalTheme(currentSeason);
+  return currentSeason;
 };

@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 const massScheduleSchema = new mongoose.Schema({
     parishId: {
         type: String,
-        required: true,
+        required: false,
         index: true
     },
     diaSemana: {

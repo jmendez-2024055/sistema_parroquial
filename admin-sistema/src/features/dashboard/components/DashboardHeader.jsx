@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
-import { liturgicalThemes, loadSavedTheme } from '../../../shared/themes/liturgicalThemes.js';
+import { liturgicalThemes } from '../../../shared/themes/liturgicalThemes.js';
+import { getCurrentLiturgicalSeason } from '../../../shared/utils/liturgicalCalendar.js';
 
 const DashboardHeader = () => {
   const [currentTheme, setCurrentTheme] = useState('ordinario');
 
   useEffect(() => {
-    const savedTheme = loadSavedTheme();
-    setCurrentTheme(savedTheme);
+    setCurrentTheme(getCurrentLiturgicalSeason());
   }, []);
 
   const theme = liturgicalThemes[currentTheme] || liturgicalThemes.ordinario;
