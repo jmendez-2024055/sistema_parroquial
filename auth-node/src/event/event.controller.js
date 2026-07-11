@@ -5,15 +5,17 @@ export const crear = async (req, res, next) => {
     try {
         const data = {
             ...req.body,
-            parishId: req.user.parishId
+            parishId: req.user?.parishId || null
         };
 
-        const categoria = await Category.findById(data.idCategoria);
-        if (!categoria) {
-            return res.status(400).json({
-                success: false,
-                message: 'La categoría no existe'
-            });
+        if (data.idCategoria) {
+            const categoria = await Category.findById(data.idCategoria);
+            if (!categoria) {
+                return res.status(400).json({
+                    success: false,
+                    message: 'La categoría no existe'
+                });
+            }
         }
 
         const evento = await eventoService.crearEvento(data);
@@ -103,7 +105,7 @@ export const actualizar = async (req, res, next) => {
 
 export const eliminar = async (req, res, next) => {
     try {
-        const parishId = req.user.parishId;
+        const parishId = req.user?.parishId || null;
         const evento = await eventoService.eliminarEvento(req.params.id, parishId);
 
         if (!evento) {

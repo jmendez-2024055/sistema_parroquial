@@ -15,8 +15,12 @@ const EventPage = lazy(() => import('../../features/event/components/EventPage.j
 const CategoryPage = lazy(() => import('../../features/category/components/CategoryPage.jsx'));
 const NoticePage = lazy(() => import('../../features/notice/components/NoticePage.jsx'));
 const MassSchedulePage = lazy(() => import('../../features/massShedule/components/MassSchedulePage.jsx'));
+const IntencionUserPage = lazy(() => import('../../features/intencion/components/IntencionUserPage.jsx'));
 const UsersPage = lazy(() => import('../../features/user/components/UsersPage.jsx'));
 const SettingsPage = lazy(() => import('../../features/settings/pages/SettingsPage.jsx'));
+const GroupListPage = lazy(() => import('../../features/group/components/GroupListPage.jsx'));
+const GroupRequestsAdminPage = lazy(() => import('../../features/group/components/GroupRequestsAdminPage.jsx'));
+const GroupManagementPage = lazy(() => import('../../features/group/components/GroupManagementPage.jsx'));
 
 const moduleRoutes = [];
 
@@ -45,9 +49,13 @@ export const AppRoutes = () => (
           <Route path="categories" element={<CategoryPage />} />
           <Route path="notices" element={<NoticePage />} />
           <Route path="mass-schedules" element={<MassSchedulePage />} />
+          <Route path="intenciones" element={<IntencionUserPage />} />
           <Route path="users" element={<UsersPage />} />
+          <Route path="groups" element={<GroupListPage />} />
           <Route element={<AdminOnlyRoute />}>
             <Route path="settings" element={<SettingsPage />} />
+            <Route path="group-requests" element={<GroupRequestsAdminPage />} />
+            <Route path="group-management" element={<GroupManagementPage />} />
           </Route>
         </Route>
         <Route path="/dashboard" element={<Navigate to="/admin/dashboard" replace />} />

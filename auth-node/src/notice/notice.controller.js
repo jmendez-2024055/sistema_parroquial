@@ -97,8 +97,8 @@ export const editarAviso = async (req, res, next) => {
 
 export const eliminarAviso = async (req, res, next) => {
     try {
-        const parishId = req.user.parishId;
-        const aviso = await avisosService.obtenerAvisoPorId(req.params.id, parishId);
+        const parishId = req.user?.parishId || null;
+        const aviso = await avisosService.eliminarAviso(req.params.id, parishId);
 
         if (!aviso) {
             return res.status(404).json({
@@ -106,15 +106,6 @@ export const eliminarAviso = async (req, res, next) => {
                 message: "Aviso no encontrado"
             });
         }
-
-        if (aviso.usuario.toString() !== req.user.id) {
-            return res.status(403).json({
-                success: false,
-                message: "No tienes permiso"
-            });
-        }
-
-        await avisosService.eliminarAviso(req.params.id, parishId);
 
         res.json({
             success: true,

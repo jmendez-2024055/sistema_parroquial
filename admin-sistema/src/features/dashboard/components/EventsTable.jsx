@@ -5,7 +5,7 @@ const EventsTable = ({ events }) => (
     <div className="events-panel__header">
       <div>
         <span className="events-panel__eyebrow">Agenda parroquial</span>
-        <h2 id="events-title">Próximos eventos y misas</h2>
+        <h2 id="events-title">Próximos eventos</h2>
       </div>
       <span className="events-panel__filter">Esta semana</span>
     </div>

@@ -36,5 +36,29 @@ export const validarRol = (rolesPermitidos = []) => {
 };
 
 export const esAdmin = (req, res, next) => {
-    return validarRol(['ADMIN_ROLE'])(req, res, next);
+    try {
+        if (!req.user) {
+            return res.status(401).json({
+                success: false,
+                message: 'Usuario no autenticado'
+            });
+        }
+
+        const userRole = req.user.role || '';
+        
+        // Verificar si el usuario es admin
+        if (userRole !== 'ADMIN_ROLE') {
+            return res.status(403).json({
+                success: false,
+                message: 'No tienes permisos para realizar esta acción'
+            });
+        }
+
+        next();
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: 'Error al validar roles'
+        });
+    }
 };

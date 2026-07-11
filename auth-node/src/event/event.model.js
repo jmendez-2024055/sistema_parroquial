@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 const eventoSchema = new mongoose.Schema({
     parishId: {
         type: String,
-        required: true,
+        required: false,
         index: true
     },
     titulo: {
@@ -35,7 +35,7 @@ const eventoSchema = new mongoose.Schema({
     idCategoria: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Category',
-        required: true
+        required: false
     },
     isActive: {
         type: Boolean,

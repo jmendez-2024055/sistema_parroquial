@@ -4,7 +4,7 @@ const avisoSchema = new Schema(
     {
         parishId: {
             type: String,
-            required: true,
+            required: false,
             index: true
         },
         titulo: {
@@ -30,7 +30,7 @@ const avisoSchema = new Schema(
         },
         usuario: {
             type: String,
-            required: true
+            required: false
         }
     },
     {

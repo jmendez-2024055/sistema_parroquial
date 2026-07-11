@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { seedCategorias } from '../src/category/category.seeder.js';
+import { seedGroups } from '../src/group/group.seeder.js';
 
 export const dbConnection = async () => {
     mongoose.connection.setMaxListeners(20); // ← agrega esta línea
@@ -16,8 +17,9 @@ export const dbConnection = async () => {
         });
         mongoose.connection.on('open', async () => {
             console.log('Mongo DB | Conectado a la base de datos');
-            // Ejecutar seeder de categorías
+            // Ejecutar seeders
             await seedCategorias();
+            await seedGroups();
         });
         mongoose.connection.on('reconnected', () => {
             console.log('Mongo DB | Reconectando a mongo DB');

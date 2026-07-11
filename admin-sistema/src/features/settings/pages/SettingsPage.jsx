@@ -1,19 +1,14 @@
 import { useState, useEffect } from 'react';
 import { DashboardContainer } from '../../../shared/components/layout/DashboardContainer.jsx';
-import { liturgicalThemes, applyLiturgicalTheme, loadSavedTheme } from '../../../shared/themes/liturgicalThemes.js';
+import { liturgicalThemes } from '../../../shared/themes/liturgicalThemes.js';
+import { getCurrentLiturgicalSeason } from '../../../shared/utils/liturgicalCalendar.js';
 
 const SettingsPage = () => {
-  const [currentTheme, setCurrentTheme] = useState('ordinario');
+  const [currentSeason, setCurrentSeason] = useState('ordinario');
 
   useEffect(() => {
-    const savedTheme = loadSavedTheme();
-    setCurrentTheme(savedTheme);
+    setCurrentSeason(getCurrentLiturgicalSeason());
   }, []);
-
-  const handleThemeChange = (themeKey) => {
-    setCurrentTheme(themeKey);
-    applyLiturgicalTheme(themeKey);
-  };
 
   return (
     <DashboardContainer
@@ -22,7 +17,7 @@ const SettingsPage = () => {
       description="Personaliza la apariencia y configuración del sistema parroquial."
     >
       <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-        {/* Sección de Tiempo Litúrgico */}
+        {/* Sección de Tiempo Litúrgico - Solo información */}
         <div style={{
           background: 'var(--surface)',
           border: '1px solid var(--line)',
@@ -44,81 +39,41 @@ const SettingsPage = () => {
             color: 'var(--muted)',
             lineHeight: 1.5,
           }}>
-            Selecciona el tiempo litúrgico actual para cambiar la paleta de colores del sistema.
+            El color del sistema se actualiza automáticamente según el calendario litúrgico católico. Tiempo actual: <strong>{liturgicalThemes[currentSeason]?.name}</strong>
           </p>
-
           <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-            gap: '16px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '12px',
+            padding: '16px',
+            background: 'var(--background)',
+            borderRadius: '12px',
+            border: '1px solid var(--line)',
           }}>
-            {Object.entries(liturgicalThemes).map(([key, theme]) => (
-              <button
-                key={key}
-                onClick={() => handleThemeChange(key)}
-                style={{
-                  padding: '16px',
-                  borderRadius: '12px',
-                  border: `2px solid ${currentTheme === key ? theme.primary : 'var(--line)'}`,
-                  background: currentTheme === key ? `${theme.primary}15` : 'var(--surface)',
-                  cursor: 'pointer',
-                  textAlign: 'left',
-                  transition: 'all 0.2s ease',
-                }}
-                onMouseEnter={(e) => {
-                  if (currentTheme !== key) {
-                    e.currentTarget.style.borderColor = theme.primary;
-                    e.currentTarget.style.background = `${theme.primary}10`;
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (currentTheme !== key) {
-                    e.currentTarget.style.borderColor = 'var(--line)';
-                    e.currentTarget.style.background = 'var(--surface)';
-                  }
-                }}
-              >
-                <div style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '12px',
-                  marginBottom: '8px',
-                }}>
-                  <div style={{
-                    width: '32px',
-                    height: '32px',
-                    borderRadius: '50%',
-                    background: theme.primary,
-                    border: '2px solid white',
-                    boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
-                  }} />
-                  <span style={{
-                    fontSize: '14px',
-                    fontWeight: 600,
-                    color: 'var(--text)',
-                  }}>
-                    {theme.name}
-                  </span>
-                </div>
-                <div style={{
-                  display: 'flex',
-                  gap: '6px',
-                }}>
-                  {[theme.primary, theme.secondary, theme.accent].map((color, i) => (
-                    <div
-                      key={i}
-                      style={{
-                        width: '20px',
-                        height: '20px',
-                        borderRadius: '4px',
-                        background: color,
-                        border: '1px solid rgba(0,0,0,0.1)',
-                      }}
-                    />
-                  ))}
-                </div>
-              </button>
-            ))}
+            <div style={{
+              width: '40px',
+              height: '40px',
+              borderRadius: '50%',
+              background: liturgicalThemes[currentSeason]?.primary,
+              border: '2px solid white',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+            }} />
+            <div>
+              <div style={{
+                fontSize: '16px',
+                fontWeight: 600,
+                color: 'var(--text)',
+              }}>
+                {liturgicalThemes[currentSeason]?.name}
+              </div>
+              <div style={{
+                fontSize: '12px',
+                color: 'var(--muted)',
+                marginTop: '4px',
+              }}>
+                Calculado automáticamente por fecha
+              </div>
+            </div>
           </div>
         </div>
 
@@ -156,7 +111,7 @@ const SettingsPage = () => {
                 Tema actual
               </span>
               <p style={{ margin: '4px 0 0', fontSize: '14px', color: 'var(--text)' }}>
-                {liturgicalThemes[currentTheme]?.name}
+                {liturgicalThemes[currentSeason]?.name}
               </p>
             </div>
           </div>

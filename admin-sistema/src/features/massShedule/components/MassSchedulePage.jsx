@@ -48,6 +48,17 @@ const MassSchedulePage = () => {
         handleCloseForm();
     };
 
+    const handleDelete = async (id) => {
+        if (window.confirm('¿Estás seguro de eliminar este horario de misa?')) {
+            try {
+                await deleteMassSchedule(id);
+                fetchMassSchedules();
+            } catch (err) {
+                console.error('Error al eliminar horario de misa:', err);
+            }
+        }
+    };
+
     const sortedSchedules = [...massSchedules].sort((a, b) => {
         const dayA = dayOrder[a.diaSemana] ?? 7;
         const dayB = dayOrder[b.diaSemana] ?? 7;
@@ -269,7 +280,7 @@ const MassSchedulePage = () => {
                                     </button>
                                     <button
                                         type="button"
-                                        onClick={() => deleteMassSchedule(schedule._id)}
+                                        onClick={() => handleDelete(schedule._id)}
                                         style={{
                                             padding: '8px 16px', borderRadius: '8px',
                                             border: '1px solid #fed7d7', background: '#fff5f5',

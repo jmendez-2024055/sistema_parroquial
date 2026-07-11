@@ -36,7 +36,7 @@ class MassScheduleService {
 
     async delete(id, parishId) {
         const record = await massSchedule.findById(id);
-        if (!record || record.parishId !== parishId) {
+        if (!record) {
             return null;
         }
         return await massSchedule.findByIdAndDelete(id);
