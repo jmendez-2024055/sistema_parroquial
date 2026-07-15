@@ -132,11 +132,6 @@ namespace AuthService.Persistence.Migrations
                         .HasColumnType("character varying(25)")
                         .HasColumnName("name");
 
-                    b.Property<string>("ParishId")
-                        .HasMaxLength(255)
-                        .HasColumnType("character varying(255)")
-                        .HasColumnName("parish_id");
-
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasMaxLength(255)

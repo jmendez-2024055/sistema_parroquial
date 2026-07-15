@@ -8,7 +8,7 @@ namespace AuthService.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize(Roles = RoleConstants.SUPERADMIN_ROLE)]
+[Authorize(Roles = RoleConstants.ADMIN_ROLE)]
 public class AdminRequestsController : ControllerBase
 {
     private readonly IAdminRequestService _adminRequestService;

@@ -23,10 +23,6 @@ public static class DataSeeder
                 new() {
                     Id = UuidGenerator.GenerateRoleId(),
                         Name = RoleConstants.USER_ROLE
-                },
-                new() {
-                    Id = UuidGenerator.GenerateRoleId(),
-                        Name = RoleConstants.SUPERADMIN_ROLE
                 }
             };
 
@@ -84,73 +80,6 @@ public static class DataSeeder
 
                 await context.Users!.AddAsync(adminUser);
                 await context.SaveChangesAsync();
-            }
-        }
-
-        // Seed de superadmin si no existe ningún usuario con SUPERADMIN_ROLE
-        var superAdminRole = await (context.Roles ?? throw new InvalidOperationException("Roles DbSet is null.")).FirstOrDefaultAsync(r => r.Name == RoleConstants.SUPERADMIN_ROLE);
-        if (superAdminRole != null)
-        {
-            var existingSuperAdmin = await (context.Users ?? throw new InvalidOperationException("Users DbSet is null."))
-                .Include(u => u.UserRoles)
-                .FirstOrDefaultAsync(u => u.UserRoles.Any(ur => ur.RoleId == superAdminRole.Id));
-
-            if (existingSuperAdmin == null)
-            {
-                var superAdminEmail = configuration?["SuperAdmin:Email"];
-                var superAdminPassword = configuration?["SuperAdmin:Password"];
-
-                if (!string.IsNullOrEmpty(superAdminEmail) && !string.IsNullOrEmpty(superAdminPassword))
-                {
-                    var passwordHasher = new PasswordHashService();
-
-                    var superAdminUserId = UuidGenerator.GenerateUserId();
-                    var superAdminProfileId = UuidGenerator.GenerateUserId();
-                    var superAdminEmailId = UuidGenerator.GenerateUserId();
-                    var superAdminUserRoleId = UuidGenerator.GenerateUserId();
-
-                    var superAdminUser = new User
-                    {
-                        Id = superAdminUserId,
-                        Name = "Super",
-                        Surname = "Admin",
-                        Username = "superadmin",
-                        Email = superAdminEmail.ToLowerInvariant(),
-                        Password = passwordHasher.HashPassword(superAdminPassword),
-                        Status = true,
-                        UserProfile = new UserProfile
-                        {
-                            Id = superAdminProfileId,
-                            UserId = superAdminUserId,
-                            Phone = string.Empty
-                        },
-                        UserEmail = new UserEmail
-                        {
-                            Id = superAdminEmailId,
-                            UserId = superAdminUserId,
-                            EmailVerified = true,
-                            EmailVerificationToken = null,
-                            EmailVerificationTokenExpiry = null
-                        },
-                        UserRoles =
-                        [
-                            new UserRole
-                            {
-                                Id = superAdminUserRoleId,
-                                UserId = superAdminUserId,
-                                RoleId = superAdminRole.Id
-                            }
-                        ]
-                    };
-
-                    await context.Users!.AddAsync(superAdminUser);
-                    await context.SaveChangesAsync();
-                    logger?.LogInformation("Superadmin user created successfully with email {Email}", superAdminEmail);
-                }
-                else
-                {
-                    logger?.LogWarning("SuperAdmin credentials not configured in appsettings. Superadmin user not created.");
-                }
             }
         }
     }

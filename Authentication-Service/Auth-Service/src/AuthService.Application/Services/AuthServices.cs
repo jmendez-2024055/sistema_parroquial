@@ -21,7 +21,6 @@ public class AuthService(
     IPasswordHashService passwordHashService,
     IJwtTokenService jwtTokenService,
     IEmailService emailService,
-    IParishService parishService,
     // IConfiguration configuration, // Removed unused parameter
     ILogger<AuthService> logger) : IAuthService
 {
@@ -61,32 +60,6 @@ public class AuthService(
         // Todos los usuarios registrados por el endpoint público requieren verificación de email
         var userStatus = false;
         var emailVerified = false;
-
-        // Determinar la parroquia del usuario
-        string? parishId = null;
-        string? parishName = null;
-
-        if (!string.IsNullOrEmpty(registerDto.ParishId))
-        {
-            // Si el usuario seleccionó una parroquia específica manualmente
-            parishId = registerDto.ParishId;
-            var parish = await parishService.GetParishByIdAsync(parishId);
-            parishName = parish?.Nombre;
-        }
-        else if (registerDto.Latitude.HasValue && registerDto.Longitude.HasValue)
-        {
-            // Si el usuario proporcionó coordenadas, buscar la parroquia más cercana
-            var nearestParish = await parishService.FindNearestParishAsync(
-                registerDto.Latitude.Value, 
-                registerDto.Longitude.Value
-            );
-            if (nearestParish != null)
-            {
-                parishId = nearestParish.Id;
-                parishName = nearestParish.Nombre;
-                logger.LogInformation("Parroquia más cercana asignada: {ParishName} ({Distance}km)", parishName, nearestParish.DistanciaKm);
-            }
-        }
 
         var user = new User
         {
@@ -134,7 +107,6 @@ public class AuthService(
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow
             },
-            ParishId = parishId,
             AdminRequestStatus = registerDto.SolicitarAdmin ? "PENDING" : "NONE"
         };
 
@@ -236,8 +208,7 @@ public class AuthService(
             Status = user.Status,
             IsEmailVerified = user.UserEmail?.EmailVerified ?? false,
             CreatedAt = user.CreatedAt,
-            UpdatedAt = user.UpdatedAt,
-            ParishId = user.ParishId
+            UpdatedAt = user.UpdatedAt
         };
     }
 

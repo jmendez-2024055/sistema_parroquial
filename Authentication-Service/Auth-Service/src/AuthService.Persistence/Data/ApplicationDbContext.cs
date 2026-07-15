@@ -99,9 +99,6 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
                 .IsRequired();
             entity.Property(e => e.UpdatedAt)
                 .IsRequired();
-            entity.Property(e => e.ParishId)
-                .HasMaxLength(255)
-                .IsRequired(false);
             entity.Property(e => e.AdminRequestStatus)
                 .HasMaxLength(20)
                 .HasDefaultValue("NONE")

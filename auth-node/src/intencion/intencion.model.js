@@ -1,11 +1,6 @@
 import mongoose from 'mongoose';
 
 const intencionSchema = new mongoose.Schema({
-    parishId: {
-        type: String,
-        required: true,
-        index: true
-    },
     massScheduleId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'MassSchedule',
@@ -41,7 +36,7 @@ const intencionSchema = new mongoose.Schema({
     versionKey: false
 });
 
-intencionSchema.index({ parishId: 1, fechaMisa: 1 });
+intencionSchema.index({ massScheduleId: 1, fechaMisa: 1 });
 intencionSchema.index({ estado: 1 });
 
 export default mongoose.model('Intencion', intencionSchema);

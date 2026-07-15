@@ -21,8 +21,7 @@ export const validarJWT = (req, res, next) => {
 
         req.user = {
             id: decoded.id || decoded.sub || decoded.nameid,
-            role: decoded.role || decoded.roles || [],
-            parishId: decoded.parishId || null
+            role: decoded.role || decoded.roles || []
         };
 
         if (!req.user.id) {

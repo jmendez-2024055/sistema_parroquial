@@ -4,8 +4,7 @@ class MassScheduleController {
 
     async getAll(req, res, next) {
         try {
-            const parishId = req.user?.parishId || null;
-            const data = await massScheduleService.getAll(parishId);
+            const data = await massScheduleService.getAll();
 
             res.json({
                 success: true,
@@ -19,8 +18,7 @@ class MassScheduleController {
 
     async getById(req, res, next) {
         try {
-            const parishId = req.user.parishId;
-            const data = await massScheduleService.getById(req.params.id, parishId);
+            const data = await massScheduleService.getById(req.params.id);
 
             if (!data) {
                 return res.status(404).json({
@@ -42,8 +40,7 @@ class MassScheduleController {
     async create(req, res, next) {
         try {
             const data = {
-                ...req.body,
-                parishId: req.user.parishId
+                ...req.body
             };
             const result = await massScheduleService.create(data);
 
@@ -60,8 +57,7 @@ class MassScheduleController {
 
     async update(req, res, next) {
         try {
-            const parishId = req.user.parishId;
-            const data = await massScheduleService.update(req.params.id, req.body, parishId);
+            const data = await massScheduleService.update(req.params.id, req.body);
 
             if (!data) {
                 return res.status(404).json({
@@ -84,8 +80,7 @@ class MassScheduleController {
     
     async delete(req, res, next) {
         try {
-            const parishId = req.user.parishId;
-            const data = await massScheduleService.delete(req.params.id, parishId);
+            const data = await massScheduleService.delete(req.params.id);
 
             if (!data) {
                 return res.status(404).json({

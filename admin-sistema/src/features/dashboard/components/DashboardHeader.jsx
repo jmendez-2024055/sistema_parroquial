@@ -14,7 +14,7 @@ const DashboardHeader = () => {
   return (
     <header className="parish-dashboard__header">
       <div>
-        <span className="parish-dashboard__eyebrow">Administración parroquial</span>
+        <span className="parish-dashboard__eyebrow">Sistema Parroquial</span>
         <h1>Panel principal</h1>
       </div>
 

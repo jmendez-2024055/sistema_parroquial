@@ -47,9 +47,6 @@ const validarIntencion = [
  *         _id:
  *           type: string
  *           description: ID autogenerado por MongoDB
- *         parishId:
- *           type: string
- *           description: ID de la parroquia
  *         massScheduleId:
  *           type: string
  *           description: ID del horario de misa
