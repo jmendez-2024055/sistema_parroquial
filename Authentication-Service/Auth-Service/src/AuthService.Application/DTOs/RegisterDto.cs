@@ -30,11 +30,4 @@ public class RegisterDto
 
     // Solicitar ser administrador de la parroquia asignada
     public bool SolicitarAdmin { get; set; } = false;
-
-    // Coordenadas para asignar automáticamente la parroquia más cercana
-    public double? Latitude { get; set; }
-    public double? Longitude { get; set; }
-    
-    // Opcional: ID de parroquia específica (si el usuario selecciona manualmente)
-    public string? ParishId { get; set; }
 }

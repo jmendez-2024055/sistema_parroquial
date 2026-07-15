@@ -18,7 +18,6 @@ import eventoRoutes from '../src/event/event.routes.js';
 import avisosRoutes from '../src/notice/notice.routes.js'; 
 import massScheduleRoutes from '../src/massShedule/massSchedule.routes.js';
 import categoriaRoutes from '../src/category/category.routes.js';
-import parishRoutes from '../src/parish/parish.routes.js';
 import intencionRoutes from '../src/intencion/intencion.routes.js';
 import groupRoutes from '../src/group/group.routes.js';
 import groupRequestRoutes from '../src/group/groupRequest.routes.js';
@@ -30,7 +29,6 @@ const routes = (app) => {
     app.use(`${BASE_PATH}/avisos`, avisosRoutes);
     app.use(`${BASE_PATH}/misa`, massScheduleRoutes);
     app.use(`${BASE_PATH}/categorias`, categoriaRoutes);
-    app.use(`${BASE_PATH}/parroquias`, parishRoutes);
     app.use(`${BASE_PATH}/intenciones`, intencionRoutes);
     app.use(`${BASE_PATH}/grupos`, groupRoutes);
     app.use(`${BASE_PATH}/solicitudes-grupos`, groupRequestRoutes);

@@ -11,19 +11,18 @@ export const crearEvento = async (data) => {
     }
 };
 
-export const obtenerEventos = async (parishId) => {
+export const obtenerEventos = async () => {
     try {
-        const query = parishId ? { parishId } : {};
-        return await Evento.find(query).populate('idCategoria');
+        return await Evento.find({}).populate('idCategoria');
     } catch (error) {
         throw new Error('Error al obtener eventos');
     }
 };
 
-export const obtenerEventoPorId = async (id, parishId) => {
+export const obtenerEventoPorId = async (id) => {
     try {
         const evento = await Evento.findById(id).populate('idCategoria');
-        if (!evento || evento.parishId !== parishId) {
+        if (!evento) {
             return null;
         }
         return evento;
@@ -32,14 +31,12 @@ export const obtenerEventoPorId = async (id, parishId) => {
     }
 };
 
-export const actualizarEvento = async (id, data, parishId) => {
+export const actualizarEvento = async (id, data) => {
     try {
         const evento = await Evento.findById(id);
-        if (!evento || evento.parishId !== parishId) {
+        if (!evento) {
             return null;
         }
-        // Prevent parishId from being overwritten
-        delete data.parishId;
         const updated = await Evento.findByIdAndUpdate(
             id,
             data,
@@ -55,7 +52,7 @@ export const actualizarEvento = async (id, data, parishId) => {
     }
 };
 
-export const eliminarEvento = async (id, parishId) => {
+export const eliminarEvento = async (id) => {
     try {
         const evento = await Evento.findById(id);
         if (!evento) {

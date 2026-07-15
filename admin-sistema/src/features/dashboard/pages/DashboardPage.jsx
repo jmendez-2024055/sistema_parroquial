@@ -6,7 +6,6 @@ import MassScheduleTable from '../components/MassScheduleTable.jsx';
 import useEventStore from '../../event/store/useEventStore.js';
 import useNoticeStore from '../../notice/store/useNoticeStore.js';
 import useMassScheduleStore from '../../massShedule/store/useMassScheduleStore.js';
-import useParishStore from '../../parish/store/useParishStore.js';
 import { useAuthStore } from '../../auth/store/authStore.js';
 
 import '../../../styles/dashboard.css';
@@ -15,7 +14,6 @@ const DashboardPage = () => {
   const { eventos, fetchEventos } = useEventStore();
   const { notices, fetchNotices } = useNoticeStore();
   const { massSchedules, fetchMassSchedules } = useMassScheduleStore();
-  const { currentParish } = useParishStore();
   const { user } = useAuthStore();
 
   useEffect(() => {
@@ -92,14 +90,6 @@ const DashboardPage = () => {
   return (
     <div className="parish-dashboard">
       <DashboardHeader />
-
-      {currentParish && (
-        <div className="parish-info-banner">
-          <h3>🏛️ {currentParish.nombre}</h3>
-          <p>{currentParish.direccion}</p>
-          {currentParish.contacto?.telefono && <span>📞 {currentParish.contacto.telefono}</span>}
-        </div>
-      )}
 
       <StatsGrid
         stats={dashboardStats}

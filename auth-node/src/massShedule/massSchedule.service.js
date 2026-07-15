@@ -2,14 +2,13 @@ import massSchedule from './massSchedule.model.js';
 
 class MassScheduleService {
 
-    async getAll(parishId) {
-        const query = parishId ? { parishId } : {};
-        return await massSchedule.find(query).sort({ diaSemana: 1, hora: 1 });
+    async getAll() {
+        return await massSchedule.find({}).sort({ diaSemana: 1, hora: 1 });
     }
 
-    async getById(id, parishId) {
+    async getById(id) {
         const record = await massSchedule.findById(id);
-        if (!record || record.parishId !== parishId) {
+        if (!record) {
             return null;
         }
         return record;
@@ -20,13 +19,11 @@ class MassScheduleService {
         return await newRecord.save();
     }
 
-    async update(id, data, parishId) {
+    async update(id, data) {
         const record = await massSchedule.findById(id);
-        if (!record || record.parishId !== parishId) {
+        if (!record) {
             return null;
         }
-        // Prevent parishId from being overwritten
-        delete data.parishId;
         return await massSchedule.findByIdAndUpdate(
             id,
             data,
@@ -34,7 +31,7 @@ class MassScheduleService {
         );
     }
 
-    async delete(id, parishId) {
+    async delete(id) {
         const record = await massSchedule.findById(id);
         if (!record) {
             return null;

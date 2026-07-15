@@ -29,8 +29,7 @@ public class JwtTokenService(IConfiguration configuration, IUserRepository userR
             new Claim(JwtRegisteredClaimNames.Sub, user.Id),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new Claim(JwtRegisteredClaimNames.Iat, DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString(), ClaimValueTypes.Integer64),
-            new Claim("role", role),
-            new Claim("parishId", user.ParishId ?? "")
+            new Claim("role", role)
         };
 
         var token = new JwtSecurityToken(
@@ -66,8 +65,7 @@ public class JwtTokenService(IConfiguration configuration, IUserRepository userR
             new Claim(JwtRegisteredClaimNames.Sub, user.Id),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new Claim(JwtRegisteredClaimNames.Iat, DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString(), ClaimValueTypes.Integer64),
-            new Claim("role", role),
-            new Claim("parishId", user.ParishId ?? "")
+            new Claim("role", role)
         };
 
         var token = new JwtSecurityToken(

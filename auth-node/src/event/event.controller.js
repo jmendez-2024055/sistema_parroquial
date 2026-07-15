@@ -4,8 +4,7 @@ import Category from '../category/category.model.js';
 export const crear = async (req, res, next) => {
     try {
         const data = {
-            ...req.body,
-            parishId: req.user?.parishId || null
+            ...req.body
         };
 
         if (data.idCategoria) {
@@ -33,8 +32,7 @@ export const crear = async (req, res, next) => {
 
 export const listar = async (req, res, next) => {
     try {
-        const parishId = req.user?.parishId || null;
-        const eventos = await eventoService.obtenerEventos(parishId);
+        const eventos = await eventoService.obtenerEventos();
 
         res.json({
             success: true,
@@ -48,8 +46,7 @@ export const listar = async (req, res, next) => {
 
 export const obtenerPorId = async (req, res, next) => {
     try {
-        const parishId = req.user.parishId;
-        const evento = await eventoService.obtenerEventoPorId(req.params.id, parishId);
+        const evento = await eventoService.obtenerEventoPorId(req.params.id);
 
         if (!evento) {
             return res.status(404).json({
@@ -70,7 +67,6 @@ export const obtenerPorId = async (req, res, next) => {
 
 export const actualizar = async (req, res, next) => {
     try {
-        const parishId = req.user.parishId;
         const data = req.body;
 
         if (data.idCategoria) {
@@ -83,7 +79,7 @@ export const actualizar = async (req, res, next) => {
             }
         }
 
-        const evento = await eventoService.actualizarEvento(req.params.id, data, parishId);
+        const evento = await eventoService.actualizarEvento(req.params.id, data);
 
         if (!evento) {
             return res.status(404).json({
@@ -105,8 +101,7 @@ export const actualizar = async (req, res, next) => {
 
 export const eliminar = async (req, res, next) => {
     try {
-        const parishId = req.user?.parishId || null;
-        const evento = await eventoService.eliminarEvento(req.params.id, parishId);
+        const evento = await eventoService.eliminarEvento(req.params.id);
 
         if (!evento) {
             return res.status(404).json({

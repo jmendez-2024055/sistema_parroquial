@@ -3,8 +3,6 @@ import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore.js';
 import { useLiturgicalTheme } from '../hooks/useLiturgicalTheme.js';
-import { useGeolocation } from '../../../shared/hooks/useGeolocation.js';
-import ParishSelection from '../../parish/components/ParishSelection.jsx';
 import styles from '../../../styles/RegisterPage.module.css';
 
 // ── Validación ────────────────────────────────────────────────────
@@ -62,50 +60,15 @@ export const RegisterPage = () => {
   const [formData, setFormData] = useState({
     Name: '', Surname: '', Username: '', Email: '',
     Password: '', ConfirmPassword: '', Phone: '',
-    Latitude: null, Longitude: null, ParishId: null,
   });
   const [showPass,    setShowPass]    = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [fieldErrs,   setFieldErrs]   = useState({});
   const [touched,     setTouched]     = useState({});
   const [successMsg,  setSuccessMsg]  = useState('');
-  const [selectedParish, setSelectedParish] = useState(null);
-  const [showParishSelection, setShowParishSelection] = useState(false);
-  
-  const { location, error: geoError, loading: geoLoading, getCurrentLocation } = useGeolocation();
 
   useEffect(() => { clearError(); }, []); // eslint-disable-line
 
-  // Actualizar coordenadas cuando se obtiene la ubicación
-  useEffect(() => {
-    if (location) {
-      setFormData(prev => ({
-        ...prev,
-        Latitude: location.latitude,
-        Longitude: location.longitude
-      }));
-    }
-  }, [location]);
-
-  const handleGetLocation = () => {
-    getCurrentLocation();
-  };
-
-  const handleParishSelect = (parish) => {
-    setSelectedParish(parish);
-    setFormData(prev => ({
-      ...prev,
-      ParishId: parish._id
-    }));
-    setShowParishSelection(false);
-  };
-
-  const handleShowParishSelection = () => {
-    if (!location) {
-      handleGetLocation();
-    }
-    setShowParishSelection(true);
-  };
 
   const handleChange = (field, value) => {
     const updated = { ...formData, [field]: value };
@@ -294,80 +257,6 @@ export const RegisterPage = () => {
               />
             </Field>
 
-            {/* Selección de Parroquia */}
-            <div style={{ marginTop: '20px' }}>
-              <label style={{ fontSize: 13, fontWeight: 600, color: '#44445a', marginBottom: 8, display: 'block' }}>
-                Parroquia
-              </label>
-              
-              {selectedParish ? (
-                <div style={{ 
-                  padding: '12px', 
-                  background: '#e8f5e9', 
-                  borderRadius: '8px',
-                  border: '1px solid #4caf50',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between'
-                }}>
-                  <div>
-                    <div style={{ fontWeight: 600, color: '#2e7d32' }}>🏛️ {selectedParish.nombre}</div>
-                    <div style={{ fontSize: 12, color: '#558b2f' }}>{selectedParish.direccion}</div>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setSelectedParish(null);
-                      setFormData(prev => ({ ...prev, ParishId: null }));
-                    }}
-                    style={{
-                      background: '#ff5252',
-                      color: 'white',
-                      border: 'none',
-                      borderRadius: '4px',
-                      padding: '6px 12px',
-                      cursor: 'pointer',
-                      fontSize: 12
-                    }}
-                  >
-                    Cambiar
-                  </button>
-                </div>
-              ) : (
-                <div>
-                  <button
-                    type="button"
-                    onClick={handleShowParishSelection}
-                    disabled={loading || geoLoading}
-                    style={{
-                      width: '100%',
-                      padding: '12px',
-                      background: '#e3f2fd',
-                      border: '2px dashed #2196f3',
-                      borderRadius: '8px',
-                      color: '#1976d2',
-                      fontWeight: 600,
-                      cursor: 'pointer',
-                      fontSize: 14,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      gap: '8px'
-                    }}
-                  >
-                    {geoLoading ? '🔄 Obteniendo ubicación...' : '📍 Seleccionar mi parroquia'}
-                  </button>
-                  {geoError && (
-                    <div style={{ fontSize: 12, color: '#e53935', marginTop: 4 }}>
-                      {geoError}
-                    </div>
-                  )}
-                  <div style={{ fontSize: 11, color: '#757575', marginTop: 4 }}>
-                    Se asignará automáticamente la parroquia más cercana a tu ubicación
-                  </div>
-                </div>
-              )}
-            </div>
 
             {/* Error servidor */}
             {storeError && (
@@ -403,56 +292,6 @@ export const RegisterPage = () => {
 
       </div>
 
-      {/* Modal de Selección de Parroquia */}
-      {showParishSelection && (
-        <div style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          background: 'rgba(0, 0, 0, 0.5)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          zIndex: 1000
-        }}>
-          <div style={{
-            background: 'white',
-            borderRadius: '12px',
-            maxWidth: '800px',
-            maxHeight: '90vh',
-            overflow: 'auto',
-            padding: '20px',
-            width: '90%'
-          }}>
-            <div style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              marginBottom: '20px'
-            }}>
-              <h3 style={{ margin: 0 }}>Seleccionar Parroquia</h3>
-              <button
-                onClick={() => setShowParishSelection(false)}
-                style={{
-                  background: 'none',
-                  border: 'none',
-                  fontSize: '24px',
-                  cursor: 'pointer',
-                  color: '#666'
-                }}
-              >
-                ×
-              </button>
-            </div>
-            <ParishSelection
-              onParishSelected={handleParishSelect}
-              selectedParishId={formData.ParishId}
-            />
-          </div>
-        </div>
-      )}
     </div>
   );
 };

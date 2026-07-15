@@ -25,7 +25,6 @@ public class AdminRequestService(
                 Name = u.Name,
                 Surname = u.Surname,
                 Email = u.Email,
-                ParishId = u.ParishId,
                 AdminRequestStatus = u.AdminRequestStatus,
                 CreatedAt = u.CreatedAt
             });
