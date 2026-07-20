@@ -22,6 +22,108 @@ namespace AuthService.Persistence.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("AuthService.Domain.Entities.Parroquia", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(16)
+                        .HasColumnType("character varying(16)")
+                        .HasColumnName("id");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("Direccion")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)")
+                        .HasColumnName("direccion");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("email");
+
+                    b.Property<string>("EncargadoApellido")
+                        .HasMaxLength(25)
+                        .HasColumnType("character varying(25)")
+                        .HasColumnName("encargado_apellido");
+
+                    b.Property<string>("EncargadoEmail")
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)")
+                        .HasColumnName("encargado_email");
+
+                    b.Property<string>("EncargadoId")
+                        .HasMaxLength(16)
+                        .HasColumnType("character varying(16)")
+                        .HasColumnName("encargado_id");
+
+                    b.Property<string>("EncargadoNombre")
+                        .HasMaxLength(25)
+                        .HasColumnType("character varying(25)")
+                        .HasColumnName("encargado_nombre");
+
+                    b.Property<string>("EncargadoPassword")
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)")
+                        .HasColumnName("encargado_password");
+
+                    b.Property<string>("EncargadoTelefono")
+                        .HasMaxLength(8)
+                        .HasColumnType("character varying(8)")
+                        .HasColumnName("encargado_telefono");
+
+                    b.Property<string>("EncargadoUsername")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("encargado_username");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("nombre");
+
+                    b.Property<string>("Telefono")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)")
+                        .HasColumnName("telefono");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
+
+                    b.Property<string>("VerificationStatus")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)")
+                        .HasDefaultValue("PENDING")
+                        .HasColumnName("verification_status");
+
+                    b.Property<string>("VerificationToken")
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)")
+                        .HasColumnName("verification_token");
+
+                    b.Property<DateTime?>("VerificationTokenExpiry")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("verification_token_expiry");
+
+                    b.HasKey("Id")
+                        .HasName("pk_parroquias");
+
+                    b.HasIndex("EncargadoId")
+                        .IsUnique()
+                        .HasDatabaseName("ix_parroquias_encargado_id");
+
+                    b.ToTable("parroquias", (string)null);
+                });
+
             modelBuilder.Entity("AuthService.Domain.Entities.RefreshToken", b =>
                 {
                     b.Property<Guid>("Id")
@@ -108,14 +210,6 @@ namespace AuthService.Persistence.Migrations
                         .HasColumnType("character varying(16)")
                         .HasColumnName("id");
 
-                    b.Property<string>("AdminRequestStatus")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(20)
-                        .HasColumnType("character varying(20)")
-                        .HasDefaultValue("NONE")
-                        .HasColumnName("admin_request_status");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("created_at");
@@ -131,6 +225,11 @@ namespace AuthService.Persistence.Migrations
                         .HasMaxLength(25)
                         .HasColumnType("character varying(25)")
                         .HasColumnName("name");
+
+                    b.Property<string>("ParroquiaId")
+                        .HasMaxLength(16)
+                        .HasColumnType("character varying(16)")
+                        .HasColumnName("parroquia_id");
 
                     b.Property<string>("Password")
                         .IsRequired()
@@ -164,6 +263,9 @@ namespace AuthService.Persistence.Migrations
                     b.HasIndex("Email")
                         .IsUnique()
                         .HasDatabaseName("ix_users_email");
+
+                    b.HasIndex("ParroquiaId")
+                        .HasDatabaseName("ix_users_parroquia_id");
 
                     b.HasIndex("Username")
                         .IsUnique()
@@ -342,6 +444,16 @@ namespace AuthService.Persistence.Migrations
                     b.ToTable("user_roles", (string)null);
                 });
 
+            modelBuilder.Entity("AuthService.Domain.Entities.Parroquia", b =>
+                {
+                    b.HasOne("AuthService.Domain.Entities.User", "Encargado")
+                        .WithOne()
+                        .HasForeignKey("AuthService.Domain.Entities.Parroquia", "EncargadoId")
+                        .HasConstraintName("fk_parroquias_users_encargado_id");
+
+                    b.Navigation("Encargado");
+                });
+
             modelBuilder.Entity("AuthService.Domain.Entities.RefreshToken", b =>
                 {
                     b.HasOne("AuthService.Domain.Entities.User", "User")
@@ -352,6 +464,16 @@ namespace AuthService.Persistence.Migrations
                         .HasConstraintName("fk_refresh_tokens_users_user_id");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("AuthService.Domain.Entities.User", b =>
+                {
+                    b.HasOne("AuthService.Domain.Entities.Parroquia", "Parroquia")
+                        .WithMany("Usuarios")
+                        .HasForeignKey("ParroquiaId")
+                        .HasConstraintName("fk_users_parroquias_parroquia_id");
+
+                    b.Navigation("Parroquia");
                 });
 
             modelBuilder.Entity("AuthService.Domain.Entities.UserEmail", b =>
@@ -409,6 +531,11 @@ namespace AuthService.Persistence.Migrations
                     b.Navigation("Role");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("AuthService.Domain.Entities.Parroquia", b =>
+                {
+                    b.Navigation("Usuarios");
                 });
 
             modelBuilder.Entity("AuthService.Domain.Entities.Role", b =>

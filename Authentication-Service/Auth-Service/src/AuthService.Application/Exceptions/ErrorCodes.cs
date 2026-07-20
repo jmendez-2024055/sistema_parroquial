@@ -12,4 +12,6 @@ public static class ErrorCodes
     public const string USER_NOT_FOUND = "USER_NOT_FOUND";
     public const string INVALID_OPERATION = "INVALID_OPERATION";
     public const string DATABASE_ERROR = "DATABASE_ERROR";
+    public const string ENTITY_ALREADY_EXISTS = "ENTITY_ALREADY_EXISTS";
+    public const string PARROQUIA_MISMATCH = "PARROQUIA_MISMATCH";
 }

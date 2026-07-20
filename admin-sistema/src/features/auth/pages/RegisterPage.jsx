@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore.js';
 import { useLiturgicalTheme } from '../hooks/useLiturgicalTheme.js';
+import { getVerifiedParroquiasRequest } from '../../../shared/apis/parroquiaService.js';
 import styles from '../../../styles/RegisterPage.module.css';
 
 // ── Validación ────────────────────────────────────────────────────
@@ -44,6 +45,9 @@ const validate = (data) => {
   else if (!/^\d{8}$/.test(data.Phone.trim()))
     errors.Phone = 'Debe tener exactamente 8 dígitos.';
 
+  if (!data.ParroquiaId?.trim())
+    errors.ParroquiaId = 'Debes seleccionar una parroquia.';
+
   return errors;
 };
 
@@ -59,15 +63,36 @@ export const RegisterPage = () => {
 
   const [formData, setFormData] = useState({
     Name: '', Surname: '', Username: '', Email: '',
-    Password: '', ConfirmPassword: '', Phone: '',
+    Password: '', ConfirmPassword: '', Phone: '', ParroquiaId: '',
   });
   const [showPass,    setShowPass]    = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [fieldErrs,   setFieldErrs]   = useState({});
   const [touched,     setTouched]     = useState({});
   const [successMsg,  setSuccessMsg]  = useState('');
+  const [parroquias,  setParroquias]  = useState([]);
+  const [loadingParroquias, setLoadingParroquias] = useState(false);
 
   useEffect(() => { clearError(); }, []); // eslint-disable-line
+
+  // Cargar parroquias verificadas
+  useEffect(() => {
+    const loadParroquias = async () => {
+      setLoadingParroquias(true);
+      try {
+        const response = await getVerifiedParroquiasRequest();
+        if (response.success && response.data) {
+          setParroquias(response.data);
+        }
+      } catch (error) {
+        console.error('Error loading parroquias:', error);
+      } finally {
+        setLoadingParroquias(false);
+      }
+    };
+
+    loadParroquias();
+  }, []);
 
 
   const handleChange = (field, value) => {
@@ -257,6 +282,56 @@ export const RegisterPage = () => {
               />
             </Field>
 
+            {/* Selector de Parroquia */}
+            <Field label="Seleccionar Parroquia" error={fieldErrs.ParroquiaId}
+              hint="Elige la parroquia a la que deseas pertenecer">
+              <select
+                className={`${styles.input} ${fieldErrs.ParroquiaId ? styles.inputError : ''}`}
+                value={formData.ParroquiaId}
+                onChange={(e) => handleChange('ParroquiaId', e.target.value)}
+                onBlur={() => handleBlur('ParroquiaId')}
+                disabled={loading || loadingParroquias}
+                style={{ cursor: loading || loadingParroquias ? 'not-allowed' : 'pointer' }}
+              >
+                <option value="">-- Selecciona una parroquia --</option>
+                {loadingParroquias ? (
+                  <option disabled>Cargando parroquias...</option>
+                ) : parroquias.length === 0 ? (
+                  <option disabled>No hay parroquias disponibles</option>
+                ) : (
+                  parroquias.map((parroquia) => (
+                    <option key={parroquia.id} value={parroquia.id}>
+                      {parroquia.nombre} - {parroquia.direccion}
+                    </option>
+                  ))
+                )}
+              </select>
+            </Field>
+
+            {parroquias.length === 0 && !loadingParroquias && (
+              <div style={{ 
+                padding: '12px', 
+                backgroundColor: '#fef3c7', 
+                borderRadius: '8px',
+                border: '1px solid #fcd34d',
+                marginBottom: '16px'
+              }}>
+                <p style={{ 
+                  fontSize: '13px', 
+                  color: '#92400e', 
+                  margin: 0,
+                  textAlign: 'center'
+                }}>
+                  No hay parroquias verificadas disponibles.{' '}
+                  <Link 
+                    to="/register-parroquia" 
+                    style={{ color: '#92400e', fontWeight: '600', textDecoration: 'underline' }}
+                  >
+                    Registra tu parroquia
+                  </Link>
+                </p>
+              </div>
+            )}
 
             {/* Error servidor */}
             {storeError && (

@@ -2,6 +2,11 @@ import { Schema, model } from 'mongoose';
 
 const groupSchema = new Schema(
   {
+    parroquiaId: {
+      type: String,
+      required: [true, 'El ID de la parroquia es obligatorio'],
+      trim: true,
+    },
     nombreGrupo: {
       type: String,
       required: [true, 'El nombre del grupo es obligatorio'],
@@ -40,6 +45,7 @@ const groupSchema = new Schema(
 );
 
 // Índices
+groupSchema.index({ parroquiaId: 1 });
 groupSchema.index({ isActive: 1 });
 groupSchema.index({ nombreGrupo: 1 });
 

@@ -6,15 +6,16 @@ export const createGroupRequestRecord = async (data) => {
     // Verificar si ya existe una solicitud para este usuario y grupo
     const existingRequest = await GroupRequest.findOne({
       idGrupo: data.idGrupo,
-      idUsuario: data.idUsuario
+      idUsuario: data.idUsuario,
+      parroquiaId: data.parroquiaId
     });
 
     if (existingRequest) {
       throw new Error('Ya existe una solicitud para este grupo');
     }
 
-    // Obtener el grupo para verificar cupo
-    const group = await Group.findById(data.idGrupo);
+    // Obtener el grupo para verificar cupo (filtrando por parroquia)
+    const group = await Group.findOne({ _id: data.idGrupo, parroquiaId: data.parroquiaId });
     if (!group) {
       throw new Error('Grupo no encontrado');
     }
@@ -26,26 +27,29 @@ export const createGroupRequestRecord = async (data) => {
 
     const groupRequest = new GroupRequest(data);
     await groupRequest.save();
-    
-    // Decrementar el cupo actual del grupo
-    await Group.findByIdAndUpdate(
-      data.idGrupo,
+
+    // Decrementar el cupo actual del grupo (filtrando por parroquia)
+    await Group.findOneAndUpdate(
+      { _id: data.idGrupo, parroquiaId: data.parroquiaId },
       { $inc: { cupoActual: 1 } }
     );
-    
+
     // Populate para devolver datos completos (solo grupo, no usuario)
-    const populatedRequest = await GroupRequest.findById(groupRequest._id)
+    const populatedRequest = await GroupRequest.findOne({ _id: groupRequest._id, parroquiaId: data.parroquiaId })
       .populate('idGrupo', 'nombreGrupo descripcion cupoMaximo cupoActual');
-    
+
     return populatedRequest;
   } catch (error) {
     throw new Error(error.message || 'Error al crear la solicitud');
   }
 };
 
-export const getGroupRequestsRecord = async (estado = null) => {
+export const getGroupRequestsRecord = async (parroquiaId, estado = null) => {
   try {
-    const query = estado ? { estado } : {};
+    if (!parroquiaId) {
+      return [];
+    }
+    const query = estado ? { estado, parroquiaId } : { parroquiaId };
     return await GroupRequest.find(query)
       .populate('idGrupo', 'nombreGrupo descripcion')
       .sort({ createdAt: -1 });
@@ -54,9 +58,12 @@ export const getGroupRequestsRecord = async (estado = null) => {
   }
 };
 
-export const getGroupRequestsByUserRecord = async (idUsuario) => {
+export const getGroupRequestsByUserRecord = async (idUsuario, parroquiaId) => {
   try {
-    return await GroupRequest.find({ idUsuario })
+    if (!parroquiaId) {
+      return [];
+    }
+    return await GroupRequest.find({ idUsuario, parroquiaId })
       .populate('idGrupo', 'nombreGrupo descripcion cupoMaximo cupoActual')
       .sort({ createdAt: -1 });
   } catch (error) {
@@ -64,20 +71,26 @@ export const getGroupRequestsByUserRecord = async (idUsuario) => {
   }
 };
 
-export const getGroupRequestByIdRecord = async (id) => {
+export const getGroupRequestByIdRecord = async (id, parroquiaId) => {
   try {
-    return await GroupRequest.findById(id)
+    if (!parroquiaId) {
+      return null;
+    }
+    return await GroupRequest.findOne({ _id: id, parroquiaId })
       .populate('idGrupo', 'nombreGrupo descripcion');
   } catch (error) {
     throw new Error('Error al buscar la solicitud');
   }
 };
 
-export const approveGroupRequestRecord = async (id, respuestaAdmin = '') => {
+export const approveGroupRequestRecord = async (id, parroquiaId, respuestaAdmin = '') => {
   try {
-    const request = await GroupRequest.findByIdAndUpdate(
-      id,
-      { 
+    if (!parroquiaId) {
+      return null;
+    }
+    const request = await GroupRequest.findOneAndUpdate(
+      { _id: id, parroquiaId },
+      {
         estado: 'aprobada',
         respuestaAdmin
       },
@@ -90,22 +103,25 @@ export const approveGroupRequestRecord = async (id, respuestaAdmin = '') => {
   }
 };
 
-export const rejectGroupRequestRecord = async (id, respuestaAdmin = '') => {
+export const rejectGroupRequestRecord = async (id, parroquiaId, respuestaAdmin = '') => {
   try {
-    const request = await GroupRequest.findById(id);
+    if (!parroquiaId) {
+      return null;
+    }
+    const request = await GroupRequest.findOne({ _id: id, parroquiaId });
     if (!request) {
       throw new Error('Solicitud no encontrada');
     }
 
-    // Liberar el cupo del grupo
-    await Group.findByIdAndUpdate(
-      request.idGrupo,
+    // Liberar el cupo del grupo (filtrando por parroquia)
+    await Group.findOneAndUpdate(
+      { _id: request.idGrupo, parroquiaId },
       { $inc: { cupoActual: -1 } }
     );
 
-    const updatedRequest = await GroupRequest.findByIdAndUpdate(
-      id,
-      { 
+    const updatedRequest = await GroupRequest.findOneAndUpdate(
+      { _id: id, parroquiaId },
+      {
         estado: 'rechazada',
         respuestaAdmin
       },
@@ -118,22 +134,30 @@ export const rejectGroupRequestRecord = async (id, respuestaAdmin = '') => {
   }
 };
 
-export const deleteGroupRequestRecord = async (id) => {
+export const deleteGroupRequestRecord = async (id, parroquiaId, userId, role) => {
   try {
-    const request = await GroupRequest.findById(id);
+    if (!parroquiaId) {
+      return null;
+    }
+    const request = await GroupRequest.findOne({ _id: id, parroquiaId });
     if (!request) {
       throw new Error('Solicitud no encontrada');
     }
 
-    // Solo liberar cupo si la solicitud estaba pendiente
-    if (request.estado === 'pendiente') {
-      await Group.findByIdAndUpdate(
-        request.idGrupo,
+    // Verificar permisos: admin puede borrar cualquier solicitud, usuario normal solo la suya
+    if (role !== 'ADMIN_ROLE' && request.idUsuario !== userId) {
+      return null; // No tiene permiso, retorna null para que el controller responda 404
+    }
+
+    // Liberar cupo si la solicitud estaba pendiente o aprobada (no si estaba rechazada)
+    if (request.estado === 'pendiente' || request.estado === 'aprobada') {
+      await Group.findOneAndUpdate(
+        { _id: request.idGrupo, parroquiaId },
         { $inc: { cupoActual: -1 } }
       );
     }
 
-    const deletedRequest = await GroupRequest.findByIdAndDelete(id);
+    const deletedRequest = await GroupRequest.findOneAndDelete({ _id: id, parroquiaId });
     return deletedRequest;
   } catch (error) {
     throw new Error('Error al eliminar la solicitud');

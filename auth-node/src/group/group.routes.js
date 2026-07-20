@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import * as groupController from './group.controller.js';
 import { validarJWT } from '../../middlewares/validar-jwt.js';
+import { esAdmin } from '../../middlewares/validar-roles.js';
 
 const router = Router();
 
@@ -50,6 +51,15 @@ router.get('/', validarJWT, groupController.getGroups);
 
 /**
  * @swagger
+ * /groups/initialize:
+ *   post:
+ *     summary: Inicializar grupos por defecto para la parroquia
+ *     tags: [Groups]
+ */
+router.post('/initialize', validarJWT, esAdmin, groupController.initializeGroups);
+
+/**
+ * @swagger
  * /groups/{id}:
  *   get:
  *     summary: Obtener un grupo por ID
@@ -64,7 +74,7 @@ router.get('/:id', validarJWT, groupController.getGroupById);
  *     summary: Crear un nuevo grupo
  *     tags: [Groups]
  */
-router.post('/', validarJWT, groupController.createGroup);
+router.post('/', validarJWT, esAdmin, groupController.createGroup);
 
 /**
  * @swagger
@@ -73,7 +83,7 @@ router.post('/', validarJWT, groupController.createGroup);
  *     summary: Actualizar un grupo
  *     tags: [Groups]
  */
-router.put('/:id', validarJWT, groupController.updateGroup);
+router.put('/:id', validarJWT, esAdmin, groupController.updateGroup);
 
 /**
  * @swagger
@@ -82,6 +92,6 @@ router.put('/:id', validarJWT, groupController.updateGroup);
  *     summary: Eliminar un grupo
  *     tags: [Groups]
  */
-router.delete('/:id', validarJWT, groupController.deleteGroup);
+router.delete('/:id', validarJWT, esAdmin, groupController.deleteGroup);
 
 export default router;

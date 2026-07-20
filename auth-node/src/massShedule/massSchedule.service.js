@@ -2,12 +2,19 @@ import massSchedule from './massSchedule.model.js';
 
 class MassScheduleService {
 
-    async getAll() {
-        return await massSchedule.find({}).sort({ diaSemana: 1, hora: 1 });
+    async getAll(parroquiaId) {
+        // Solo devolver horarios si se proporciona parroquiaId
+        if (!parroquiaId) {
+            return [];
+        }
+        return await massSchedule.find({ parroquiaId }).sort({ diaSemana: 1, hora: 1 });
     }
 
-    async getById(id) {
-        const record = await massSchedule.findById(id);
+    async getById(id, parroquiaId) {
+        if (!parroquiaId) {
+            return null;
+        }
+        const record = await massSchedule.findOne({ _id: id, parroquiaId });
         if (!record) {
             return null;
         }
@@ -19,24 +26,22 @@ class MassScheduleService {
         return await newRecord.save();
     }
 
-    async update(id, data) {
-        const record = await massSchedule.findById(id);
-        if (!record) {
+    async update(id, data, parroquiaId) {
+        if (!parroquiaId) {
             return null;
         }
-        return await massSchedule.findByIdAndUpdate(
-            id,
+        return await massSchedule.findOneAndUpdate(
+            { _id: id, parroquiaId },
             data,
             { new: true, runValidators: true }
         );
     }
 
-    async delete(id) {
-        const record = await massSchedule.findById(id);
-        if (!record) {
+    async delete(id, parroquiaId) {
+        if (!parroquiaId) {
             return null;
         }
-        return await massSchedule.findByIdAndDelete(id);
+        return await massSchedule.findOneAndDelete({ _id: id, parroquiaId });
     }
 }
 

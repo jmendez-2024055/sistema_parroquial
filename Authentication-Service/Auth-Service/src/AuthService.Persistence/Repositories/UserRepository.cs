@@ -38,6 +38,7 @@ public class UserRepository(ApplicationDbContext context) : IUserRepository
             .Include(u => u.UserPasswordReset)
             .Include(u => u.UserRoles)
                 .ThenInclude(ur => ur.Role)
+            .Include(u => u.Parroquia)
             .FirstOrDefaultAsync(u => EF.Functions.ILike(u.Email, email));
     }
 
@@ -49,6 +50,7 @@ public class UserRepository(ApplicationDbContext context) : IUserRepository
             .Include(u => u.UserPasswordReset)
             .Include(u => u.UserRoles)
                 .ThenInclude(ur => ur.Role)
+            .Include(u => u.Parroquia)
             .FirstOrDefaultAsync(u => EF.Functions.ILike(u.Username, username));
     }
 

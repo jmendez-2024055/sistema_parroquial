@@ -21,13 +21,22 @@ export const Sidebar = ({ isOpen, onClose }) => {
 
   const filteredNavigation = navigation.filter(item => !item.adminOnly || isAdmin);
 
+  const parroquiaNombre = user?.parroquiaNombre || 'Sistema Parroquial';
+  const iniciales = parroquiaNombre
+    .split(' ')
+    .filter(Boolean)
+    .slice(0, 2)
+    .map(palabra => palabra[0])
+    .join('')
+    .toUpperCase();
+
   return (
     <>
       <aside className={`sidebar ${isOpen ? 'sidebar--open' : ''}`}>
         <div className="sidebar__brand">
-          <div className="sidebar__brand-mark">SP</div>
+          <div className="sidebar__brand-mark">{iniciales}</div>
           <div>
-            <strong>San Cristóbal</strong>
+            <strong>{parroquiaNombre}</strong>
             <span>Administración parroquial</span>
           </div>
           <button className="icon-button sidebar__close" onClick={onClose} aria-label="Cerrar menú">

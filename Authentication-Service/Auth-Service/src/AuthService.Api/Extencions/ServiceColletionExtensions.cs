@@ -19,6 +19,7 @@ public static class ServiceCollectionExtensions
         // Configure application services
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IRoleRepository, RoleRepository>();
+        services.AddScoped<IParroquiaRepository, ParroquiaRepository>();
         services.AddScoped<IAuthService, Application.Services.AuthService>();
         services.AddScoped<IUserManagementService, UserManagementService>();
         services.AddScoped<IPasswordHashService, PasswordHashService>();
@@ -26,7 +27,11 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IEmailService, EmailService>();
         services.AddScoped<IRefreshTokenService, RefreshTokenService>();
         services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
-        services.AddScoped<IAdminRequestService, AdminRequestService>();
+        services.AddScoped<IParroquiaService, ParroquiaService>();
+        services.AddHttpClient<IParishDataInitializerService, ParishDataInitializerService>(client =>
+        {
+            client.Timeout = TimeSpan.FromSeconds(10);
+        });
 
         // Configure health checks
         services.AddHealthChecks();

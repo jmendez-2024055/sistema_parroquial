@@ -17,11 +17,12 @@ export const validarJWT = (req, res, next) => {
             ? authHeader.split(' ')[1]
             : authHeader;
 
-        const decoded = jwt.verify(token, JWT_SECRET); 
+        const decoded = jwt.verify(token, JWT_SECRET);
 
         req.user = {
             id: decoded.id || decoded.sub || decoded.nameid,
-            role: decoded.role || decoded.roles || []
+            role: decoded.role || decoded.roles || [],
+            parroquiaId: decoded.parroquiaId || null
         };
 
         if (!req.user.id) {

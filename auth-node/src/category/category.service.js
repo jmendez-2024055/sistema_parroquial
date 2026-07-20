@@ -10,27 +10,37 @@ export const createCategoriaRecord = async (data) => {
   }
 };
 
-export const getCategoriasRecord = async () => {
+export const getCategoriasRecord = async (parroquiaId) => {
   try {
-    return await Categoria.find({ isActive: true })
+    // Solo devolver categorías si se proporciona parroquiaId
+    if (!parroquiaId) {
+      return [];
+    }
+    return await Categoria.find({ isActive: true, parroquiaId })
       .sort({ nombreCategoria: 1 });
   } catch (error) {
     throw new Error('Error al obtener categorías');
   }
 };
 
-export const getCategoriaByIdRecord = async (id) => {
+export const getCategoriaByIdRecord = async (id, parroquiaId) => {
   try {
-    return await Categoria.findById(id);
+    if (!parroquiaId) {
+      return null;
+    }
+    return await Categoria.findOne({ _id: id, parroquiaId });
   } catch (error) {
     throw new Error('Error al buscar la categoría');
   }
 };
 
-export const updateCategoriaRecord = async (id, data) => {
+export const updateCategoriaRecord = async (id, data, parroquiaId) => {
   try {
-    const categoria = await Categoria.findByIdAndUpdate(
-      id,
+    if (!parroquiaId) {
+      return null;
+    }
+    const categoria = await Categoria.findOneAndUpdate(
+      { _id: id, parroquiaId },
       data,
       {
         new: true,
@@ -44,15 +54,18 @@ export const updateCategoriaRecord = async (id, data) => {
   }
 };
 
-export const deleteCategoriaRecord = async (id) => {
+export const deleteCategoriaRecord = async (id, parroquiaId) => {
   try {
-    const categoria = await Categoria.findByIdAndUpdate(
-      id,
+    if (!parroquiaId) {
+      return null;
+    }
+    const categoria = await Categoria.findOneAndUpdate(
+      { _id: id, parroquiaId },
       { isActive: false },
       { new: true }
     );
 
-    return categoria; 
+    return categoria;
   } catch (error) {
     throw new Error('Error al eliminar la categoría');
   }

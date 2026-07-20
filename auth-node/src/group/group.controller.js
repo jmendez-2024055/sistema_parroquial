@@ -1,8 +1,13 @@
 import * as groupService from './group.service.js';
+import { seedGroups } from './group.seeder.js';
 
 export const createGroup = async (req, res, next) => {
   try {
-    const data = req.body;
+    const data = { ...req.body };
+    // Eliminar cualquier parroquiaId que venga del body para evitar spoofing
+    delete data.parroquiaId;
+    // Asignar parroquiaId del usuario autenticado
+    data.parroquiaId = req.user.parroquiaId;
 
     const group = await groupService.createGroupRecord(data);
 
@@ -17,9 +22,33 @@ export const createGroup = async (req, res, next) => {
   }
 };
 
+export const initializeGroups = async (req, res, next) => {
+  try {
+    const parroquiaId = req.user?.parroquiaId;
+
+    if (!parroquiaId) {
+      return res.status(400).json({
+        success: false,
+        message: 'No se puede inicializar grupos sin parroquiaId'
+      });
+    }
+
+    await seedGroups(parroquiaId);
+
+    res.json({
+      success: true,
+      message: 'Grupos inicializados correctamente para la parroquia'
+    });
+
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const getGroups = async (req, res, next) => {
   try {
-    const groups = await groupService.getGroupsRecord();
+    const parroquiaId = req.user?.parroquiaId;
+    const groups = await groupService.getGroupsRecord(parroquiaId);
 
     res.json({
       success: true,
@@ -35,7 +64,8 @@ export const getGroups = async (req, res, next) => {
 
 export const getGroupById = async (req, res, next) => {
   try {
-    const group = await groupService.getGroupByIdRecord(req.params.id);
+    const parroquiaId = req.user?.parroquiaId;
+    const group = await groupService.getGroupByIdRecord(req.params.id, parroquiaId);
 
     if (!group) {
       return res.status(404).json({
@@ -56,9 +86,11 @@ export const getGroupById = async (req, res, next) => {
 
 export const updateGroup = async (req, res, next) => {
   try {
+    const parroquiaId = req.user?.parroquiaId;
     const group = await groupService.updateGroupRecord(
       req.params.id,
-      req.body
+      req.body,
+      parroquiaId
     );
 
     if (!group) {
@@ -81,7 +113,8 @@ export const updateGroup = async (req, res, next) => {
 
 export const deleteGroup = async (req, res, next) => {
   try {
-    const group = await groupService.deleteGroupRecord(req.params.id);
+    const parroquiaId = req.user?.parroquiaId;
+    const group = await groupService.deleteGroupRecord(req.params.id, parroquiaId);
 
     if (!group) {
       return res.status(404).json({

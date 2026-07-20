@@ -20,6 +20,9 @@ export const Navbar = ({ onMenuClick }) => {
   const segment = location.pathname.split('/').filter(Boolean).at(-1);
   const userName = user?.name ?? user?.fullName ?? user?.username ?? 'Administrador';
   const role = user?.role?.name ?? user?.role ?? 'Equipo parroquial';
+  
+  const isAdmin = role === 'ADMIN_ROLE';
+  const sectionLabel = isAdmin ? 'Panel administrativo' : 'Panel principal';
 
   return (
     <header className="navbar">
@@ -28,7 +31,7 @@ export const Navbar = ({ onMenuClick }) => {
           <AppIcon name="menu" />
         </button>
         <div>
-          <span>Panel administrativo</span>
+          <span>{sectionLabel}</span>
           <strong>{pageNames[segment] ?? 'Sistema Parroquial'}</strong>
         </div>
       </div>

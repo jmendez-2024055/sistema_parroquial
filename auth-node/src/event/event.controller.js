@@ -7,8 +7,13 @@ export const crear = async (req, res, next) => {
             ...req.body
         };
 
+        // Agregar parroquiaId del usuario autenticado
+        if (req.user?.parroquiaId) {
+            data.parroquiaId = req.user.parroquiaId;
+        }
+
         if (data.idCategoria) {
-            const categoria = await Category.findById(data.idCategoria);
+            const categoria = await Category.findOne({ _id: data.idCategoria, parroquiaId: data.parroquiaId });
             if (!categoria) {
                 return res.status(400).json({
                     success: false,
@@ -32,7 +37,8 @@ export const crear = async (req, res, next) => {
 
 export const listar = async (req, res, next) => {
     try {
-        const eventos = await eventoService.obtenerEventos();
+        const parroquiaId = req.user?.parroquiaId;
+        const eventos = await eventoService.obtenerEventos(parroquiaId);
 
         res.json({
             success: true,
@@ -46,7 +52,8 @@ export const listar = async (req, res, next) => {
 
 export const obtenerPorId = async (req, res, next) => {
     try {
-        const evento = await eventoService.obtenerEventoPorId(req.params.id);
+        const parroquiaId = req.user?.parroquiaId;
+        const evento = await eventoService.obtenerEventoPorId(req.params.id, parroquiaId);
 
         if (!evento) {
             return res.status(404).json({
@@ -70,7 +77,8 @@ export const actualizar = async (req, res, next) => {
         const data = req.body;
 
         if (data.idCategoria) {
-            const categoria = await Category.findById(data.idCategoria);
+            const parroquiaId = req.user?.parroquiaId;
+            const categoria = await Category.findOne({ _id: data.idCategoria, parroquiaId });
             if (!categoria) {
                 return res.status(400).json({
                     success: false,
@@ -79,7 +87,8 @@ export const actualizar = async (req, res, next) => {
             }
         }
 
-        const evento = await eventoService.actualizarEvento(req.params.id, data);
+        const parroquiaId = req.user?.parroquiaId;
+        const evento = await eventoService.actualizarEvento(req.params.id, data, parroquiaId);
 
         if (!evento) {
             return res.status(404).json({
@@ -101,7 +110,8 @@ export const actualizar = async (req, res, next) => {
 
 export const eliminar = async (req, res, next) => {
     try {
-        const evento = await eventoService.eliminarEvento(req.params.id);
+        const parroquiaId = req.user?.parroquiaId;
+        const evento = await eventoService.eliminarEvento(req.params.id, parroquiaId);
 
         if (!evento) {
             return res.status(404).json({

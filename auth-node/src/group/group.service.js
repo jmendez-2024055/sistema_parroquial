@@ -10,27 +10,37 @@ export const createGroupRecord = async (data) => {
   }
 };
 
-export const getGroupsRecord = async () => {
+export const getGroupsRecord = async (parroquiaId) => {
   try {
-    return await Group.find({ isActive: true })
+    // Solo devolver grupos si se proporciona parroquiaId
+    if (!parroquiaId) {
+      return [];
+    }
+    return await Group.find({ isActive: true, parroquiaId })
       .sort({ nombreGrupo: 1 });
   } catch (error) {
     throw new Error('Error al obtener grupos');
   }
 };
 
-export const getGroupByIdRecord = async (id) => {
+export const getGroupByIdRecord = async (id, parroquiaId) => {
   try {
-    return await Group.findById(id);
+    if (!parroquiaId) {
+      return null;
+    }
+    return await Group.findOne({ _id: id, parroquiaId });
   } catch (error) {
     throw new Error('Error al buscar el grupo');
   }
 };
 
-export const updateGroupRecord = async (id, data) => {
+export const updateGroupRecord = async (id, data, parroquiaId) => {
   try {
-    const group = await Group.findByIdAndUpdate(
-      id,
+    if (!parroquiaId) {
+      return null;
+    }
+    const group = await Group.findOneAndUpdate(
+      { _id: id, parroquiaId },
       data,
       {
         new: true,
@@ -44,10 +54,13 @@ export const updateGroupRecord = async (id, data) => {
   }
 };
 
-export const deleteGroupRecord = async (id) => {
+export const deleteGroupRecord = async (id, parroquiaId) => {
   try {
-    const group = await Group.findByIdAndUpdate(
-      id,
+    if (!parroquiaId) {
+      return null;
+    }
+    const group = await Group.findOneAndUpdate(
+      { _id: id, parroquiaId },
       { isActive: false },
       { new: true }
     );
