@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import * as eventService from "../services/eventService.js";
+import * as categoryService from "../../category/service/categoryService.js";
 
 const useEventStore = create((set, get) => ({
     eventos: [],
@@ -20,7 +21,16 @@ const useEventStore = create((set, get) => ({
     fetchCategorias: async () => {
         try {
             const res = await eventService.getCategorias();
-            set({ categorias: res.data.data });
+            const categorias = res.data.data || [];
+            
+            // Si no hay categorías, inicializarlas y volver a obtener
+            if (categorias.length === 0) {
+                await categoryService.initializeCategorias();
+                const retryRes = await eventService.getCategorias();
+                set({ categorias: retryRes.data.data });
+            } else {
+                set({ categorias });
+            }
         } catch (err) {
             set({ error: 'Error al obtener categorías' });
         }

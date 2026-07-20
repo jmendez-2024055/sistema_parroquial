@@ -8,41 +8,44 @@ export const seedCategorias = async (parroquiaId = null) => {
       return;
     }
 
-    const count = await Categoria.countDocuments({ parroquiaId });
-
-    if (count === 0) {
-      const categorias = [
-        {
-          parroquiaId,
-          nombreCategoria: 'Litúrgico',
-          descripcion: 'Eventos litúrgicos y celebraciones religiosas',
-          isActive: true
-        },
-        {
-          parroquiaId,
-          nombreCategoria: 'Formativo',
-          descripcion: 'Eventos de formación y educación religiosa',
-          isActive: true
-        },
-        {
-          parroquiaId,
-          nombreCategoria: 'Juvenil',
-          descripcion: 'Eventos y actividades para jóvenes',
-          isActive: true
-        },
-        {
-          parroquiaId,
-          nombreCategoria: 'Comunitario',
-          descripcion: 'Eventos y actividades comunitarias',
-          isActive: true
-        }
-      ];
-
-      await Categoria.insertMany(categorias);
-      console.log(`✅ Categorías creadas para parroquia ${parroquiaId}`);
-    } else {
-      console.log(`ℹ️ Las categorías ya existen para parroquia ${parroquiaId}`);
+    // Verificar si ya existen categorías para esta parroquia
+    const existingCategorias = await Categoria.find({ parroquiaId });
+    
+    // Si ya existen categorías, eliminar duplicados y recrear
+    if (existingCategorias.length > 0) {
+      console.log(`ℹ️ Limpiando categorías duplicadas para parroquia ${parroquiaId}`);
+      await Categoria.deleteMany({ parroquiaId });
     }
+
+    const categorias = [
+      {
+        parroquiaId,
+        nombreCategoria: 'Litúrgico',
+        descripcion: 'Eventos litúrgicos y celebraciones religiosas',
+        isActive: true
+      },
+      {
+        parroquiaId,
+        nombreCategoria: 'Formativo',
+        descripcion: 'Eventos de formación y educación religiosa',
+        isActive: true
+      },
+      {
+        parroquiaId,
+        nombreCategoria: 'Juvenil',
+        descripcion: 'Eventos y actividades para jóvenes',
+        isActive: true
+      },
+      {
+        parroquiaId,
+        nombreCategoria: 'Comunitario',
+        descripcion: 'Eventos y actividades comunitarias',
+        isActive: true
+      }
+    ];
+
+    await Categoria.insertMany(categorias);
+    console.log(`✅ Categorías creadas para parroquia ${parroquiaId}`);
   } catch (error) {
     console.error('❌ Error al inicializar categorías:', error);
   }

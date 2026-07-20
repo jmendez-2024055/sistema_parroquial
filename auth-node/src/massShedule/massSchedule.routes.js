@@ -52,7 +52,7 @@ const router = Router();
  *       200:
  *         description: Lista de horarios
  */
-router.get('/', massScheduleController.getAll);
+router.get('/', validarJWT, massScheduleController.getAll);
 
 /**
  * @swagger

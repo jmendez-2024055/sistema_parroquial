@@ -145,7 +145,7 @@ router.delete('/:id', validarJWT, esAdmin, eliminarAviso);
  *       200:
  *         description: Lista de avisos
  */
-router.get('/', listarAvisos);
+router.get('/', validarJWT, listarAvisos);
 
 /**
  * @swagger
