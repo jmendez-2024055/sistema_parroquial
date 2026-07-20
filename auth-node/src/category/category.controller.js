@@ -1,8 +1,13 @@
 import * as categoriaService from './category.service.js';
+import { seedCategorias } from './category.seeder.js';
 
   export const createCategoria = async (req, res, next) => {
     try {
-      const data = req.body;
+      const data = { ...req.body };
+      // Eliminar cualquier parroquiaId que venga del body para evitar spoofing
+      delete data.parroquiaId;
+      // Asignar parroquiaId del usuario autenticado
+      data.parroquiaId = req.user.parroquiaId;
 
       const categoria = await categoriaService.createCategoriaRecord(data);
 
@@ -17,9 +22,33 @@ import * as categoriaService from './category.service.js';
     }
   };
 
+  export const initializeCategorias = async (req, res, next) => {
+    try {
+      const parroquiaId = req.user?.parroquiaId;
+
+      if (!parroquiaId) {
+        return res.status(400).json({
+          success: false,
+          message: 'No se puede inicializar categorías sin parroquiaId'
+        });
+      }
+
+      await seedCategorias(parroquiaId);
+
+      res.json({
+        success: true,
+        message: 'Categorías inicializadas correctamente para la parroquia'
+      });
+
+    } catch (error) {
+      next(error);
+    }
+  };
+
   export const getCategorias = async (req, res, next) => {
     try {
-      const categorias = await categoriaService.getCategoriasRecord();
+      const parroquiaId = req.user?.parroquiaId;
+      const categorias = await categoriaService.getCategoriasRecord(parroquiaId);
 
       res.json({
         success: true,
@@ -35,7 +64,8 @@ import * as categoriaService from './category.service.js';
 
   export const getCategoriaById = async (req, res, next) => {
     try {
-      const categoria = await categoriaService.getCategoriaByIdRecord(req.params.id);
+      const parroquiaId = req.user?.parroquiaId;
+      const categoria = await categoriaService.getCategoriaByIdRecord(req.params.id, parroquiaId);
 
       if (!categoria) {
         return res.status(404).json({
@@ -57,9 +87,11 @@ import * as categoriaService from './category.service.js';
 
   export const updateCategoria = async (req, res, next) => {
     try {
+      const parroquiaId = req.user?.parroquiaId;
       const categoria = await categoriaService.updateCategoriaRecord(
         req.params.id,
-        req.body
+        req.body,
+        parroquiaId
       );
 
       if (!categoria) {
@@ -82,7 +114,8 @@ import * as categoriaService from './category.service.js';
 
   export const deleteCategoria = async (req, res, next) => {
     try {
-      const categoria = await categoriaService.deleteCategoriaRecord(req.params.id);
+      const parroquiaId = req.user?.parroquiaId;
+      const categoria = await categoriaService.deleteCategoriaRecord(req.params.id, parroquiaId);
 
       if (!categoria) {
         return res.status(404).json({

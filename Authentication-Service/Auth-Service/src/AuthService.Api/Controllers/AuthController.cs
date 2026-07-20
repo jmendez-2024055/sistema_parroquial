@@ -176,6 +176,11 @@ namespace AuthService.Api.Controllers
             return Ok(result);
         }
 
+        private string? CurrentUserParroquiaId()
+        {
+            return User.Claims.FirstOrDefault(c => c.Type == "parroquiaId")?.Value;
+        }
+
         [HttpGet("users")]
         [Authorize]
         [EnableRateLimiting("AuthPolicy")]
@@ -186,7 +191,13 @@ namespace AuthService.Api.Controllers
                 return StatusCode(403, new { success = false, message = "Forbidden" });
             }
 
-            var users = await _authService.GetAllUsersAsync();
+            var requesterParroquiaId = CurrentUserParroquiaId();
+            if (string.IsNullOrEmpty(requesterParroquiaId))
+            {
+                return StatusCode(403, new { success = false, message = "Forbidden: User has no parish assigned" });
+            }
+
+            var users = await _authService.GetAllUsersAsync(requesterParroquiaId);
             return Ok(users);
         }
     }

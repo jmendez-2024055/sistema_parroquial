@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import * as categoriaController from './category.controller.js';
 import { validarJWT } from '../../middlewares/validar-jwt.js';
+import { esAdmin } from '../../middlewares/validar-roles.js';
 
 const router = Router();
 
@@ -43,12 +44,21 @@ router.get('/', validarJWT, categoriaController.getCategorias);
 
 /**
  * @swagger
+ * /category/initialize:
+ *   post:
+ *     summary: Inicializar categorías por defecto para la parroquia
+ *     tags: [Categoria]
+ */
+router.post('/initialize', validarJWT, categoriaController.initializeCategorias);
+
+/**
+ * @swagger
  * /category/{id}:
  *   get:
  *     summary: Obtener una categoría por ID
  *     tags: [Categoria]
  */
-router.get('/:id', categoriaController.getCategoriaById);
+router.get('/:id', validarJWT, categoriaController.getCategoriaById);
 
 /**
  * @swagger
@@ -57,7 +67,7 @@ router.get('/:id', categoriaController.getCategoriaById);
  *     summary: Crear una nueva categoría
  *     tags: [Categoria]
  */
-router.post('/', categoriaController.createCategoria);
+router.post('/', validarJWT, esAdmin, categoriaController.createCategoria);
 
 /**
  * @swagger
@@ -66,7 +76,7 @@ router.post('/', categoriaController.createCategoria);
  *     summary: Actualizar una categoría
  *     tags: [Categoria]
  */
-router.put('/:id', categoriaController.updateCategoria);
+router.put('/:id', validarJWT, esAdmin, categoriaController.updateCategoria);
 
 /**
  * @swagger
@@ -75,6 +85,6 @@ router.put('/:id', categoriaController.updateCategoria);
  *     summary: Eliminar una categoría
  *     tags: [Categoria]
  */
-router.delete('/:id', categoriaController.deleteCategoria);
+router.delete('/:id', validarJWT, esAdmin, categoriaController.deleteCategoria);
 
 export default router;

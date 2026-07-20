@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import * as groupRequestController from './groupRequest.controller.js';
 import { validarJWT } from '../../middlewares/validar-jwt.js';
+import { esAdmin } from '../../middlewares/validar-roles.js';
 
 const router = Router();
 
@@ -44,7 +45,7 @@ const router = Router();
  *     summary: Obtener todas las solicitudes (admin)
  *     tags: [GroupRequests]
  */
-router.get('/', validarJWT, groupRequestController.getGroupRequests);
+router.get('/', validarJWT, esAdmin, groupRequestController.getGroupRequests);
 
 /**
  * @swagger
@@ -80,7 +81,7 @@ router.post('/', validarJWT, groupRequestController.createGroupRequest);
  *     summary: Aprobar una solicitud
  *     tags: [GroupRequests]
  */
-router.put('/:id/approve', validarJWT, groupRequestController.approveGroupRequest);
+router.put('/:id/approve', validarJWT, esAdmin, groupRequestController.approveGroupRequest);
 
 /**
  * @swagger
@@ -89,7 +90,7 @@ router.put('/:id/approve', validarJWT, groupRequestController.approveGroupReques
  *     summary: Rechazar una solicitud
  *     tags: [GroupRequests]
  */
-router.put('/:id/reject', validarJWT, groupRequestController.rejectGroupRequest);
+router.put('/:id/reject', validarJWT, esAdmin, groupRequestController.rejectGroupRequest);
 
 /**
  * @swagger

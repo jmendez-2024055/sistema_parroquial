@@ -28,6 +28,6 @@ public class RegisterDto
     [StringLength(8, MinimumLength = 8)]
     public string Phone { get; set; } = string.Empty;
 
-    // Solicitar ser administrador de la parroquia asignada
-    public bool SolicitarAdmin { get; set; } = false;
+    [Required(ErrorMessage = "Debe seleccionar una parroquia.")]
+    public string ParroquiaId { get; set; } = string.Empty;
 }

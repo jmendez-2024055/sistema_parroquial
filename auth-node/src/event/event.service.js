@@ -11,17 +11,24 @@ export const crearEvento = async (data) => {
     }
 };
 
-export const obtenerEventos = async () => {
+export const obtenerEventos = async (parroquiaId) => {
     try {
-        return await Evento.find({}).populate('idCategoria');
+        // Solo devolver eventos si se proporciona parroquiaId
+        if (!parroquiaId) {
+            return [];
+        }
+        return await Evento.find({ parroquiaId }).populate('idCategoria');
     } catch (error) {
         throw new Error('Error al obtener eventos');
     }
 };
 
-export const obtenerEventoPorId = async (id) => {
+export const obtenerEventoPorId = async (id, parroquiaId) => {
     try {
-        const evento = await Evento.findById(id).populate('idCategoria');
+        if (!parroquiaId) {
+            return null;
+        }
+        const evento = await Evento.findOne({ _id: id, parroquiaId }).populate('idCategoria');
         if (!evento) {
             return null;
         }
@@ -31,14 +38,13 @@ export const obtenerEventoPorId = async (id) => {
     }
 };
 
-export const actualizarEvento = async (id, data) => {
+export const actualizarEvento = async (id, data, parroquiaId) => {
     try {
-        const evento = await Evento.findById(id);
-        if (!evento) {
+        if (!parroquiaId) {
             return null;
         }
-        const updated = await Evento.findByIdAndUpdate(
-            id,
+        const updated = await Evento.findOneAndUpdate(
+            { _id: id, parroquiaId },
             data,
             {
                 new: true,
@@ -52,13 +58,12 @@ export const actualizarEvento = async (id, data) => {
     }
 };
 
-export const eliminarEvento = async (id) => {
+export const eliminarEvento = async (id, parroquiaId) => {
     try {
-        const evento = await Evento.findById(id);
-        if (!evento) {
+        if (!parroquiaId) {
             return null;
         }
-        const deleted = await Evento.findByIdAndDelete(id);
+        const deleted = await Evento.findOneAndDelete({ _id: id, parroquiaId });
         return deleted; 
     } catch (error) {
         throw new Error('Error al eliminar el evento');

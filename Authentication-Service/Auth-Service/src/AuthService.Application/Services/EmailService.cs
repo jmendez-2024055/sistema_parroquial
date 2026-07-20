@@ -66,6 +66,29 @@ public class EmailService(IConfiguration configuration, ILogger<EmailService> lo
         await SendEmailAsync(email, subject, body);
     }
 
+    public async Task SendParroquiaVerificationEmailAsync(string email, string username, string parroquiaNombre, string token)
+    {
+        var subject = "Verifica tu parroquia - Sistema Parroquial";
+        var verificationUrl = $"{configuration["AppSettings:FrontendUrl"]}/verify-parroquia?token={token}";
+
+        var body = $@"
+            <h2>Verificación de Parroquia - Sistema Parroquial</h2>
+            <p>Hola {username},</p>
+            <p>Has registrado la parroquia <strong>{parroquiaNombre}</strong> en el Sistema Parroquial.</p>
+            <p>Para completar el registro y verificar que eres el encargado de esta parroquia, haz clic en el siguiente enlace:</p>
+            <a href='{verificationUrl}' style='background-color: #28a745; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;'>
+                Verificar Parroquia
+            </a>
+            <p>Si no puedes hacer clic en el enlace, copia y pega esta URL en tu navegador:</p>
+            <p>{verificationUrl}</p>
+            <p>Al verificar la parroquia, se creará automáticamente tu cuenta de administrador con acceso completo para gestionar {parroquiaNombre}.</p>
+            <p>Este enlace expirará en 24 horas.</p>
+            <p>Si no registraste esta parroquia, ignora este correo.</p>
+        ";
+
+        await SendEmailAsync(email, subject, body);
+    }
+
     private async Task SendEmailAsync(string to, string subject, string body)
     {
         var smtpSettings = configuration.GetSection("SmtpSettings");

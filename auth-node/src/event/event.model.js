@@ -1,6 +1,11 @@
 import mongoose from 'mongoose';
 
 const eventoSchema = new mongoose.Schema({
+    parroquiaId: {
+        type: String,
+        required: [true, 'El ID de la parroquia es obligatorio'],
+        trim: true
+    },
     titulo: {
         type: String,
         required: true,
@@ -39,5 +44,9 @@ const eventoSchema = new mongoose.Schema({
 }, {
     timestamps: true
 });
+
+eventoSchema.index({ parroquiaId: 1 });
+eventoSchema.index({ fecha: 1 });
+eventoSchema.index({ isActive: 1 });
 
 export default mongoose.model('Evento', eventoSchema);

@@ -13,24 +13,25 @@ public class RoleRepository(ApplicationDbContext context) : IRoleRepository
             .FirstOrDefaultAsync(r => r.Name == roleName);
     }
 
-    public async Task<int> CountUsersInRoleAsync(string roleName)
+    public async Task<int> CountUsersInRoleAsync(string roleName, string parroquiaId)
     {
         return await (context.UserRoles ?? throw new InvalidOperationException("UserRoles DbSet is null."))
             .Include(ur => ur.Role)
-            .Where(ur => ur.Role.Name == roleName)
+            .Include(ur => ur.User)
+            .Where(ur => ur.Role.Name == roleName && ur.User.ParroquiaId == parroquiaId)
             .Select(ur => ur.UserId)
             .Distinct()
             .CountAsync();
     }
 
-    public async Task<IReadOnlyList<User>> GetUsersByRoleAsync(string roleName)
+    public async Task<IReadOnlyList<User>> GetUsersByRoleAsync(string roleName, string parroquiaId)
     {
         var users = await (context.Users ?? throw new InvalidOperationException("Users DbSet is null."))
             .Include(u => u.UserProfile)
             .Include(u => u.UserEmail)
             .Include(u => u.UserRoles)
                 .ThenInclude(ur => ur.Role)
-            .Where(u => u.UserRoles.Any(ur => ur.Role.Name == roleName))
+            .Where(u => u.UserRoles.Any(ur => ur.Role.Name == roleName) && u.ParroquiaId == parroquiaId)
             .ToListAsync();
         return users;
     }

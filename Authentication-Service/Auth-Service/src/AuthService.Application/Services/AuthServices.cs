@@ -107,7 +107,7 @@ public class AuthService(
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow
             },
-            AdminRequestStatus = registerDto.SolicitarAdmin ? "PENDING" : "NONE"
+            ParroquiaId = registerDto.ParroquiaId
         };
 
         // Guardar usuario y entidades relacionadas
@@ -218,7 +218,9 @@ public class AuthService(
         {
             Id = user.Id,
             Username = user.Username,
-            Role = user.UserRoles.FirstOrDefault()?.Role?.Name ?? RoleConstants.USER_ROLE
+            Role = user.UserRoles.FirstOrDefault()?.Role?.Name ?? RoleConstants.USER_ROLE,
+            ParroquiaId = user.ParroquiaId,
+            ParroquiaNombre = user.Parroquia?.Nombre
         };
     }
 
@@ -412,9 +414,10 @@ public class AuthService(
         return MapToUserResponseDto(user);
     }
 
-    public async Task<IEnumerable<UserResponseDto>> GetAllUsersAsync()
+    public async Task<IEnumerable<UserResponseDto>> GetAllUsersAsync(string parroquiaId)
     {
         var users = await userRepository.GetUsersAsync();
-        return users.Select(MapToUserResponseDto);
+        var filteredUsers = users.Where(u => u.ParroquiaId == parroquiaId);
+        return filteredUsers.Select(MapToUserResponseDto);
     }
 }

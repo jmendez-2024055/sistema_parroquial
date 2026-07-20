@@ -1,6 +1,7 @@
 using AuthService.Application.DTOs;
 using AuthService.Application.Interfaces;
 using AuthService.Domain.Constants;
+using AuthService.Domain.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.RateLimiting;
@@ -9,7 +10,7 @@ namespace AuthService.Api.Controllers;
 
 [ApiController]
 [Route("api/v1/[controller]")]
-public class UsersController(IUserManagementService userManagementService) : ControllerBase
+public class UsersController(IUserManagementService userManagementService, IUserRepository userRepository) : ControllerBase
 {
     private async Task<bool> CurrentUserIsAdmin()
     {
@@ -17,6 +18,11 @@ public class UsersController(IUserManagementService userManagementService) : Con
         if (string.IsNullOrEmpty(userId)) return false;
         var roles = await userManagementService.GetUserRolesAsync(userId);
         return roles.Contains(RoleConstants.ADMIN_ROLE);
+    }
+
+    private string? CurrentUserParroquiaId()
+    {
+        return User.Claims.FirstOrDefault(c => c.Type == "parroquiaId")?.Value;
     }
 
     [HttpPut("{userId}/role")]
@@ -29,7 +35,13 @@ public class UsersController(IUserManagementService userManagementService) : Con
             return StatusCode(403, new { success = false, message = "Forbidden" });
         }
 
-        var result = await userManagementService.UpdateUserRoleAsync(userId, dto.RoleName);
+        var requesterParroquiaId = CurrentUserParroquiaId();
+        if (string.IsNullOrEmpty(requesterParroquiaId))
+        {
+            return StatusCode(403, new { success = false, message = "Forbidden: User has no parish assigned" });
+        }
+
+        var result = await userManagementService.UpdateUserRoleAsync(userId, dto.RoleName, requesterParroquiaId);
         return Ok(result);
     }
 
@@ -37,6 +49,24 @@ public class UsersController(IUserManagementService userManagementService) : Con
     [Authorize]
     public async Task<ActionResult<IReadOnlyList<string>>> GetUserRoles(string userId)
     {
+        if (!await CurrentUserIsAdmin())
+        {
+            return StatusCode(403, new { success = false, message = "Forbidden" });
+        }
+
+        var requesterParroquiaId = CurrentUserParroquiaId();
+        if (string.IsNullOrEmpty(requesterParroquiaId))
+        {
+            return StatusCode(403, new { success = false, message = "Forbidden: User has no parish assigned" });
+        }
+
+        // Verify that the target user belongs to the same parish
+        var targetUser = await userRepository.GetByIdAsync(userId);
+        if (targetUser.ParroquiaId != requesterParroquiaId)
+        {
+            return StatusCode(403, new { success = false, message = "Forbidden: Cannot access users from another parish" });
+        }
+
         var roles = await userManagementService.GetUserRolesAsync(userId);
         return Ok(roles);
     }
@@ -51,7 +81,13 @@ public class UsersController(IUserManagementService userManagementService) : Con
             return StatusCode(403, new { success = false, message = "Forbidden" });
         }
 
-        var users = await userManagementService.GetUsersByRoleAsync(roleName);
+        var requesterParroquiaId = CurrentUserParroquiaId();
+        if (string.IsNullOrEmpty(requesterParroquiaId))
+        {
+            return StatusCode(403, new { success = false, message = "Forbidden: User has no parish assigned" });
+        }
+
+        var users = await userManagementService.GetUsersByRoleAsync(roleName, requesterParroquiaId);
         return Ok(users);
     }
 }

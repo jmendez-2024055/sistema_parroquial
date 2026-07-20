@@ -47,8 +47,9 @@ public class User
     // Refresh tokens
     public ICollection<RefreshToken> RefreshTokens { get; set; } = new List<RefreshToken>();
 
-    // Estado de solicitud de administrador de parroquia
-    // Valores posibles: NONE, PENDING, APPROVED, REJECTED
-    public string AdminRequestStatus { get; set; } = "NONE";
+    // Relación con parroquia
+    [MaxLength(16)]
+    public string? ParroquiaId { get; set; }
+    public Parroquia? Parroquia { get; set; }
 
 }

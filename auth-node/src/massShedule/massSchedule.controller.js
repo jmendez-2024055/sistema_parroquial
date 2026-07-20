@@ -4,7 +4,8 @@ class MassScheduleController {
 
     async getAll(req, res, next) {
         try {
-            const data = await massScheduleService.getAll();
+            const parroquiaId = req.user?.parroquiaId;
+            const data = await massScheduleService.getAll(parroquiaId);
 
             res.json({
                 success: true,
@@ -18,7 +19,8 @@ class MassScheduleController {
 
     async getById(req, res, next) {
         try {
-            const data = await massScheduleService.getById(req.params.id);
+            const parroquiaId = req.user?.parroquiaId;
+            const data = await massScheduleService.getById(req.params.id, parroquiaId);
 
             if (!data) {
                 return res.status(404).json({
@@ -42,6 +44,12 @@ class MassScheduleController {
             const data = {
                 ...req.body
             };
+
+            // Agregar parroquiaId del usuario autenticado
+            if (req.user?.parroquiaId) {
+                data.parroquiaId = req.user.parroquiaId;
+            }
+
             const result = await massScheduleService.create(data);
 
             res.status(201).json({
@@ -57,7 +65,8 @@ class MassScheduleController {
 
     async update(req, res, next) {
         try {
-            const data = await massScheduleService.update(req.params.id, req.body);
+            const parroquiaId = req.user?.parroquiaId;
+            const data = await massScheduleService.update(req.params.id, req.body, parroquiaId);
 
             if (!data) {
                 return res.status(404).json({
@@ -80,7 +89,8 @@ class MassScheduleController {
     
     async delete(req, res, next) {
         try {
-            const data = await massScheduleService.delete(req.params.id);
+            const parroquiaId = req.user?.parroquiaId;
+            const data = await massScheduleService.delete(req.params.id, parroquiaId);
 
             if (!data) {
                 return res.status(404).json({

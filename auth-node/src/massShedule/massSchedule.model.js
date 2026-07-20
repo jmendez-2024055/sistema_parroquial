@@ -1,6 +1,11 @@
 import mongoose from 'mongoose';
 
 const massScheduleSchema = new mongoose.Schema({
+    parroquiaId: {
+        type: String,
+        required: [true, 'El ID de la parroquia es obligatorio'],
+        trim: true
+    },
     diaSemana: {
         type: String,
         required: [true, 'El día de la semana es obligatorio'],
@@ -37,6 +42,7 @@ const massScheduleSchema = new mongoose.Schema({
     versionKey: false
 });
 
+massScheduleSchema.index({ parroquiaId: 1 });
 massScheduleSchema.index({ diaSemana: 1 });
 massScheduleSchema.index({ tipoMisa: 1 });
 

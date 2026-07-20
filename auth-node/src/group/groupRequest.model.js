@@ -2,6 +2,11 @@ import { Schema, model } from 'mongoose';
 
 const groupRequestSchema = new Schema(
   {
+    parroquiaId: {
+      type: String,
+      required: [true, 'El ID de la parroquia es obligatorio'],
+      trim: true,
+    },
     idGrupo: {
       type: Schema.Types.ObjectId,
       ref: 'Group',

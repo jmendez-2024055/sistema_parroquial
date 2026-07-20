@@ -7,6 +7,11 @@ export const crear = async (req, res, next) => {
             userId: req.user.id
         };
 
+        // Agregar parroquiaId del usuario autenticado
+        if (req.user?.parroquiaId) {
+            data.parroquiaId = req.user.parroquiaId;
+        }
+
         const intencion = await intencionService.crearIntencion(data);
 
         res.status(201).json({
@@ -22,9 +27,10 @@ export const crear = async (req, res, next) => {
 
 export const listar = async (req, res, next) => {
     try {
+        const parroquiaId = req.user?.parroquiaId;
         const role = req.user.role;
-        
-        const intenciones = await intencionService.obtenerIntenciones(role === 'ADMIN_ROLE');
+
+        const intenciones = await intencionService.obtenerIntenciones(parroquiaId, role === 'ADMIN_ROLE');
 
         res.json({
             success: true,
@@ -39,7 +45,8 @@ export const listar = async (req, res, next) => {
 
 export const obtenerPorId = async (req, res, next) => {
     try {
-        const intencion = await intencionService.obtenerIntencionPorId(req.params.id);
+        const parroquiaId = req.user?.parroquiaId;
+        const intencion = await intencionService.obtenerIntencionPorId(req.params.id, parroquiaId);
 
         if (!intencion) {
             return res.status(404).json({
@@ -60,7 +67,8 @@ export const obtenerPorId = async (req, res, next) => {
 
 export const actualizar = async (req, res, next) => {
     try {
-        const intencion = await intencionService.actualizarIntencion(req.params.id, req.body);
+        const parroquiaId = req.user?.parroquiaId;
+        const intencion = await intencionService.actualizarIntencion(req.params.id, req.body, parroquiaId);
 
         if (!intencion) {
             return res.status(404).json({
@@ -82,7 +90,8 @@ export const actualizar = async (req, res, next) => {
 
 export const eliminar = async (req, res, next) => {
     try {
-        const intencion = await intencionService.eliminarIntencion(req.params.id);
+        const parroquiaId = req.user?.parroquiaId;
+        const intencion = await intencionService.eliminarIntencion(req.params.id, parroquiaId);
 
         if (!intencion) {
             return res.status(404).json({

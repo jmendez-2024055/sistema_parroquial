@@ -7,6 +7,11 @@ export const crearAviso = async (req, res, next) => {
             usuario: req.user.id
         };
 
+        // Agregar parroquiaId del usuario autenticado
+        if (req.user?.parroquiaId) {
+            data.parroquiaId = req.user.parroquiaId;
+        }
+
         const aviso = await avisosService.crearAviso(data);
 
         res.status(201).json({
@@ -22,7 +27,8 @@ export const crearAviso = async (req, res, next) => {
 
 export const listarAvisos = async (req, res, next) => {
     try {
-        const avisos = await avisosService.listarAvisos();
+        const parroquiaId = req.user?.parroquiaId;
+        const avisos = await avisosService.listarAvisos(parroquiaId);
 
         res.json({
             success: true,
@@ -37,7 +43,8 @@ export const listarAvisos = async (req, res, next) => {
 
 export const obtenerAvisoPorId = async (req, res, next) => {
     try {
-        const aviso = await avisosService.obtenerAvisoPorId(req.params.id);
+        const parroquiaId = req.user?.parroquiaId;
+        const aviso = await avisosService.obtenerAvisoPorId(req.params.id, parroquiaId);
 
         if (!aviso) {
             return res.status(404).json({
@@ -58,7 +65,8 @@ export const obtenerAvisoPorId = async (req, res, next) => {
 
 export const editarAviso = async (req, res, next) => {
     try {
-        const aviso = await avisosService.obtenerAvisoPorId(req.params.id);
+        const parroquiaId = req.user?.parroquiaId;
+        const aviso = await avisosService.obtenerAvisoPorId(req.params.id, parroquiaId);
 
         if (!aviso) {
             return res.status(404).json({
@@ -76,7 +84,8 @@ export const editarAviso = async (req, res, next) => {
 
         const actualizado = await avisosService.editarAviso(
             req.params.id,
-            req.body
+            req.body,
+            parroquiaId
         );
 
         res.json({
@@ -92,7 +101,8 @@ export const editarAviso = async (req, res, next) => {
 
 export const eliminarAviso = async (req, res, next) => {
     try {
-        const aviso = await avisosService.eliminarAviso(req.params.id);
+        const parroquiaId = req.user?.parroquiaId;
+        const aviso = await avisosService.eliminarAviso(req.params.id, parroquiaId);
 
         if (!aviso) {
             return res.status(404).json({

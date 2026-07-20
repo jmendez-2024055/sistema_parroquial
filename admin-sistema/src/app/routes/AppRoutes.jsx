@@ -3,6 +3,8 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import { ForgotPasswordPage } from '../../features/auth/pages/ForgotPasswordPage.jsx';
 import { LoginPage } from '../../features/auth/pages/LoginPage.jsx';
 import { RegisterPage } from '../../features/auth/pages/RegisterPage.jsx';
+import { RegisterParroquiaPage } from '../../features/auth/pages/RegisterParroquiaPage.jsx';
+import { VerifyParroquiaPage } from '../../features/auth/pages/VerifyParroquiaPage.jsx';
 import { ResetPasswordPage } from '../../features/auth/pages/ResetPasswordPage.jsx';
 import { UnauthorizedPage } from '../../features/auth/pages/UnauthorizedPage.jsx';
 import { VerifyEmail } from '../../features/auth/pages/VerifyEmail.jsx';
@@ -36,6 +38,8 @@ export const AppRoutes = () => (
     <Routes>
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
+      <Route path="/register-parroquia" element={<RegisterParroquiaPage />} />
+      <Route path="/verify-parroquia" element={<VerifyParroquiaPage />} />
       <Route path="/verify-email" element={<VerifyEmail />} />
       <Route path="/recover" element={<ForgotPasswordPage />} />
       <Route path="/reset-password" element={<ResetPasswordPage />} />

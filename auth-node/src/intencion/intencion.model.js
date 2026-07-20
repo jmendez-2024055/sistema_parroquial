@@ -1,6 +1,11 @@
 import mongoose from 'mongoose';
 
 const intencionSchema = new mongoose.Schema({
+    parroquiaId: {
+        type: String,
+        required: [true, 'El ID de la parroquia es obligatorio'],
+        trim: true
+    },
     massScheduleId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'MassSchedule',
@@ -36,6 +41,7 @@ const intencionSchema = new mongoose.Schema({
     versionKey: false
 });
 
+intencionSchema.index({ parroquiaId: 1 });
 intencionSchema.index({ massScheduleId: 1, fechaMisa: 1 });
 intencionSchema.index({ estado: 1 });
 

@@ -3,7 +3,7 @@ import massSchedule from '../massShedule/massSchedule.model.js';
 
 export const crearIntencion = async (data) => {
     try {
-        const horarioMisa = await massSchedule.findById(data.massScheduleId);
+        const horarioMisa = await massSchedule.findOne({ _id: data.massScheduleId, parroquiaId: data.parroquiaId });
         if (!horarioMisa) throw new Error('El horario de misa especificado no existe');
 
         const dataToCreate = { ...data };
@@ -17,16 +17,16 @@ export const crearIntencion = async (data) => {
     }
 };
 
-export const actualizarIntencion = async (id, data) => {
+export const actualizarIntencion = async (id, data, parroquiaId) => {
     try {
-        const intencion = await Intencion.findById(id);
-        if (!intencion) return null;
-
+        if (!parroquiaId) {
+            return null;
+        }
         const updateData = { ...data };
         delete updateData._id;
 
-        const actualizada = await Intencion.findByIdAndUpdate(
-            id,
+        const actualizada = await Intencion.findOneAndUpdate(
+            { _id: id, parroquiaId },
             { $set: updateData },
             { new: true, runValidators: true, context: 'query' }
         ).populate('massScheduleId');
@@ -42,30 +42,37 @@ export const actualizarIntencion = async (id, data) => {
     }
 };
 
-export const eliminarIntencion = async (id) => {
+export const eliminarIntencion = async (id, parroquiaId) => {
     try {
-        const intencion = await Intencion.findById(id);
-        if (!intencion) return null;
-
-        return await Intencion.findByIdAndDelete(id);
+        if (!parroquiaId) {
+            return null;
+        }
+        return await Intencion.findOneAndDelete({ _id: id, parroquiaId });
     } catch (error) {
         console.error('Error en eliminarIntencion:', error.message);
         throw error;
     }
 };
 
-export const obtenerIntenciones = async (getAll = false) => {
+export const obtenerIntenciones = async (parroquiaId, getAll = false) => {
     try {
-        const query = getAll ? {} : {};
-        return await Intencion.find(query).populate('massScheduleId').sort({ fechaMisa: 1 });
+        // Solo devolver intenciones si se proporciona parroquiaId
+        if (!parroquiaId) {
+            return [];
+        }
+        const filter = { parroquiaId };
+        return await Intencion.find(filter).populate('massScheduleId').sort({ fechaMisa: 1 });
     } catch (error) {
         throw new Error('Error al obtener las intenciones');
     }
 };
 
-export const obtenerIntencionPorId = async (id) => {
+export const obtenerIntencionPorId = async (id, parroquiaId) => {
     try {
-        const intencion = await Intencion.findById(id).populate('massScheduleId');
+        if (!parroquiaId) {
+            return null;
+        }
+        const intencion = await Intencion.findOne({ _id: id, parroquiaId }).populate('massScheduleId');
         if (!intencion) return null;
         
         return intencion;

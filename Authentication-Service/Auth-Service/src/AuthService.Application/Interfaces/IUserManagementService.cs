@@ -4,7 +4,7 @@ namespace AuthService.Application.Interfaces;
 
 public interface IUserManagementService
 {
-    Task<UserResponseDto> UpdateUserRoleAsync(string userId, string roleName);
+    Task<UserResponseDto> UpdateUserRoleAsync(string userId, string roleName, string requesterParroquiaId);
     Task<IReadOnlyList<string>> GetUserRolesAsync(string userId);
-    Task<IReadOnlyList<UserResponseDto>> GetUsersByRoleAsync(string roleName);
+    Task<IReadOnlyList<UserResponseDto>> GetUsersByRoleAsync(string roleName, string requesterParroquiaId);
 }

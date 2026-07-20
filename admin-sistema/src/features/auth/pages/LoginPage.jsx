@@ -180,6 +180,13 @@ export const LoginPage = () => {
           </Link>
         </div>
 
+        <div className={styles.links}>
+          <p className={styles.linksText}>¿Representas una parroquia?</p>
+          <Link to="/register-parroquia" className={styles.link} style={{ color: theme.btnBg }}>
+            Registra tu parroquia
+          </Link>
+        </div>
+
         <div className={styles.forgotWrap}>
           <Link to="/recover" className={styles.forgotLink}>¿Olvidaste tu contraseña?</Link>
         </div>

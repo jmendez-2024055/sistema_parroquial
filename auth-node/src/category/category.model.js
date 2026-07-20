@@ -2,6 +2,11 @@ import { Schema, model } from 'mongoose';
 
 const categoriaSchema = new Schema(
   {
+    parroquiaId: {
+      type: String,
+      required: [true, 'El ID de la parroquia es obligatorio'],
+      trim: true,
+    },
     nombreCategoria: {
       type: String,
       required: [true, 'El nombre de la categoría es obligatorio'],
@@ -29,6 +34,7 @@ const categoriaSchema = new Schema(
 );
 
 // Índices
+categoriaSchema.index({ parroquiaId: 1 });
 categoriaSchema.index({ isActive: 1 });
 categoriaSchema.index({ nombreCategoria: 1 });
 

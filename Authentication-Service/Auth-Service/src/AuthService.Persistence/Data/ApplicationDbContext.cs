@@ -13,6 +13,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<UserEmail>? UserEmails { get; set; }
     public DbSet<UserPasswordReset>? UserPasswordResets { get; set; }
     public DbSet<RefreshToken>? RefreshTokens { get; set; }
+    public DbSet<Parroquia>? Parroquias { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -99,10 +100,8 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
                 .IsRequired();
             entity.Property(e => e.UpdatedAt)
                 .IsRequired();
-            entity.Property(e => e.AdminRequestStatus)
-                .HasMaxLength(20)
-                .HasDefaultValue("NONE")
-                .IsRequired();
+            entity.Property(e => e.ParroquiaId)
+                .HasMaxLength(16);
             entity.HasIndex(e => e.Username).IsUnique();
             entity.HasIndex(e => e.Email).IsUnique();
             // Relaciones
@@ -118,6 +117,9 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             entity.HasOne(e => e.UserPasswordReset)
                 .WithOne(upr => upr.User)
                 .HasForeignKey<UserPasswordReset>(upr => upr.UserId);
+            entity.HasOne(e => e.Parroquia)
+                .WithMany(p => p.Usuarios)
+                .HasForeignKey(e => e.ParroquiaId);
         });
 
         // Configuración de UserProfile
@@ -200,6 +202,53 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             entity.Property(e => e.CreatedAt).IsRequired();
             entity.Property(e => e.UpdatedAt).IsRequired();
         });
+
+        // Configuración de Parroquia
+        modelBuilder.Entity<Parroquia>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Id)
+                .HasMaxLength(16)
+                .ValueGeneratedOnAdd();
+            entity.Property(e => e.Nombre)
+                .IsRequired()
+                .HasMaxLength(100);
+            entity.Property(e => e.Direccion)
+                .IsRequired()
+                .HasMaxLength(200);
+            entity.Property(e => e.Telefono)
+                .HasMaxLength(20);
+            entity.Property(e => e.Email)
+                .HasMaxLength(100);
+            entity.Property(e => e.VerificationStatus)
+                .IsRequired()
+                .HasMaxLength(20)
+                .HasDefaultValue("PENDING");
+            entity.Property(e => e.VerificationToken)
+                .HasMaxLength(256);
+            entity.Property(e => e.EncargadoNombre)
+                .HasMaxLength(25);
+            entity.Property(e => e.EncargadoApellido)
+                .HasMaxLength(25);
+            entity.Property(e => e.EncargadoUsername)
+                .HasMaxLength(50);
+            entity.Property(e => e.EncargadoEmail)
+                .HasMaxLength(150);
+            entity.Property(e => e.EncargadoPassword)
+                .HasMaxLength(255);
+            entity.Property(e => e.EncargadoTelefono)
+                .HasMaxLength(8);
+            entity.Property(e => e.EncargadoId)
+                .HasMaxLength(16);
+            entity.Property(e => e.CreatedAt)
+                .IsRequired();
+            entity.Property(e => e.UpdatedAt)
+                .IsRequired();
+            // Relaciones
+            entity.HasOne(e => e.Encargado)
+                .WithOne()
+                .HasForeignKey<Parroquia>(e => e.EncargadoId);
+        });
     }
 
     public override int SaveChanges()
@@ -217,7 +266,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     private void UpdateTimestamps()
     {
         var entries = ChangeTracker.Entries()
-            .Where(e => (e.Entity is User || e.Entity is Role || e.Entity is UserRole || e.Entity is UserEmail || e.Entity is UserPasswordReset || e.Entity is UserProfile)
+            .Where(e => (e.Entity is User || e.Entity is Role || e.Entity is UserRole || e.Entity is UserEmail || e.Entity is UserPasswordReset || e.Entity is UserProfile || e.Entity is Parroquia)
                         && (e.State == EntityState.Added || e.State == EntityState.Modified));
 
         foreach (var entry in entries)
@@ -269,6 +318,14 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
                     userProfile.CreatedAt = DateTime.UtcNow;
                 }
                 userProfile.UpdatedAt = DateTime.UtcNow;
+            }
+            else if (entry.Entity is Parroquia parroquia)
+            {
+                if (entry.State == EntityState.Added)
+                {
+                    parroquia.CreatedAt = DateTime.UtcNow;
+                }
+                parroquia.UpdatedAt = DateTime.UtcNow;
             }
         }
     }

@@ -2,6 +2,11 @@ import { Schema, model } from 'mongoose';
 
 const avisoSchema = new Schema(
     {
+        parroquiaId: {
+            type: String,
+            required: [true, 'El ID de la parroquia es obligatorio'],
+            trim: true,
+        },
         titulo: {
             type: String,
             required: [true, 'El título es obligatorio'],
@@ -34,6 +39,7 @@ const avisoSchema = new Schema(
     }
 );
 
+avisoSchema.index({ parroquiaId: 1 });
 avisoSchema.index({ estado: 1 });
 avisoSchema.index({ fechaPublicacion: -1 });
 

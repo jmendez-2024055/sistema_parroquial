@@ -1,4 +1,5 @@
 using AuthService.Application.DTOs;
+using AuthService.Application.Exceptions;
 using AuthService.Application.Interfaces;
 using AuthService.Domain.Constants;
 using AuthService.Domain.Entities;
@@ -8,7 +9,7 @@ namespace AuthService.Application.Services;
 
 public class UserManagementService(IUserRepository users, IRoleRepository roles) : IUserManagementService
 {
-    public async Task<UserResponseDto> UpdateUserRoleAsync(string userId, string roleName)
+    public async Task<UserResponseDto> UpdateUserRoleAsync(string userId, string roleName, string requesterParroquiaId)
     {
         // Normalize
         roleName = roleName?.Trim().ToUpperInvariant() ?? string.Empty;
@@ -21,11 +22,17 @@ public class UserManagementService(IUserRepository users, IRoleRepository roles)
         // Load user with roles
         var user = await users.GetByIdAsync(userId);
 
+        // Verify parroquia match
+        if (user.ParroquiaId != requesterParroquiaId)
+        {
+            throw new BusinessException(ErrorCodes.PARROQUIA_MISMATCH, "No tienes permiso para modificar usuarios de otra parroquia");
+        }
+
         // If demoting an admin, prevent removing last admin
         var isUserAdmin = user.UserRoles.Any(r => r.Role.Name == RoleConstants.ADMIN_ROLE);
         if (isUserAdmin && roleName != RoleConstants.ADMIN_ROLE)
         {
-            var adminCount = await roles.CountUsersInRoleAsync(RoleConstants.ADMIN_ROLE);
+            var adminCount = await roles.CountUsersInRoleAsync(RoleConstants.ADMIN_ROLE, requesterParroquiaId);
 
             if (adminCount <= 1)
             {
@@ -66,10 +73,10 @@ public class UserManagementService(IUserRepository users, IRoleRepository roles)
         return roleNames;
     }
 
-    public async Task<IReadOnlyList<UserResponseDto>> GetUsersByRoleAsync(string roleName)
+    public async Task<IReadOnlyList<UserResponseDto>> GetUsersByRoleAsync(string roleName, string requesterParroquiaId)
     {
         roleName = roleName?.Trim().ToUpperInvariant() ?? string.Empty;
-        var usersInRole = await roles.GetUsersByRoleAsync(roleName);
+        var usersInRole = await roles.GetUsersByRoleAsync(roleName, requesterParroquiaId);
         return usersInRole.Select(u => new UserResponseDto
         {
             Id = u.Id,
