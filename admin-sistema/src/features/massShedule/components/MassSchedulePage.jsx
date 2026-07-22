@@ -98,10 +98,15 @@ const MassSchedulePage = () => {
             )}
 
             {!loading && massSchedules.length === 0 && (
-                <section className="content-card empty-state">
-                    <div className="empty-state__icon"><AppIcon name="clock" size={28} /></div>
-                    <h2>No hay horarios registrados</h2>
-                    <p>Crea el primer horario con el botón "Nuevo Horario".</p>
+                <section className="content-card empty-state" style={{ position: 'relative', overflow: 'hidden', minHeight: '280px', padding: '28px' }}>
+                    <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(circle at top left, rgba(31, 120, 66, 0.12), transparent 45%)', pointerEvents: 'none' }} />
+                    <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', minHeight: '220px' }}>
+                        <div className="empty-state__icon" style={{ width: '58px', height: '58px', borderRadius: '18px', background: 'rgba(255,255,255,0.8)', boxShadow: '0 8px 24px rgba(28,55,42,0.1)', marginBottom: '14px' }}>
+                            <AppIcon name="church" size={28} />
+                        </div>
+                        <h2 style={{ marginBottom: '8px' }}>Aún no hay horarios de misa</h2>
+                        <p style={{ maxWidth: '420px', margin: 0, color: 'var(--muted)' }}>Publica el primer horario para que la comunidad pueda planificar su participación.</p>
+                    </div>
                 </section>
             )}
 
@@ -110,7 +115,13 @@ const MassSchedulePage = () => {
                     display: 'grid',
                     gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
                     gap: '20px',
+                    position: 'relative',
+                    overflow: 'hidden',
+                    padding: '6px',
+                    borderRadius: '18px',
+                    background: 'linear-gradient(135deg, rgba(255,255,255,0.95), rgba(236, 242, 233, 0.8))',
                 }}>
+                    <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(circle at top right, rgba(31, 120, 66, 0.08), transparent 40%)', pointerEvents: 'none' }} />
                     {sortedSchedules.map((schedule) => (
                         <div key={schedule._id} style={{
                             background: 'var(--surface)',

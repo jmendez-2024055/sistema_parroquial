@@ -1,5 +1,5 @@
 const MassScheduleTable = ({ massSchedules }) => (
-  <section className="events-panel" aria-labelledby="masses-title">
+  <section className="events-panel" aria-labelledby="masses-title" style={{ position: 'relative', overflow: 'hidden' }}>
     <div className="events-panel__header">
       <div>
         <span className="events-panel__eyebrow">Horarios de misa</span>
@@ -8,8 +8,9 @@ const MassScheduleTable = ({ massSchedules }) => (
       <span className="events-panel__filter">Esta semana</span>
     </div>
 
-    <div className="events-table-wrapper">
-      <table className="events-table">
+    <div className="events-table-wrapper" style={{ position: 'relative' }}>
+      <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(circle at top right, rgba(31, 120, 66, 0.08), transparent 40%)', pointerEvents: 'none' }} />
+      <table className="events-table" style={{ position: 'relative', zIndex: 1 }}>
         <thead>
           <tr>
             <th scope="col">Día</th>
