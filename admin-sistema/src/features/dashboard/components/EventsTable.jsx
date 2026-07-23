@@ -1,7 +1,7 @@
 import CategoryBadge from './CategoryBadge.jsx';
 
 const EventsTable = ({ events }) => (
-  <section className="events-panel" aria-labelledby="events-title">
+  <section className="events-panel" aria-labelledby="events-title" style={{ position: 'relative', overflow: 'hidden' }}>
     <div className="events-panel__header">
       <div>
         <span className="events-panel__eyebrow">Agenda parroquial</span>
@@ -10,8 +10,9 @@ const EventsTable = ({ events }) => (
       <span className="events-panel__filter">Esta semana</span>
     </div>
 
-    <div className="events-table-wrapper">
-      <table className="events-table">
+    <div className="events-table-wrapper" style={{ position: 'relative' }}>
+      <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(circle at top right, rgba(31, 120, 66, 0.08), transparent 40%)', pointerEvents: 'none' }} />
+      <table className="events-table" style={{ position: 'relative', zIndex: 1 }}>
         <thead>
           <tr>
             <th scope="col">Nombre</th>

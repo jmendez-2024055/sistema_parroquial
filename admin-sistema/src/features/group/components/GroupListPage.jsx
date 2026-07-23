@@ -114,7 +114,7 @@ const GroupListPage = () => {
                                         }}>
                                             <AppIcon name="users" size={24} style={{ color: '#16a34a' }} />
                                         </div>
-                                        <div style={{ flex: 1 }}>
+                                        <div style={{ flex: 1, textAlign: 'center' }}>
                                             <h3 style={{
                                                 margin: 0,
                                                 fontFamily: "'Playfair Display', serif",
@@ -156,7 +156,7 @@ const GroupListPage = () => {
                                                 color: 'var(--green-800)',
                                                 marginBottom: '4px',
                                             }}>
-                                                Requisitos:
+                                                Requisitos: 
                                             </p>
                                             <p style={{
                                                 margin: 0,
@@ -204,7 +204,7 @@ const GroupListPage = () => {
                                             style={{
                                                 marginTop: 'auto',
                                                 padding: '12px 20px',
-                                                borderRadius: '8px',
+                                                borderRadius: '10px',
                                                 background: '#16a34a',
                                                 color: 'white',
                                                 fontSize: '14px',

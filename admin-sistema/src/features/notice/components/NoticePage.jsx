@@ -86,10 +86,15 @@ const NoticePage = () => {
             )}
 
             {!loading && notices.length === 0 && (
-                <section className="content-card empty-state">
-                    <div className="empty-state__icon"><AppIcon name="bell" size={28} /></div>
-                    <h2>No hay avisos registrados</h2>
-                    <p>Crea el primero con el botón "Nuevo Aviso".</p>
+                <section className="content-card empty-state" style={{ position: 'relative', overflow: 'hidden', minHeight: '280px', padding: '28px' }}>
+                    <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(circle at top left, rgba(31, 120, 66, 0.12), transparent 45%)', pointerEvents: 'none' }} />
+                    <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center', minHeight: '220px' }}>
+                        <div className="empty-state__icon" style={{ width: '58px', height: '58px', borderRadius: '18px', background: 'rgba(255,255,255,0.8)', boxShadow: '0 8px 24px rgba(28,55,42,0.1)', marginBottom: '14px' }}>
+                            <AppIcon name="bell" size={28} />
+                        </div>
+                        <h2 style={{ marginBottom: '8px' }}>Publica un aviso para la comunidad</h2>
+                        <p style={{ maxWidth: '420px', margin: 0, color: 'var(--muted)' }}>Mantén informada a la parroquia con comunicados, recordatorios y novedades.</p>
+                    </div>
                 </section>
             )}
 
@@ -98,7 +103,13 @@ const NoticePage = () => {
                     display: 'flex',
                     flexDirection: 'column',
                     gap: '16px',
+                    position: 'relative',
+                    overflow: 'hidden',
+                    padding: '6px',
+                    borderRadius: '18px',
+                    background: 'linear-gradient(135deg, rgba(255,255,255,0.95), rgba(236, 242, 233, 0.8))',
                 }}>
+                    <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(circle at top right, rgba(31, 120, 66, 0.08), transparent 40%)', pointerEvents: 'none' }} />
                     {notices.map((notice) => (
                         <div
                             key={notice._id}
