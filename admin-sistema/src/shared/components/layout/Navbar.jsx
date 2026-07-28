@@ -37,10 +37,6 @@ export const Navbar = ({ onMenuClick }) => {
       </div>
 
       <div className="navbar__actions">
-        <label className="navbar__search">
-          <AppIcon name="search" size={18} />
-          <input type="search" placeholder="Buscar en el sistema" aria-label="Buscar en el sistema" />
-        </label>
         <div className="navbar__user">
           <AvatarUser user={user} />
           <div>

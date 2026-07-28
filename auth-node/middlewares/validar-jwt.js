@@ -22,7 +22,7 @@ export const validarJWT = (req, res, next) => {
         req.user = {
             id: decoded.id || decoded.sub || decoded.nameid,
             role: decoded.role || decoded.roles || [],
-            parroquiaId: decoded.parroquiaId || null
+            parroquiaId: (decoded.parroquiaId && decoded.parroquiaId !== '') ? decoded.parroquiaId : null
         };
 
         if (!req.user.id) {
