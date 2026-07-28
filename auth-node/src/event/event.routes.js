@@ -53,7 +53,7 @@ const router = Router();
  *       200:
  *         description: Lista de eventos
  */
-router.get('/', eventController.listar);
+router.get('/', validarJWT, eventController.listar);
 
 /**
  * @swagger

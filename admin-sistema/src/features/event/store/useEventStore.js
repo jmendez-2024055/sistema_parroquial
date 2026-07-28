@@ -20,7 +20,15 @@ const useEventStore = create((set, get) => ({
     fetchCategorias: async () => {
         try {
             const res = await eventService.getCategorias();
-            set({ categorias: res.data.data });
+            // Eliminar duplicados por nombre de categoría
+            const uniqueCategorias = res.data.data.reduce((acc, current) => {
+                const exists = acc.find(cat => cat.nombreCategoria === current.nombreCategoria);
+                if (!exists) {
+                    acc.push(current);
+                }
+                return acc;
+            }, []);
+            set({ categorias: uniqueCategorias });
         } catch (err) {
             set({ error: 'Error al obtener categorías' });
         }
