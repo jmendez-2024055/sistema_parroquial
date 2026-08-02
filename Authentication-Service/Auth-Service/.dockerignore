@@ -1,0 +1,13 @@
+**/bin
+**/bin/**
+**/obj
+**/obj/**
+bin
+obj
+**/.vs
+**/.vscode
+**/appsettings.Development.json
+**/keys
+.git
+.gitignore
+*.md
