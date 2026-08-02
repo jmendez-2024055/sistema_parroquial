@@ -1,0 +1,83 @@
+version: '3.8'
+
+services:
+
+  auth-service:
+    build:
+      context: ./Authentication-Service/Auth-Service
+      dockerfile: Dockerfile
+    container_name: sistema_parroquial_auth_service
+    depends_on:
+      auth-node:
+        condition: service_healthy
+    environment:
+      ConnectionStrings__DefaultConnection: "Host=${SUPABASE_DB_HOST};Port=${SUPABASE_DB_PORT};Database=${SUPABASE_DB_NAME};Username=${SUPABASE_DB_USER};Password=${SUPABASE_DB_PASSWORD};SSL Mode=Require;Trust Server Certificate=true;Timeout=15;Command Timeout=15"
+      JwtSettings__SecretKey: ${JWT_SECRET}
+      JwtSettings__Issuer: SistemaParroquial
+      JwtSettings__Audience: SistemaParroquial
+      JwtSettings__ExpirationMinutes: "60"
+      AppSettings__FrontendUrl: "http://localhost:5173"
+      NodeServices__BaseUrl: "http://auth-node:3000/SistemaParroquial/v1"
+      Security__AllowedOrigins__0: "http://localhost:5173"
+      SmtpSettings__Host: ${SMTP_HOST}
+      SmtpSettings__Port: ${SMTP_PORT}
+      SmtpSettings__Username: ${SMTP_USERNAME}
+      SmtpSettings__Password: ${SMTP_PASSWORD}
+      SmtpSettings__FromEmail: ${SMTP_FROM_EMAIL}
+      SmtpSettings__FromName: "Sistema Parroquial"
+      SmtpSettings__Enabled: "true"
+      ASPNETCORE_ENVIRONMENT: "Production"
+    ports:
+      - "5262:8080"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8080/health || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 15s
+    restart: unless-stopped
+    networks:
+      - sistema_parroquial_net
+
+  auth-node:
+    build:
+      context: ./auth-node
+      dockerfile: Dockerfile
+    container_name: sistema_parroquial_auth_node
+    environment:
+      URI_MONGODB: ${MONGO_ATLAS_URI}
+      JWT_SECRET: ${JWT_SECRET}
+      PORT: "3000"
+      NODE_ENV: "production"
+    ports:
+      - "3000:3000"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:3000/SistemaParroquial/v1/health || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    restart: unless-stopped
+    networks:
+      - sistema_parroquial_net
+
+  admin-sistema:
+    build:
+      context: ./admin-sistema
+      dockerfile: Dockerfile
+      args:
+        VITE_AUTH_URL: "http://localhost:5262/api/v1"
+        VITE_API_URL: "http://localhost:3000/SistemaParroquial/v1"
+    container_name: sistema_parroquial_frontend
+    depends_on:
+      - auth-service
+      - auth-node
+    ports:
+      - "5173:80"
+    restart: unless-stopped
+    networks:
+      - sistema_parroquial_net
+
+networks:
+  sistema_parroquial_net:
+    driver: bridge
